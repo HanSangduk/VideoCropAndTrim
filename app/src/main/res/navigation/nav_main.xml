@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_main"
+    app:startDestination="@id/mainFragment">
+    <fragment
+        android:id="@+id/mainFragment"
+        android:name="com.example.videocropandtrim.ui.main.VideoCTMainFragment"
+        android:label="main_fragment"
+        tools:layout="@layout/fragment_video_crop_trim_main">
+        <action
+            android:id="@+id/action_mainFragment_to_detailFragemnt"
+            app:destination="@id/detailFragemnt" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/detailFragemnt"
+        android:name="com.example.videocropandtrim.ui.detail.VideoCTDetailFragment"
+        android:label="user_fragment"
+        tools:layout="@layout/fragment_video_crop_trim_detail">
+        <argument
+            android:name="selectedMediaFile"
+            app:argType="com.example.videocropandtrim.model.data.MediaFile" />
+        <action
+            android:id="@+id/action_detailFragment_to_resultFragment"
+            app:destination="@id/resultFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/resultFragment"
+        android:name="com.example.videocropandtrim.ui.result.VideoCTResultFragment"
+        android:label="result_fragment"
+        tools:layout="@layout/fragment_video_crop_trim_result">
+        <argument
+            android:name="resultMediaFile"
+            app:argType="com.example.videocropandtrim.model.data.MediaFile" />
+    </fragment>
+
+</navigation>

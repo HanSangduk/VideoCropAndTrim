@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:bind="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="videoCropAndTrimViewModel"
+            type="com.example.videocropandtrim.ui.main.VideoCropAndTrimViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/purple_200">
+
+        <ImageView
+            android:id="@+id/testThumbnail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:adjustViewBounds="true"
+            android:visibility="gone"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+
+        <com.google.android.exoplayer2.ui.PlayerView
+            android:id="@+id/pvVideoCTDetail"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:resize_mode="fit"
+            app:surface_type="texture_view"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/rvVideoCropAndTrimDetailTimeLine"/>
+
+        <com.example.videocropandtrim.utils.customview.OverlayCropView
+            android:id="@+id/ocvVideoCTDetail"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/rvVideoCropAndTrimDetailTimeLine"/>
+
+        <TextView
+            android:id="@+id/tvVideoCropAndTrimDetailTimeLine"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:gravity="center"
+            android:text="HIIIIIIIIIIIIII"
+            android:textColor="@color/white"
+            android:textSize="24dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvVideoCropAndTrimDetailTimeLine"
+            android:layout_width="0dp"
+            android:layout_height="100dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            bind:set_ct_detail_rv_adapter="@{videoCropAndTrimViewModel.selectVideoFrames}"
+            bind:set_ct_detail_rv_adapter_vm="@{videoCropAndTrimViewModel}" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/mbVideoCropAndTrimDetailNext"
+            android:layout_width="wrap_content"
+            android:layout_height="60dp"
+            app:backgroundTint="@color/teal_200"
+            android:textSize="20dp"
+            android:text="NEXT"
+            android:gravity="center"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintRight_toRightOf="parent"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

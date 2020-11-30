@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">VideoCropAndTrim</string>
+    <string name="today">Today</string>
+    <string name="yesterday">Yesterday</string>
+    <string name="this_year_data_format">MMM dd</string>
+    <string name="this_year_over_data_format">MMM dd, yyyy</string>
+    <string name="days_ago">%s day(s) ago</string>
+</resources>
