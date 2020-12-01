@@ -9,8 +9,8 @@
     <color name="white">#FFFFFFFF</color>
 
     <!--Crop View-->
-    <color name="ucrop_color_default_crop_grid">#80ffffff</color>
-    <color name="ucrop_color_default_crop_frame">#ffffff</color>
-    <color name="ucrop_color_default_dimmed">#8c000000</color>
-    <color name="ucrop_color_default_logo">#4f212121</color>
+    <color name="color_default_crop_grid">#80ffffff</color>
+    <color name="color_default_crop_frame">#ffffff</color>
+    <color name="color_default_dimmed">#8c000000</color>
+    <color name="color_default_logo">#4f212121</color>
 </resources>

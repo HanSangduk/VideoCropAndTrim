@@ -38,8 +38,8 @@ class OverlayCropView
         const val DEFAULT_CROP_GRID_COLUMN_COUNT = 2
     }
 
-    val mCropViewRect = RectF()
-    val mTempRect = RectF()
+    private val mCropViewRect = RectF()
+    private val mTempRect = RectF()
 
     var mThisWidth = 0
     var mThisHeight:Int = 0
@@ -84,20 +84,20 @@ class OverlayCropView
     private var isFreeCrop = false
 
     init {
-        mTouchPointThreshold = resources.getDimensionPixelSize(R.dimen.ucrop_default_crop_rect_corner_touch_threshold)
-        mCropRectMinSize = resources.getDimensionPixelSize(R.dimen.ucrop_default_crop_rect_min_size)
-        mCropRectCornerTouchAreaLineLength = resources.getDimensionPixelSize(R.dimen.ucrop_default_crop_rect_corner_touch_area_line_length)
+        mTouchPointThreshold = resources.getDimensionPixelSize(R.dimen.default_crop_rect_corner_touch_threshold)
+        mCropRectMinSize = resources.getDimensionPixelSize(R.dimen.default_crop_rect_min_size)
+        mCropRectCornerTouchAreaLineLength = resources.getDimensionPixelSize(R.dimen.default_crop_rect_corner_touch_area_line_length)
 
         attrs?.let { lAttrs ->
             val a = context.obtainStyledAttributes(lAttrs, R.styleable.OverlayCropView)
 
             mCircleDimmedLayer = a.getBoolean(
-                R.styleable.OverlayCropView_ucrop_circle_dimmed_layer,
+                R.styleable.OverlayCropView_circle_dimmed_layer,
                 DEFAULT_CIRCLE_DIMMED_LAYER
             )
             mDimmedColor = a.getColor(
-                R.styleable.OverlayCropView_ucrop_dimmed_color,
-                ContextCompat.getColor(context, R.color.ucrop_color_default_dimmed)
+                R.styleable.OverlayCropView_dimmed_color,
+                ContextCompat.getColor(context, R.color.color_default_dimmed)
             )
             mDimmedStrokePaint.color = mDimmedColor
             mDimmedStrokePaint.style = Paint.Style.STROKE
@@ -105,13 +105,13 @@ class OverlayCropView
 
             initCropFrameStyle(a)
             mShowCropFrame = a.getBoolean(
-                R.styleable.OverlayCropView_ucrop_show_frame,
+                R.styleable.OverlayCropView_show_frame,
                 DEFAULT_SHOW_CROP_FRAME
             )
 
             initCropGridStyle(a)
             mShowCropGrid = a.getBoolean(
-                R.styleable.OverlayCropView_ucrop_show_grid,
+                R.styleable.OverlayCropView_show_grid,
                 DEFAULT_SHOW_CROP_GRID
             )
 
@@ -124,12 +124,12 @@ class OverlayCropView
      */
     private fun initCropFrameStyle(a: TypedArray) { //start 33
         val cropFrameStrokeSize = a.getDimensionPixelSize(
-            R.styleable.OverlayCropView_ucrop_frame_stroke_size,
-            resources.getDimensionPixelSize(R.dimen.ucrop_default_crop_frame_stoke_width)
+            R.styleable.OverlayCropView_frame_stroke_size,
+            resources.getDimensionPixelSize(R.dimen.default_crop_frame_stoke_width)
         )
         val cropFrameColor = a.getColor(
-            R.styleable.OverlayCropView_ucrop_frame_color,
-            ContextCompat.getColor(context, R.color.ucrop_color_default_crop_frame)
+            R.styleable.OverlayCropView_frame_color,
+            ContextCompat.getColor(context, R.color.color_default_crop_frame)
         )
         mCropFramePaint.strokeWidth = cropFrameStrokeSize.toFloat()
         mCropFramePaint.color = cropFrameColor
@@ -144,21 +144,21 @@ class OverlayCropView
      */
     private fun initCropGridStyle(a: TypedArray) { //start 44
         val cropGridStrokeSize = a.getDimensionPixelSize(
-            R.styleable.OverlayCropView_ucrop_grid_stroke_size,
-            resources.getDimensionPixelSize(R.dimen.ucrop_default_crop_grid_stoke_width)
+            R.styleable.OverlayCropView_grid_stroke_size,
+            resources.getDimensionPixelSize(R.dimen.default_crop_grid_stoke_width)
         )
         val cropGridColor = a.getColor(
-            R.styleable.OverlayCropView_ucrop_grid_color,
-            ContextCompat.getColor(context, R.color.ucrop_color_default_crop_grid)
+            R.styleable.OverlayCropView_grid_color,
+            ContextCompat.getColor(context, R.color.color_default_crop_grid)
         )
         mCropGridPaint.strokeWidth = cropGridStrokeSize.toFloat()
         mCropGridPaint.color = cropGridColor
         mCropGridRowCount = a.getInt(
-            R.styleable.OverlayCropView_ucrop_grid_row_count,
+            R.styleable.OverlayCropView_grid_row_count,
             DEFAULT_CROP_GRID_ROW_COUNT
         )
         mCropGridColumnCount = a.getInt(
-            R.styleable.OverlayCropView_ucrop_grid_column_count,
+            R.styleable.OverlayCropView_grid_column_count,
             DEFAULT_CROP_GRID_COLUMN_COUNT
         )
     }

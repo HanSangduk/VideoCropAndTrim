@@ -3,28 +3,34 @@
     <declare-styleable name="OverlayCropView">
 
         <!--Overlay view-->
-        <attr name="ucrop_show_oval_crop_frame" format="boolean"/>
-        <attr name="ucrop_circle_dimmed_layer" format="boolean"/>
-        <attr name="ucrop_dimmed_color" format="color"/>
+        <attr name="show_oval_crop_frame" format="boolean"/>
+        <attr name="circle_dimmed_layer" format="boolean"/>
+        <attr name="dimmed_color" format="color"/>
 
-        <attr name="ucrop_grid_stroke_size" format="dimension"/>
-        <attr name="ucrop_grid_color" format="color"/>
-        <attr name="ucrop_grid_row_count" format="integer"/>
-        <attr name="ucrop_grid_column_count" format="integer"/>
-        <attr name="ucrop_show_grid" format="boolean"/>
+        <attr name="grid_stroke_size" format="dimension"/>
+        <attr name="grid_color" format="color"/>
+        <attr name="grid_row_count" format="integer"/>
+        <attr name="grid_column_count" format="integer"/>
+        <attr name="show_grid" format="boolean"/>
 
-        <attr name="ucrop_frame_stroke_size" format="dimension"/>
-        <attr name="ucrop_frame_color" format="color"/>
-        <attr name="ucrop_show_frame" format="boolean"/>
+        <attr name="frame_stroke_size" format="dimension"/>
+        <attr name="frame_color" format="color"/>
+        <attr name="show_frame" format="boolean"/>
 
     </declare-styleable>
 
-    <declare-styleable name="ucrop_AspectRatioTextView">
+    <declare-styleable name="TimeLineTrimmer">
 
-        <attr name="ucrop_artv_ratio_title" format="string"/>
-
-        <attr name="ucrop_artv_ratio_x" format="float"/>
-        <attr name="ucrop_artv_ratio_y" format="float"/>
+        <attr name="tlt_dimmed_color" format="color"/>
+        <attr name="tlt_line_stroke_color" format="color"/>
+        <attr name="tlt_line_stroke_size" format="dimension"/>
+        <attr name="tlt_left_guide_line_thumb" format="reference"/>
+        <attr name="tlt_right_guide_line_thumb" format="reference"/>
+        <attr name="tlt_timeline_rect_direction" format="enum">
+            <enum name="all" value="0"/>
+            <enum name="vertical" value="1"/>
+            <enum name="horizontal" value="2"/>
+        </attr>
 
     </declare-styleable>
 

@@ -1,7 +1,7 @@
 package com.example.videocropandtrim.utils
 
 import android.content.Context
-import android.os.MemoryFile
+import android.content.res.Resources
 import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.StringRes
@@ -13,17 +13,12 @@ import io.reactivex.Flowable
 import io.reactivex.Observable
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.annotations.CheckReturnValue
-import io.reactivex.annotations.SchedulerSupport
 import io.reactivex.schedulers.Schedulers
 import org.joda.time.DateTime
 import org.joda.time.DateTimeZone
 import org.joda.time.Days
 import org.joda.time.format.DateTimeFormat
 import java.io.File
-import java.io.FileInputStream
-import java.io.FileOutputStream
-import java.io.InputStream
 import java.math.BigDecimal
 import java.math.RoundingMode
 import java.util.concurrent.TimeUnit
@@ -247,4 +242,28 @@ fun Long.convertSecondsToTime(): String {
             }
         }
     }
+}
+
+
+
+fun Context.convertDpToPx(dp: Float): Int {
+    val scale: Float = Resources.getSystem().displayMetrics.density
+    return (dp * scale).fastRound()
+}
+
+fun Context.convertDpToPx(dp: Int): Int {
+    val scale: Float = Resources.getSystem().displayMetrics.density
+    return (dp * scale).fastRound()
+}
+
+
+fun Context.convertPxToDp(px: Float): Float {
+    val scale: Float = Resources.getSystem().displayMetrics.density
+    return px / scale
+}
+
+
+fun Context.convertPxToDp(px: Int): Float {
+    val scale: Float = Resources.getSystem().displayMetrics.density
+    return px / scale
 }

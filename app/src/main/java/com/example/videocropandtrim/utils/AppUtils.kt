@@ -7,7 +7,7 @@ fun logg(msg: String){
     Log.d("alskaejr", msg)
 }
 
-
+fun Float.fastRound(): Int = if(this > 0) (this + 0.5).toInt() else (this - 0.5).toInt()
 
 
 //private fun executeBinary() {

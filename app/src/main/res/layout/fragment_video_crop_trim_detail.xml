@@ -69,6 +69,14 @@
             bind:set_ct_detail_rv_adapter="@{videoCropAndTrimViewModel.selectVideoFrames}"
             bind:set_ct_detail_rv_adapter_vm="@{videoCropAndTrimViewModel}" />
 
+        <com.example.videocropandtrim.utils.customview.TimeLineTrimmer
+            android:layout_width="0dp"
+            android:layout_height="100dp"
+            app:tlt_line_stroke_size="10dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"/>
+
         <com.google.android.material.button.MaterialButton
             android:id="@+id/mbVideoCropAndTrimDetailNext"
             android:layout_width="wrap_content"
