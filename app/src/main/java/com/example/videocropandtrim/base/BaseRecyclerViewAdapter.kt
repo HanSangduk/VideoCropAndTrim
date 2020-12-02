@@ -76,6 +76,11 @@ abstract class BaseRecyclerViewAdapter<T, VM, VDB: ViewDataBinding>
         }
     }
 
+
+    protected open fun onBindCreateViewHolder(binding: VDB, parent: ViewGroup, viewType: Int){
+
+    }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
 
         binding = DataBindingUtil.inflate(LayoutInflater.from(parent.context), layoerId, parent, false)
@@ -92,8 +97,11 @@ abstract class BaseRecyclerViewAdapter<T, VM, VDB: ViewDataBinding>
                     headerView
                 } ?: binding.root
             }
-            else -> binding.root
+            else -> {
+                binding.root
+            }
         }
+        onBindCreateViewHolder(binding, parent, viewType)
         return BaseRecyclerViewHolder(rootView)
     }
 

@@ -6,9 +6,11 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.example.videocropandtrim.R
 import com.example.videocropandtrim.model.data.MediaFile
 import com.example.videocropandtrim.ui.main.VideoCropAndTrimViewModel
 import com.example.videocropandtrim.utils.logg
+import com.example.videocropandtrim.utils.widget.DefaultRvItemDecoration
 
 @BindingAdapter(value = ["bind:set_ct_detail_rv_adapter_vm", "bind:set_ct_detail_rv_adapter"])
 fun bindCTDetailRvAdapter(recyclerView: RecyclerView, vm: VideoCropAndTrimViewModel?, videoFrames: List<Bitmap>?){
@@ -22,6 +24,12 @@ fun bindCTDetailRvAdapter(recyclerView: RecyclerView, vm: VideoCropAndTrimViewMo
                 }
             } ?: run {
                 val lim = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+                recyclerView.addItemDecoration(
+                    DefaultRvItemDecoration(
+                        resources.getDimensionPixelSize(R.dimen.default_timeline_padding),
+                        lVideoFrames.size
+                    )
+                )
                 recyclerView.layoutManager = lim
                 recyclerView.adapter = VideoCTDetailRvAdapter(
                     vm = vm,

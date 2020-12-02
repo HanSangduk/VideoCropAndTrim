@@ -34,4 +34,19 @@
 
     </declare-styleable>
 
+    <declare-styleable name="TimeLineTrimmerVersion01">
+
+        <attr name="tlt_ver01_dimmed_color" format="color"/>
+        <attr name="tlt_ver01_line_stroke_color" format="color"/>
+        <attr name="tlt_ver01_line_stroke_size" format="dimension"/>
+        <attr name="tlt_ver01_left_guide_line_thumb" format="reference"/>
+        <attr name="tlt_ver01_right_guide_line_thumb" format="reference"/>
+        <attr name="tlt_ver01_timeline_rect_direction" format="enum">
+            <enum name="all" value="0"/>
+            <enum name="vertical" value="1"/>
+            <enum name="horizontal" value="2"/>
+        </attr>
+
+    </declare-styleable>
+
 </resources>

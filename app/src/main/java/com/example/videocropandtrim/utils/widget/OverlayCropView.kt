@@ -1,4 +1,4 @@
-package com.example.videocropandtrim.utils.customview
+package com.example.videocropandtrim.utils.widget
 
 import android.content.Context
 import android.content.res.TypedArray
@@ -6,15 +6,12 @@ import android.graphics.*
 import android.util.AttributeSet
 import android.view.MotionEvent
 import android.view.View
-import android.view.ViewGroup
 import androidx.annotation.IntDef
 import androidx.core.content.ContextCompat
 import com.example.videocropandtrim.R
 import com.example.videocropandtrim.utils.getCenterFromRect
 import com.example.videocropandtrim.utils.getCornersFromRect
 import com.example.videocropandtrim.utils.logg
-import java.math.RoundingMode
-import java.text.DecimalFormat
 
 class OverlayCropView
     @JvmOverloads
@@ -232,13 +229,8 @@ class OverlayCropView
             }
             else -> {
                 val transRatio = templateRectF.height() / resizeHeight
-                logg("transRatio: $transRatio")
                 val width = templateRectF.width() / transRatio
-                logg("resizeWidth: $resizeWidth")
-                logg("width: $width")
                 val pivotWidth = resizeWidth/2
-                logg("pivotWidth: $pivotWidth")
-                logg("pivotWidth - width: ${pivotWidth - width}")
                 RectF(pivotWidth - width/2, 0f, pivotWidth + width/2, resizeHeight )
             }
         }
@@ -258,15 +250,12 @@ class OverlayCropView
      */
     fun setTemplateCropRectF(templateRectF: RectF){
         mMaxCropRectF.set(setTemplateRectF(templateRectF))
-        logg("mMaxCropRectF: $mMaxCropRectF")
         setCropViewRectf(mMaxCropRectF)
     }
 
     private fun setCropViewRectf(rectF: RectF){
-        logg("realVideoRectF: ${realVideoRectF.width()}")
         if(realVideoRectF.width() < 1) return
         mCropViewRect.set(rectF)
-//        resizeVideoRectF.set(rectF)
         updateGridPoints()
         postInvalidate()
     }
@@ -440,15 +429,12 @@ class OverlayCropView
             mPreviousTouchX = -1f
             mPreviousTouchY = -1f
             mCurrentTouchCornerIndex = -1
-            logg("action up overlayCropViewChangeListener rectf: $mCropViewRect")
             overlayCropViewChangeListener?.invoke(mCropViewRect)
         }
         return false
     }
 
     private fun isEnableMovingRectF(currentRectF: RectF): Boolean{
-        logg("isEnableMovingRectF currentRectF: $currentRectF")
-        logg("@@ isEnableMovingRectF mCropViewRect: $resizeVideoRectF")
         return currentRectF.left >= resizeVideoRectF.left
                 && currentRectF.top >= resizeVideoRectF.top
                 && currentRectF.right <= resizeVideoRectF.right

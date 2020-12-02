@@ -125,7 +125,7 @@ fun File.deleteAll() {
     val childFileList = this.listFiles()
     if (this.exists()) {
         for (childFile in childFileList) {
-            if (childFile.isDirectory()) {
+            if (childFile.isDirectory) {
                 childFile.deleteAll() // 하위 디렉토리
             } else {
                 childFile.delete() // 하위 파일
@@ -221,23 +221,30 @@ fun Float.percentValue(percent: Float) = (this * percent / 100).roundValue()
 
 fun Int.unitFormat() : String = if(this in 0 until 10) "0$this" else this.toString()
 
-fun Long.convertSecondsToTime(): String {
+fun Long.convertSecondsToTime(timeUnit: TimeUnit = TimeUnit.MILLISECONDS): String {
+    val time = when(timeUnit){
+        TimeUnit.MILLISECONDS -> this / 10f.pow(3)
+        TimeUnit.MICROSECONDS -> this / 10f.pow(6)
+        TimeUnit.MINUTES -> this * 60
+        TimeUnit.HOURS -> this * 3600
+        else -> this
+    }.toLong()
     var timeStr = ""
     var hour = 0
     var min = 0
     var second = 0
-    return if(this <= 0) "00:00"
+    return if(time <= 0) "00:00"
     else {
-        min = (this / 60).toInt()
+        min = (time / 60).toInt()
         if(min < 60) {
-            second = (this % 60).toInt()
+            second = (time % 60).toInt()
             "00:${min.unitFormat()}:${second.unitFormat()}"
         }else{
             hour = min / 60
             if(hour > 99) "99:59:59"
             else {
                 min %= 60
-                second = (this - hour * 3600 - min * 60).toInt()
+                second = (time - hour * 3600 - min * 60).toInt()
                 "${hour.unitFormat()}:${min.unitFormat()}:${second.unitFormat()}"
             }
         }
@@ -266,4 +273,11 @@ fun Context.convertPxToDp(px: Float): Float {
 fun Context.convertPxToDp(px: Int): Float {
     val scale: Float = Resources.getSystem().displayMetrics.density
     return px / scale
+}
+
+fun Context.getDeviceWidth(): Int {
+    return resources.displayMetrics.widthPixels
+}
+fun Context.getDeviceHeight(): Int {
+    return resources.displayMetrics.heightPixels
 }

@@ -37,7 +37,7 @@
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintBottom_toTopOf="@+id/rvVideoCropAndTrimDetailTimeLine"/>
 
-        <com.example.videocropandtrim.utils.customview.OverlayCropView
+        <com.example.videocropandtrim.utils.widget.OverlayCropView
             android:id="@+id/ocvVideoCTDetail"
             android:layout_width="0dp"
             android:layout_height="0dp"
@@ -62,17 +62,21 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvVideoCropAndTrimDetailTimeLine"
             android:layout_width="0dp"
-            android:layout_height="100dp"
+            android:layout_height="90dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             bind:set_ct_detail_rv_adapter="@{videoCropAndTrimViewModel.selectVideoFrames}"
             bind:set_ct_detail_rv_adapter_vm="@{videoCropAndTrimViewModel}" />
 
-        <com.example.videocropandtrim.utils.customview.TimeLineTrimmer
+        <com.example.videocropandtrim.utils.widget.TimeLineTrimmer
+            android:id="@+id/tltVideoCTD"
             android:layout_width="0dp"
-            android:layout_height="100dp"
+            android:layout_height="90dp"
             app:tlt_line_stroke_size="10dp"
+            android:paddingTop="@dimen/timeline_time_text_area"
+            android:paddingStart="@dimen/default_timeline_padding"
+            android:paddingEnd="@dimen/default_timeline_padding"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"/>
@@ -85,7 +89,7 @@
             android:textSize="20dp"
             android:text="NEXT"
             android:gravity="center"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintRight_toRightOf="parent"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>

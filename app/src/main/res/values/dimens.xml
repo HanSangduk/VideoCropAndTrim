@@ -8,4 +8,6 @@
     <dimen name="default_crop_rect_min_size">50dp</dimen>
     <dimen name="default_crop_rect_corner_touch_area_line_length">10dp</dimen>
 
+    <dimen name="default_timeline_padding">30dp</dimen>
+    <dimen name="timeline_time_text_area">30dp</dimen>
 </resources>

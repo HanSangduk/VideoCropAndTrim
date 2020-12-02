@@ -22,6 +22,15 @@ class ExoManager(
     private var currentWindow = 0
     private var playbackPosition: Long = 0
 
+
+    private val defaultExoListener = object : Player.EventListener {
+        override fun onPlayerStateChanged(playWhenReady: Boolean, playbackState: Int) {
+            logg("onPlayerStateChanged exoCurrentPosition: ${player?.currentPosition}")
+        }
+        override fun onIsPlayingChanged(isPlaying: Boolean) {
+        }
+    }
+
     fun initializePlayer(playUri: String) {
         if (player == null) {
             val trackSelector = DefaultTrackSelector(context)
@@ -32,6 +41,8 @@ class ExoManager(
                 .setTrackSelector(trackSelector)
                 .build()
         }
+
+        player?.addListener(defaultExoListener)
 
         videoListener?.let { player?.addVideoListener(it) }
 
