@@ -12,10 +12,7 @@ import android.view.MotionEvent
 import android.view.View
 import androidx.core.content.ContextCompat
 import com.example.videocropandtrim.R
-import com.example.videocropandtrim.utils.convertDpToPx
-import com.example.videocropandtrim.utils.convertSecondsToTime
-import com.example.videocropandtrim.utils.getTimelineOneTakeWidth
-import com.example.videocropandtrim.utils.logg
+import com.example.videocropandtrim.utils.*
 import com.example.videocropandtrim.utils.widget.TimeLineTrimmer.TimeLineRectMovingDirection.Companion.getTimeLineRectMovingDirectionByValue
 import java.util.concurrent.TimeUnit
 import kotlin.math.max
@@ -176,11 +173,14 @@ class TimeLineTrimmer @JvmOverloads constructor(
         )
 
         mTimeLineTrimmerRect.set(
-            mMaxRectF.left,
-            mMaxRectF.top,
-            mTemplateMaxRightPoint ?: mMaxRectF.right,
-            mMaxRectF.bottom
+            mMaxRectF
         )
+//        mTimeLineTrimmerRect.set(
+//            mMaxRectF.left,
+//            mMaxRectF.top,
+//            mTemplateMaxRightPoint ?: mMaxRectF.right,
+//            mMaxRectF.bottom
+//        )
         logg("mVideoOneTakeWidth mTimeLineTrimmerRect@@ : $mTimeLineTrimmerRect")
 
         if(changed){
@@ -230,31 +230,12 @@ class TimeLineTrimmer @JvmOverloads constructor(
         logg("mTimeLineTrimmerRect.left: ${mTimeLineTrimmerRect}")
     }
 
-    //todo 밑에 setVideoDuration와 함께 받도록 수정하거나 그런거 해야할거같은데 데이터 구조가 어케 될지 모르니까 일단 대기
-    fun setTemplateDuration(duration: Long){
-        //todo 얘도 10*6승으로 올지는 모르니까 오는거 보고 수정 필요할 수도
-        mTemplateVideoMaxDurationMilliSec = duration
-
-        mTemplateMaxRightPoint = (paddingLeft + mVideoOneTakeWidth * mVideoDurationRatio * (mTemplateVideoMaxDurationMilliSec/ ONE_SECOND_BY_MILLISECOND)).toFloat()
+    fun setVideoAndTemplateDuration(videoDuration: Long, templateDuration: Long){
+        mTemplateVideoMaxDurationMilliSec = templateDuration
+        mVideoOneTakeMilliSec = context.getOneSceneDuration(videoDuration, templateDuration)
+        mVideoDurationMilliSec = (videoDuration/ 10f.pow(3)).toLong()
+        logg("mVideoOneTakeMilliSec: $mVideoOneTakeMilliSec")
     }
-
-    fun setVideoDuration(duration: Long){
-//        val second = (duration/ 10f.pow(6)).toLong()
-
-        mVideoDurationMilliSec = (duration/ 10f.pow(3)).toLong()
-        if(mVideoDurationMilliSec > (10 * ONE_SECOND_BY_MILLISECOND)){
-            mVideoOneTakeMilliSec = ONE_SECOND_BY_MILLISECOND
-            mVideoDurationRatio = 1L
-        }else{
-            mVideoOneTakeMilliSec = mVideoDurationMilliSec / 10
-            mVideoDurationRatio = ONE_SECOND_BY_MILLISECOND / mVideoOneTakeMilliSec
-        }
-//        mVideoOneTakeMilliSec = if(mVideoDurationMilliSec > (10 * ONE_SECOND_BY_MILLISECOND)) ONE_SECOND_BY_MILLISECOND else mVideoDurationMilliSec / 10
-//        mVideoDurationRatio =
-        logg("time: ${mVideoDurationMilliSec.convertSecondsToTime(TimeUnit.MICROSECONDS)}")
-
-    }
-
 
     /**
      * todo 1201 이제 남은거
@@ -265,8 +246,6 @@ class TimeLineTrimmer @JvmOverloads constructor(
      * 5. 그리고 이게 마무리 된다면 해당 시간초로 cropㅎ ㅏ자
      */
     fun setTimeLineTemp(startSec: Float){
-//        600
-//        1000 / 500
 
         logg("setTimeLineTemp startSec: $startSec")
         logg("setTimeLineTemp startSec: ${startSec * mVideoOneTakeMilliSec}")
@@ -275,11 +254,6 @@ class TimeLineTrimmer @JvmOverloads constructor(
 
     }
 
-    /**
-     * This method draws dimmed area around the crop bounds.
-     *
-     * @param canvas - valid canvas object
-     */
     private fun drawDimmedLayer(canvas: Canvas) { //start 11 11 //start 14 14
         canvas.save()
 
@@ -289,129 +263,10 @@ class TimeLineTrimmer @JvmOverloads constructor(
         canvas.restore()
     }
 
-    /**
-     * This method draws crop bounds (empty rectangle)
-     * and crop guidelines (vertical and horizontal lines inside the crop bounds) if needed.
-     *
-     * @param canvas - valid canvas object
-     */
     private fun drawCropGrid(canvas: Canvas) { //start 12 12 //start 15 15
         logg("55onLayout drawCropGrid: ${mTimeLineTrimmerRect}")
         canvas.drawRect(mTimeLineTrimmerRect, mFramePaint)
         updatePoints()
-    }
-
-    override fun onTouchEvent(event: MotionEvent): Boolean {
-        var x = event.x
-        var y = event.y
-
-        if(event.action and MotionEvent.ACTION_MASK == MotionEvent.ACTION_DOWN){
-            mTimeLineTrimmerTouchArea = getTouchArea(event)
-            logg("onTouch down getTouchArea(event): $mTimeLineTrimmerTouchArea")
-            if(mTimeLineTrimmerTouchArea == TimeLineTrimmerTouchArea.NONE){
-                mPreviousTouchX = -1f
-                mPreviousTouchY = -1f
-            }else{
-                mPreviousTouchX = x
-                mPreviousTouchY = y
-            }
-            return mTimeLineTrimmerTouchArea != TimeLineTrimmerTouchArea.NONE
-        }
-
-        if(event.action and MotionEvent.ACTION_MASK == MotionEvent.ACTION_MOVE){
-            if(event.pointerCount == 1 && mTimeLineTrimmerTouchArea != TimeLineTrimmerTouchArea.NONE){
-                //todo something
-                logg("moveee prev x: $x")
-                x = min(max(x, paddingLeft.toFloat()), width - paddingRight.toFloat())
-                y = min(max(y, paddingTop.toFloat()), height - paddingBottom.toFloat())
-                logg("moveee x: $x")
-                logg("moveee width - paddingRight.toFloat(): ${width - paddingRight.toFloat()}")
-                updateTimeLineRect(x, y)
-                mPreviousTouchX = x
-                mPreviousTouchY = y
-            }
-            return true
-        }
-
-        if(event.action and MotionEvent.ACTION_MASK == MotionEvent.ACTION_UP){
-            mTimeLineTrimmerTouchArea = TimeLineTrimmerTouchArea.NONE
-            logg("onTouch down getTouchArea(event): $mTimeLineTrimmerTouchArea")
-        }
-
-
-        return false
-    }
-
-    private fun isEnableMovingRect(movingRectF: RectF): Boolean{
-        logg("isEnableMovingRect movingRectF: ${movingRectF}")
-        logg("@@isEnableMovingRect mMaxRectF: ${mMaxRectF}")
-        return movingRectF.left >= mMaxRectF.left
-                && movingRectF.top >= mMaxRectF.top
-                && movingRectF.right <= mMaxRectF.right
-                && movingRectF.bottom <= mMaxRectF.bottom
-    }
-
-    private fun updateTimeLineRect(x: Float, y: Float) {
-//        val pureTemplateRatio = mMaxCropRectF.width() / mMaxCropRectF.height()
-        mTempTimeLineRect.set(mTimeLineTrimmerRect)
-        when(mTimeLineTrimmerTouchArea){
-            TimeLineTrimmerTouchArea.LEFT_TOP -> {
-            }
-            TimeLineTrimmerTouchArea.RIGHT_TOP -> {
-            }
-            TimeLineTrimmerTouchArea.RIGHT_BOTTOM -> {
-            }
-            TimeLineTrimmerTouchArea.LEFT_BOTTOM -> {
-            }
-            TimeLineTrimmerTouchArea.IN -> {
-                logg("22 mTimeLineTrimmerRect.left: ${mTimeLineTrimmerRect}")
-                logg("updateTimeLineRect IN x: $x")
-                logg("updateTimeLineRect IN mPreviousTouchX: $mPreviousTouchX")
-                logg("updateTimeLineRect IN mTempTimeLineRect: $mTempTimeLineRect")
-                logg("updateTimeLineRect IN timeLineRectMovingDirection: $timeLineRectMovingDirection")
-                when (timeLineRectMovingDirection) {
-                    TimeLineRectMovingDirection.ALL -> mTempTimeLineRect.offset(
-                        x - mPreviousTouchX,
-                        y - mPreviousTouchY
-                    )
-                    TimeLineRectMovingDirection.HORIZONTAL -> mTempTimeLineRect.offset(
-                        x - mPreviousTouchX,
-                        0f
-                    )
-                    TimeLineRectMovingDirection.VERTICAL -> mTempTimeLineRect.offset(
-                        0f,
-                        y - mPreviousTouchY
-                    )
-                }
-//                mTempTimeLineRect.offset(
-//                    x - mPreviousTouchX,
-//                    0f
-//                )
-                logg("updateTimeLineRect IN 222mTempTimeLineRect: $mTempTimeLineRect")
-
-                if (isEnableMovingRect(mTempTimeLineRect)) {
-                    mTimeLineTrimmerRect.set(mTempTimeLineRect)
-                    updatePoints()
-                    postInvalidate()
-                }
-                return
-            }
-            else -> {}
-        }
-
-        //일단은 줄이거나 넓히는 기능없이 움직이기만 가능하게 작업중이라 주석
-//        val changeHeight = mTempTimeLineRect.height() in (mRectMinSize.toFloat() / pureTemplateRatio).. mMaxCropRectF.height()
-//                && mTempTimeLineRect.top >= 0
-//                && mTempTimeLineRect.bottom <= resizeVideoRectF.height()
-//        val changeWidth = mTempTimeLineRect.width() in mRectMinSize.toFloat() .. mMaxCropRectF.width()
-//                && mTempTimeLineRect.left >= 0
-//                && mTempTimeLineRect.right <= resizeVideoRectF.width()
-//
-//        if (changeHeight && changeWidth) {
-//            mTimeLineTrimmerRect.set(mTempTimeLineRect)
-//            updateGridPoints()
-//            postInvalidate()
-//        }
     }
 
     private var mEdgePoints: FloatArray? = null
@@ -474,4 +329,92 @@ class TimeLineTrimmer @JvmOverloads constructor(
             }
         }
     }
+
+
+
+//    private fun isEnableMovingRect(movingRectF: RectF): Boolean{
+//        return movingRectF.left >= mMaxRectF.left
+//                && movingRectF.top >= mMaxRectF.top
+//                && movingRectF.right <= mMaxRectF.right
+//                && movingRectF.bottom <= mMaxRectF.bottom
+//    }
+
+//    override fun onTouchEvent(event: MotionEvent): Boolean {
+//        var x = event.x
+//        var y = event.y
+//
+//        if(event.action and MotionEvent.ACTION_MASK == MotionEvent.ACTION_DOWN){
+//            mTimeLineTrimmerTouchArea = getTouchArea(event)
+//            logg("onTouch down getTouchArea(event): $mTimeLineTrimmerTouchArea")
+//            if(mTimeLineTrimmerTouchArea == TimeLineTrimmerTouchArea.NONE){
+//                mPreviousTouchX = -1f
+//                mPreviousTouchY = -1f
+//            }else{
+//                mPreviousTouchX = x
+//                mPreviousTouchY = y
+//            }
+//            return mTimeLineTrimmerTouchArea != TimeLineTrimmerTouchArea.NONE
+//        }
+//
+//        if(event.action and MotionEvent.ACTION_MASK == MotionEvent.ACTION_MOVE){
+//            if(event.pointerCount == 1 && mTimeLineTrimmerTouchArea != TimeLineTrimmerTouchArea.NONE){
+//                //todo something
+//                logg("moveee prev x: $x")
+//                x = min(max(x, paddingLeft.toFloat()), width - paddingRight.toFloat())
+//                y = min(max(y, paddingTop.toFloat()), height - paddingBottom.toFloat())
+//                logg("moveee x: $x")
+//                logg("moveee width - paddingRight.toFloat(): ${width - paddingRight.toFloat()}")
+//                updateTimeLineRect(x, y)
+//                mPreviousTouchX = x
+//                mPreviousTouchY = y
+//            }
+//            return true
+//        }
+//
+//        if(event.action and MotionEvent.ACTION_MASK == MotionEvent.ACTION_UP){
+//            mTimeLineTrimmerTouchArea = TimeLineTrimmerTouchArea.NONE
+//            logg("onTouch down getTouchArea(event): $mTimeLineTrimmerTouchArea")
+//        }
+//
+//
+//        return false
+//    }
+
+//    private fun updateTimeLineRect(x: Float, y: Float) {
+//        mTempTimeLineRect.set(mTimeLineTrimmerRect)
+//        when(mTimeLineTrimmerTouchArea){
+//            TimeLineTrimmerTouchArea.LEFT_TOP -> {
+//            }
+//            TimeLineTrimmerTouchArea.RIGHT_TOP -> {
+//            }
+//            TimeLineTrimmerTouchArea.RIGHT_BOTTOM -> {
+//            }
+//            TimeLineTrimmerTouchArea.LEFT_BOTTOM -> {
+//            }
+//            TimeLineTrimmerTouchArea.IN -> {
+//                when (timeLineRectMovingDirection) {
+//                    TimeLineRectMovingDirection.ALL -> mTempTimeLineRect.offset(
+//                        x - mPreviousTouchX,
+//                        y - mPreviousTouchY
+//                    )
+//                    TimeLineRectMovingDirection.HORIZONTAL -> mTempTimeLineRect.offset(
+//                        x - mPreviousTouchX,
+//                        0f
+//                    )
+//                    TimeLineRectMovingDirection.VERTICAL -> mTempTimeLineRect.offset(
+//                        0f,
+//                        y - mPreviousTouchY
+//                    )
+//                }
+//                if (isEnableMovingRect(mTempTimeLineRect)) {
+//                    mTimeLineTrimmerRect.set(mTempTimeLineRect)
+//                    updatePoints()
+//                    postInvalidate()
+//                }
+//                return
+//            }
+//            else -> {}
+//        }
+//    }
+
 }

@@ -32,79 +32,27 @@ class VideoCTDetailFragment: Fragment(), ViewBindingHolder<FragmentVideoCropTrim
     private val mVideoCropAndTrimViewModel: VideoCropAndTrimViewModel by sharedViewModel()
     val navArgs by navArgs<VideoCTDetailFragmentArgs>()
 
+    companion object{
+        //todo 임시용 나중에 서버에서 받아온 값으로 넘겨주자
+        const val TEMP_TEMPLATE_DURATION = 2000L
+    }
+
     private val mOnScrollListener: RecyclerView.OnScrollListener
         by lazy {
             object : RecyclerView.OnScrollListener() {
-
                 override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                     super.onScrolled(recyclerView, dx, dy)
-//                    logg("onScrolled dx: $dx     dy: $dy")
-//                    val distanceX = binding?.rvVideoCropAndTrimDetailTimeLine?.calcScrollXDistance()
-//                    logg("calcScrollXDistance firstVisibleChildView position * itemWidth - firstVisibleChildView.left:: $distanceX")
                     val timelineStartSec = binding?.rvVideoCropAndTrimDetailTimeLine?.calcScrollXDistance2()
-//                    logg("calcScrollXDistance firstVisibleChildView position * itemWidth - firstVisibleChildView.left seeeccc:: $distanceX2")
-
                     timelineStartSec?.let { binding?.tltVideoCTD?.setTimeLineTemp(it) }
-
-//                isSeeking = false
-//                val scrollX: Int = calcScrollXDistance()
-//                //达不到滑动的距离
-//                if (Math.abs(lastScrollX - scrollX) < mScaledTouchSlop) {
-//                    isOverScaledTouchSlop = false
-//                    return
-//                }
-//                isOverScaledTouchSlop = true
-//                //初始状态,why ? 因为默认的时候有35dp的空白！
-//                if (scrollX == -RECYCLER_VIEW_PADDING) {
-//                    scrollPos = 0
-//                } else {
-//                    isSeeking = true
-//                    scrollPos =
-//                        (mAverageMsPx * (RECYCLER_VIEW_PADDING + scrollX) / THUMB_WIDTH) as Long
-//                    mLeftProgressPos = mRangeSeekBarView.getSelectedMinValue() + scrollPos
-//                    mRightProgressPos = mRangeSeekBarView.getSelectedMaxValue() + scrollPos
-//                    Log.d(
-//                        com.iknow.android.widget.VideoTrimmerView.TAG,
-//                        "onScrolled >>>> mLeftProgressPos = $mLeftProgressPos"
-//                    )
-//                    mRedProgressBarPos = mLeftProgressPos
-//                    if (mVideoView.isPlaying()) {
-//                        mVideoView.pause()
-//                        setPlayPauseViewIcon(false)
-//                    }
-//                    mRedProgressIcon.setVisibility(View.GONE)
-//                    seekTo(mLeftProgressPos)
-//                    mRangeSeekBarView.setStartEndTime(mLeftProgressPos, mRightProgressPos)
-//                    mRangeSeekBarView.invalidate()
-//                }
-//                lastScrollX = scrollX
                 }
             }
         }
 
-    private fun RecyclerView.calcScrollXDistance(): Int {
-        val layoutManager = layoutManager as LinearLayoutManager
-        val position = layoutManager.findFirstVisibleItemPosition()
-        logg("calcScrollXDistance position: $position")
-        val firstVisibleChildView = layoutManager.findViewByPosition(position)
-        val itemWidth = firstVisibleChildView!!.width
-        logg("calcScrollXDistance firstVisibleChildView: $firstVisibleChildView")
-        logg("calcScrollXDistance itemWidth: $itemWidth")
-        logg("calcScrollXDistance firstVisibleChildView left: ${firstVisibleChildView.left}")
-//        logg("calcScrollXDistance firstVisibleChildView position * itemWidth - firstVisibleChildView.left: ${position * itemWidth - firstVisibleChildView.left}")
-        return position * itemWidth - firstVisibleChildView.left + itemWidth
-    }
-
     private fun RecyclerView.calcScrollXDistance2(): Float {
         val layoutManager = layoutManager as LinearLayoutManager
         val position = layoutManager.findFirstVisibleItemPosition()
-        logg("calcScrollXDistance position: $position")
         val firstVisibleChildView = layoutManager.findViewByPosition(position)
         val itemWidth = firstVisibleChildView!!.width
-        logg("calcScrollXDistance firstVisibleChildView: $firstVisibleChildView")
-        logg("calcScrollXDistance itemWidth: $itemWidth")
-        logg("calcScrollXDistance firstVisibleChildView left: ${firstVisibleChildView.left}")
-//        logg("calcScrollXDistance firstVisibleChildView position * itemWidth - firstVisibleChildView.left: ${position * itemWidth - firstVisibleChildView.left}")
         return (position * itemWidth - firstVisibleChildView.left + itemWidth) / itemWidth.toFloat()
     }
 
@@ -118,13 +66,11 @@ class VideoCTDetailFragment: Fragment(), ViewBindingHolder<FragmentVideoCropTrim
         logg("mVideoCropAndTrimViewModel.selectVideoUri: ${mVideoCropAndTrimViewModel.selectVideoUri.value}")
         context?.let {
             Glide.with(it)
-//                .load(Uri.parse("file://${navArgs.selectedMediaFile.filePath}"))
                 .load(Uri.parse("${navArgs.selectedMediaFile.dataURI}"))
                 .into(testThumbnail)
         }
 
-        tltVideoCTD.setVideoDuration(navArgs.selectedMediaFile.duration)
-        tltVideoCTD.setTemplateDuration(5000L)
+        tltVideoCTD.setVideoAndTemplateDuration(navArgs.selectedMediaFile.duration, TEMP_TEMPLATE_DURATION)
 
         initUI()
         initObersve()
@@ -242,15 +188,6 @@ class VideoCTDetailFragment: Fragment(), ViewBindingHolder<FragmentVideoCropTrim
 
     fun FragmentVideoCropTrimDetailBinding.btnSetting(){
         mbVideoCropAndTrimDetailNext.setOnClickListener {
-            //todo 여기에 str0 이랑 str2랑 작업하기
-
-//            context?.let { ctx ->
-//                val id = Uri.parse(navArgs.selectedMediaFile.dataURI).lastPathSegment
-//                logg("id: $id")
-//                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.Q) {
-//                    getFileToFileId(ctx, id)
-//                }
-//            }
 
 //            navArgs.selectedMediaFile.filePath?.let { it1 -> temp(it1) }
             ffmpegFolderPath?.let { ffmpegFolderPath ->
@@ -329,6 +266,7 @@ class VideoCTDetailFragment: Fragment(), ViewBindingHolder<FragmentVideoCropTrim
 
     override fun onDestroy() {
         super.onDestroy()
+        mVideoCropAndTrimViewModel.shareFragmentFinished()
         logg("여길 안타는군??")
     }
 }

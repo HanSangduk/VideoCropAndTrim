@@ -6,13 +6,20 @@ import android.media.MediaMetadataRetriever
 import android.net.Uri
 import android.provider.MediaStore
 import androidx.lifecycle.MutableLiveData
+import com.example.videocropandtrim.R
 import com.example.videocropandtrim.model.MediaRepository
 import com.example.videocropandtrim.model.data.MediaFile
 import com.example.videocropandtrim.ui.BaseViewModel
+import com.example.videocropandtrim.ui.detail.VideoCTDetailFragment
+import com.example.videocropandtrim.utils.getOneSceneDuration
+import com.example.videocropandtrim.utils.getTimelineWidth
 import com.example.videocropandtrim.utils.logg
+import com.example.videocropandtrim.utils.widget.TimeLineTrimmer
 import com.example.videocropandtrim.utils.with
+import com.google.android.exoplayer2.Timeline
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.Observables
 import io.reactivex.rxkotlin.addTo
 import io.reactivex.schedulers.Schedulers
@@ -65,72 +72,74 @@ class VideoCropAndTrimViewModel(val context: Context, val mediaRepository: Media
         _selectVideoUri.postValue(null)
     }
 
-//    fun getVideoFrame(mediaFile: MediaFile){
-//        val startPosition = 0
-//        val endPosition = mediaFile.duration / 1000
-//        var totalThumbsCount = endPosition / 1000
-//        totalThumbsCount = if(totalThumbsCount > 10) totalThumbsCount else 10
-//
-//        try {
-//            val mediaMetadataRetriever = MediaMetadataRetriever()
-//            mediaMetadataRetriever.setDataSource(context, Uri.parse(mediaFile.dataURI))
-//            // Retrieve media data use microsecond
-//            val interval: Long = (endPosition - startPosition) / (totalThumbsCount - 1)
-//            _selectVideoFrames.value = null
-//
-//            for (i in 0 until totalThumbsCount) {
-//                val frameTime: Long = startPosition + interval * i
-//                var bitmap: Bitmap? =
-//                    mediaMetadataRetriever.getFrameAtTime(
-//                        frameTime * 1000,
-//                        MediaMetadataRetriever.OPTION_CLOSEST_SYNC
-//                    )
-//                bitmap?.let {
-//                    try {
-//                        val newBitmap = Bitmap.createScaledBitmap(
-//                            it,
-//                            89,
-//                            113,
-//                            false
-//                        )
-//                        _selectVideoFrames.value = _selectVideoFrames.value?.plus(newBitmap) ?: listOf(newBitmap)
-//                    } catch (t: Throwable) {
-//                        t.printStackTrace()
-//                        null
-//                    }
-//                }
-//            }
-//
-//            mediaMetadataRetriever.release()
-//        } catch (e: Throwable) {
-//            e.printStackTrace()
-//            logg("total Error: ${e.message}")
-//        }
-//    }
+    private val shareDisposables : CompositeDisposable by lazy {
+        CompositeDisposable()
+    }
+
+    fun shareFragmentFinished(){
+        shareDisposables.clear()
+    }
 
     fun getVideoFrame(mediaFile: MediaFile){
-        logg("")
-//        239000
+        val mediaDurationMilliSec = mediaFile.duration / TimeLineTrimmer.ONE_SECOND_BY_MILLISECOND
+
+        try {
+            val interval: Long = context.getOneSceneDuration(mediaFile.duration, VideoCTDetailFragment.TEMP_TEMPLATE_DURATION)
+            val totalCnt = mediaDurationMilliSec / interval
+            Observable.rangeLong(0, totalCnt)
+                .subscribeOn(Schedulers.computation())
+                .map {
+                    val mediaMetadataRetriever = MediaMetadataRetriever()
+                    mediaMetadataRetriever.setDataSource(context, Uri.parse(mediaFile.dataURI))
+                    val frameTime: Long = interval * it
+                    logg("getVideoFrame need frameTime: ${frameTime}")
+                    val bitmap = mediaMetadataRetriever.getFrameAtTime(
+                        frameTime * 1000,
+                        MediaMetadataRetriever.OPTION_CLOSEST_SYNC
+                    )
+                    logg("test123 it long: $it  && hash: ${bitmap.hashCode()}")
+                    mediaMetadataRetriever.release()
+                    bitmap
+                }
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe {
+                    it?.let {
+                        logg("test123 subscribe it  && hash: ${it.hashCode()}")
+                        try {
+                            val newBitmap = Bitmap.createScaledBitmap(
+                                it,
+                                89,
+                                113,
+                                false
+                            )
+                            _selectVideoFrames.value = _selectVideoFrames.value?.plus(newBitmap) ?: listOf(newBitmap)
+                        } catch (t: Throwable) {
+                            t.printStackTrace()
+                            null
+                        }
+                    }
+                }.addTo(shareDisposables)
+        } catch (e: Throwable) {
+            e.printStackTrace()
+            logg("total Error: ${e.message}")
+        }
+    }
+
+    /**
+     * version 01
+     * 1초 단위 가져오는 용도
+     */
+    fun getVideoFrameVersion01(mediaFile: MediaFile){
         val startPosition = 0
         val endPosition = mediaFile.duration / 1000
         var totalThumbsCount = endPosition / 1000
-        logg("firstCount totalThumbsCount: $totalThumbsCount")
         totalThumbsCount = if(totalThumbsCount > 10) totalThumbsCount else 10
-        logg("2222 firstCount totalThumbsCount: $totalThumbsCount")
-
         try {
-//            val mediaMetadataRetriever = MediaMetadataRetriever()
-//            mediaMetadataRetriever.setDataSource(context, Uri.parse(mediaFile.dataURI))
-            // Retrieve media data use microsecond
             val interval: Long = (endPosition - startPosition) / (totalThumbsCount - 1)
-            logg("shootVideoThumbInBackground interval: $interval")
             var frameBitmap: Bitmap? = null
             val asd = Observable.rangeLong(0, totalThumbsCount)
                 .subscribeOn(Schedulers.computation())
-                .doOnNext {
-//                    logg("ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ")
-//                    logg("long: $it")
-                }.map {
+                .map {
                     val mediaMetadataRetriever = MediaMetadataRetriever()
                     mediaMetadataRetriever.setDataSource(context, Uri.parse(mediaFile.dataURI))
                     val frameTime: Long = startPosition + interval * it
@@ -144,7 +153,6 @@ class VideoCropAndTrimViewModel(val context: Context, val mediaRepository: Media
                 }
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe {
-//                    logg("bitMap: $it")
                     it?.let {
                         try {
                             val newBitmap = Bitmap.createScaledBitmap(
@@ -160,8 +168,6 @@ class VideoCropAndTrimViewModel(val context: Context, val mediaRepository: Media
                         }
                     }
                 }
-//
-//            mediaMetadataRetriever.release()
         } catch (e: Throwable) {
             e.printStackTrace()
             logg("total Error: ${e.message}")

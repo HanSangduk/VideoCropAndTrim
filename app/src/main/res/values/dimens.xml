@@ -10,4 +10,6 @@
 
     <dimen name="default_timeline_padding">30dp</dimen>
     <dimen name="timeline_time_text_area">30dp</dimen>
+
+    <dimen name="default_video_thumb_width">40dp</dimen>
 </resources>

@@ -14,8 +14,6 @@ import com.example.videocropandtrim.utils.widget.DefaultRvItemDecoration
 
 @BindingAdapter(value = ["bind:set_ct_detail_rv_adapter_vm", "bind:set_ct_detail_rv_adapter"])
 fun bindCTDetailRvAdapter(recyclerView: RecyclerView, vm: VideoCropAndTrimViewModel?, videoFrames: List<Bitmap>?){
-//    logg("bindCTDetailRvAdapter mediaFiles size: ${videoFrames?.size}")
-//    logg("bindCTDetailRvAdapter mediaFiles vm: ${vm}")
     videoFrames?.let { lVideoFrames ->
         with(recyclerView){
             adapter?.let {
@@ -24,12 +22,7 @@ fun bindCTDetailRvAdapter(recyclerView: RecyclerView, vm: VideoCropAndTrimViewMo
                 }
             } ?: run {
                 val lim = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-                recyclerView.addItemDecoration(
-                    DefaultRvItemDecoration(
-                        resources.getDimensionPixelSize(R.dimen.default_timeline_padding),
-                        lVideoFrames.size
-                    )
-                )
+
                 recyclerView.layoutManager = lim
                 recyclerView.adapter = VideoCTDetailRvAdapter(
                     vm = vm,
@@ -39,6 +32,11 @@ fun bindCTDetailRvAdapter(recyclerView: RecyclerView, vm: VideoCropAndTrimViewMo
                     setHasStableIds(true)
                     recyclerView.setHasFixedSize(true)
                 }
+                recyclerView.addItemDecoration(
+                    DefaultRvItemDecoration(
+                        resources.getDimensionPixelSize(R.dimen.default_timeline_padding),
+                    )
+                )
             }
         }
     }
