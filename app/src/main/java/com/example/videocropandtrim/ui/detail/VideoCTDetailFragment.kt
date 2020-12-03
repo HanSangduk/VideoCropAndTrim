@@ -1,11 +1,14 @@
 package com.example.videocropandtrim.ui.detail
 
+import android.animation.ValueAnimator
 import android.graphics.RectF
-import android.net.Uri
 import android.os.Bundle
+import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.LinearInterpolator
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
@@ -13,36 +16,72 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.arthenica.mobileffmpeg.Config
 import com.arthenica.mobileffmpeg.FFmpeg
-import com.bumptech.glide.Glide
+import com.example.videocropandtrim.R
 import com.example.videocropandtrim.base.ViewBindingHolder
 import com.example.videocropandtrim.base.ViewBindingHolderImpl
 import com.example.videocropandtrim.databinding.FragmentVideoCropTrimDetailBinding
 import com.example.videocropandtrim.model.data.MediaFile
 import com.example.videocropandtrim.ui.main.VideoCropAndTrimViewModel
+import com.example.videocropandtrim.utils.convertSecondsToTime
 import com.example.videocropandtrim.utils.exo.ExoManager
 import com.example.videocropandtrim.utils.getFileFolderPath
+import com.example.videocropandtrim.utils.getTimelineWidth
 import com.example.videocropandtrim.utils.logg
+import com.google.android.exoplayer2.Player
 import com.google.android.exoplayer2.video.VideoListener
+import io.reactivex.Flowable
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.rxkotlin.addTo
 import org.joda.time.DateTime
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import java.io.File
+import java.util.*
+import java.util.concurrent.TimeUnit
 
 class VideoCTDetailFragment: Fragment(), ViewBindingHolder<FragmentVideoCropTrimDetailBinding> by ViewBindingHolderImpl(){
-
-    private val mVideoCropAndTrimViewModel: VideoCropAndTrimViewModel by sharedViewModel()
-    val navArgs by navArgs<VideoCTDetailFragmentArgs>()
 
     companion object{
         //todo 임시용 나중에 서버에서 받아온 값으로 넘겨주자
         const val TEMP_TEMPLATE_DURATION = 2000L
     }
 
+    private val mVideoCropAndTrimViewModel: VideoCropAndTrimViewModel by sharedViewModel()
+    val navArgs by navArgs<VideoCTDetailFragmentArgs>()
+
+    private var exoManager: ExoManager? = null
+
     private val mOnScrollListener: RecyclerView.OnScrollListener
         by lazy {
             object : RecyclerView.OnScrollListener() {
+                override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                    super.onScrollStateChanged(recyclerView, newState)
+                    /**
+                     * private static final int STATE_IDLE = 0;
+                     * private static final int STATE_IN_PROGRESS_MANUAL_DRAG = 1;
+                     * private static final int STATE_IN_PROGRESS_SMOOTH_SCROLL = 2;
+                     * private static final int STATE_IN_PROGRESS_IMMEDIATE_SCROLL = 3;
+                     * private static final int STATE_IN_PROGRESS_FAKE_DRAG = 4;
+                     */
+                    logg("rvScroll newState: $newState")
+                    when(newState){
+                        0 -> {
+//                            startTimelineProgressBar()
+                            exoManager?.start()
+//                            timerStart()
+                        }
+                        else -> {
+                            pauseTimelineProgressBar()
+//                            timerPause()
+                        }
+                    }
+                }
+
                 override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                     super.onScrolled(recyclerView, dx, dy)
+//                    logg("rvScroll onScrolled dx: $dx     //     dy: $dy")
                     val timelineStartSec = binding?.rvVideoCropAndTrimDetailTimeLine?.calcScrollXDistance2()
+                    logg("rvScroll drawTimelineText timelineStartSec: $timelineStartSec")
                     timelineStartSec?.let { binding?.tltVideoCTD?.setTimeLineTemp(it) }
                 }
             }
@@ -64,13 +103,11 @@ class VideoCTDetailFragment: Fragment(), ViewBindingHolder<FragmentVideoCropTrim
 
         logg("navArgs: $navArgs")
         logg("mVideoCropAndTrimViewModel.selectVideoUri: ${mVideoCropAndTrimViewModel.selectVideoUri.value}")
-        context?.let {
-            Glide.with(it)
-                .load(Uri.parse("${navArgs.selectedMediaFile.dataURI}"))
-                .into(testThumbnail)
-        }
-
-        tltVideoCTD.setVideoAndTemplateDuration(navArgs.selectedMediaFile.duration, TEMP_TEMPLATE_DURATION)
+//        context?.let {
+//            Glide.with(it)
+//                .load(Uri.parse("${navArgs.selectedMediaFile.dataURI}"))
+//                .into(testThumbnail)
+//        }
 
         initUI()
         initObersve()
@@ -100,11 +137,53 @@ class VideoCTDetailFragment: Fragment(), ViewBindingHolder<FragmentVideoCropTrim
         ocvVideoCTDetail.setTargetAspectRatio(1f) // todo 흠 이거 ratio를 어케 정해줘야하려나
 
         rvVideoCropAndTrimDetailTimeLine.addOnScrollListener(mOnScrollListener)
+        TimeLineTrimmerSetting()
         btnSetting()
         exoSetting()
     }
 
-    private var exoManager: ExoManager? = null
+    private fun FragmentVideoCropTrimDetailBinding.TimeLineTrimmerSetting() {
+        with(tltVideoCTD){
+            setVideoAndTemplateDuration(
+                navArgs.selectedMediaFile.duration,
+                TEMP_TEMPLATE_DURATION
+            )
+
+            timeLineChnageTimeCallback = { startTime, endTime ->
+                val seekTime = if(startTime > 500) startTime - 500 else startTime
+                exoManager?.seekTo(
+                    exoPos = seekTime
+                )
+            }
+        }
+    }
+    private var mProgressAnimator: ValueAnimator? = null
+
+    fun startTimelineProgressBar(){
+        context?.let { ctx ->
+
+            binding?.apply {
+                val params = vProgressBarVideoTimeLine.layoutParams as ConstraintLayout.LayoutParams
+                val start = ctx.resources.getDimensionPixelSize(R.dimen.default_timeline_padding)
+                val end = ctx.getTimelineWidth() + start
+                mProgressAnimator = ValueAnimator.ofInt(start, end).setDuration(TEMP_TEMPLATE_DURATION )
+                mProgressAnimator?.interpolator = LinearInterpolator()
+                mProgressAnimator?.addUpdateListener { animation ->
+
+                    params.leftMargin = animation.animatedValue as Int
+                    vProgressBarVideoTimeLine.layoutParams = params
+
+                }
+                mProgressAnimator?.start()
+            }
+        }
+    }
+
+    private fun pauseTimelineProgressBar() {
+        binding?.vProgressBarVideoTimeLine?.clearAnimation()
+//        binding?.vProgressBarVideoTimeLine?.removeCallbacks() //todo listener 넣으면 추가해주자
+        mProgressAnimator?.cancel()
+    }
 
     private fun FragmentVideoCropTrimDetailBinding.exoSetting() {
         exoManager = context?.let { ctx ->
@@ -125,7 +204,6 @@ class VideoCTDetailFragment: Fragment(), ViewBindingHolder<FragmentVideoCropTrim
                             unappliedRotationDegrees,
                             pixelWidthHeightRatio
                         )
-                        logg("onVideoSizeChanged@@@ width: $width   heght: $height")
                         ocvVideoCTDetail.realVideoRectF.set(
                             0f,
                             0f,
@@ -136,10 +214,6 @@ class VideoCTDetailFragment: Fragment(), ViewBindingHolder<FragmentVideoCropTrim
 
                     override fun onSurfaceSizeChanged(width: Int, height: Int) {
                         super.onSurfaceSizeChanged(width, height)
-
-                        logg("videoListener width: $width   heght: $height")
-//                        if(height > width) return //일단 이거 임시인데 이거 두번째가 타도록 해야할거같은데 흠
-                        logg("2222 videoListener width: $width   heght: $height")
                         ocvVideoCTDetail.resizeVideoRectF.set(
                             0f,
                             0f,
@@ -174,9 +248,24 @@ class VideoCTDetailFragment: Fragment(), ViewBindingHolder<FragmentVideoCropTrim
                         ocvVideoCTDetail.layoutParams = cropRectViewP
 //                        ocvVideoCTDetail.mCropViewRect.set(0f, 0f, width.toFloat(), height.toFloat())
                     }
+                }// VideoListener
+
+                playbackStateListener = object : Player.EventListener {
+                    override fun onPlayerStateChanged(playWhenReady: Boolean, playbackState: Int) {
+                        logg("exo onPlayerStateChanged playWhenReady: $playWhenReady")
+                        if(playWhenReady && playbackState == Player.STATE_READY){
+                            startTimelineProgressBar()
+                            timerStart()
+                        }
+                        else timelineTimerDispose.clear()
+//                        else timerPause()
+
+                        logg("exo onPlayerStateChanged playbackState: $playbackState")
+                    }
                 }
+
                 navArgs.selectedMediaFile.dataURI?.let { initializePlayer(it) }
-            }
+            }// exoManager apply
         }
     }
 
@@ -197,9 +286,9 @@ class VideoCTDetailFragment: Fragment(), ViewBindingHolder<FragmentVideoCropTrim
                     if(!isDirectory) mkdir()
                 }
 
-                val str0 = "-y -ss ${tltVideoCTD.mRealTimelineStartTimeStr}" +
+                val str0 = "-y -ss ${tltVideoCTD.mRealTimelineStartTimeMilliSec.convertSecondsToTime()}" +
                         " -i ${navArgs.selectedMediaFile.filePath}" +
-                        " -to ${tltVideoCTD.mRealTimelineEndTimeStr}" +
+                        " -to ${(tltVideoCTD.mRealTimelineEndTimeMilliSec - tltVideoCTD.mRealTimelineStartTimeMilliSec).convertSecondsToTime()}" +
                         " -preset ultrafast -async 1 -strict -2" +
                         " -c copy $trimmerFileName"
 
@@ -219,20 +308,67 @@ class VideoCTDetailFragment: Fragment(), ViewBindingHolder<FragmentVideoCropTrim
                     logg("@@@FFmpeg.executeAsync executionId: $executionId ")
                     logg("@@@@FFmpeg.executeAsync returnCode: $returnCode ")
                     if(returnCode != Config.RETURN_CODE_SUCCESS) return@executeAsync
-                    temp(trimmerFileName)
+                    videoCrop(trimmerFileName)
 //                    go(trimmerFileName)
                 }
             }
-
-
         }
     }
 
-    fun FragmentVideoCropTrimDetailBinding.temp(chanageFileName: String){
+    private val timelineTimerDispose by lazy {
+        CompositeDisposable()
+    }
+
+    private fun timerStart(){
+//        timerPause()
+
+        Flowable.interval(0, 50, TimeUnit.MILLISECONDS)
+//            .subscribeOn(Schedulers.computation())
+            .observeOn(AndroidSchedulers.mainThread())
+            .map {
+                exoManager?.getCurrentTime()
+            }
+            .distinctUntilChanged { old, new ->
+                logg("old: $old")
+
+
+
+
+                val newTime = (new / 100) * 100
+                val roundEndTimeMilliSec = ((binding?.tltVideoCTD?.mRealTimelineEndTimeMilliSec ?: 0) / 100 ) * 100
+                logg("new: $new")
+                logg("newTime: $newTime")
+                logg("exoplayer timeline max time: ${binding?.tltVideoCTD?.mRealTimelineEndTimeMilliSec}")
+                logg("roundEndTimeMilliSec: $roundEndTimeMilliSec")
+                logg("new != roundEndTimeMilliSec: ${newTime != roundEndTimeMilliSec}")
+
+
+                //todo true가 되면 subscrib 안탄다 개꿀 그걸 이용하자
+                //처음 한번은 타네???
+//                true
+                newTime != roundEndTimeMilliSec
+            }
+            .subscribe {
+                logg("2222mainThread?? ${Looper.myLooper() == Looper.getMainLooper()}")
+                logg("asd subscribe: $it")
+                it?.let {
+                    val newTime = (it / 100) * 100
+                    val roundEndTimeMilliSec = ((binding?.tltVideoCTD?.mRealTimelineEndTimeMilliSec ?: 0) / 100 ) * 100
+                    logg("newTime == roundEndTimeMilliSec: ${it == roundEndTimeMilliSec}")
+                    if(newTime == roundEndTimeMilliSec) timerPause()
+                }
+            }.addTo(timelineTimerDispose)
+    }
+    private fun timerPause(){
+        timelineTimerDispose.clear()
+        exoManager?.pausePlayer()
+//        timelineTimerDispose.dispose()
+    }
+
+    fun FragmentVideoCropTrimDetailBinding.videoCrop(chanageFileName: String){
 
         val fileName = "${ffmpegFolderPath}temp_${DateTime().millis}.mp4"
         val realCropRectF = ocvVideoCTDetail.getRealSizeCropRectF()
-
         realCropRectF?.let {
             val str1 = "-i $chanageFileName" +
                     " -r 30 -preset ultrafast" +
@@ -265,10 +401,14 @@ class VideoCTDetailFragment: Fragment(), ViewBindingHolder<FragmentVideoCropTrim
     }
 
     override fun onDestroy() {
+        timelineTimerDispose.clear()
+        timelineTimerDispose.dispose()
         super.onDestroy()
         mVideoCropAndTrimViewModel.shareFragmentFinished()
+        exoManager?.releasePlayer()
         logg("여길 안타는군??")
     }
 }
+
 
 

@@ -1,66 +1,57 @@
 package com.example.videocropandtrim.ui.detail
 
-import android.graphics.Bitmap
 import com.bumptech.glide.RequestManager
+import com.bumptech.glide.load.DecodeFormat
 import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.bumptech.glide.request.RequestOptions
 import com.example.videocropandtrim.R
 import com.example.videocropandtrim.base.BaseRecyclerViewAdapter
 import com.example.videocropandtrim.databinding.ItemVideoCropAndTrimVideoFrameBinding
 import com.example.videocropandtrim.ui.main.VideoCropAndTrimViewModel
+import com.example.videocropandtrim.utils.logg
+import kotlin.math.pow
 
 class VideoCTDetailRvAdapter(
     vm: VideoCropAndTrimViewModel? = null,
-    items: List<Bitmap> = emptyList(),
+    items: List<Pair<String, Long>> = emptyList(),
     val glide: RequestManager
 ): BaseRecyclerViewAdapter<
-        Bitmap,
+        Pair<String, Long>,
         VideoCropAndTrimViewModel,
         ItemVideoCropAndTrimVideoFrameBinding>(
     R.layout.item_video_crop_and_trim_video_frame,
     items = items,
     vm = vm
 ){
-
-    fun addItems(addItems: List<Bitmap>){
-        val oldItemsSize = items?.let {
-            it.size - 1
-        } ?: 0
-        items = addItems
-//        logg("oldItemsSize: ${oldItemsSize}")
-//        logg("addItems: ${addItems.size}")
-//        logg(" items: ${items?.size}")
-        notifyItemInserted(addItems.size - 1)
-//        notifyItemRangeChanged(oldItemsSize, addItems.size - 1)
+    override fun getItemIdR(position: Int): Long {
+        logg("getItemIdR pos: $position      items?.get(position)?.second: ${items?.get(position)?.second}")
+        return items?.get(position)?.second ?: -1
     }
 
-
-//    override fun onBindCreateViewHolder(
-//        binding: ItemVideoCropAndTrimVideoFrameBinding,
-//        parent: ViewGroup,
-//        viewType: Int
-//    ) {
-//        val layoutParams = binding.ivVideoFrameThumbnail.layoutParams
-//        logg("onBindCreateViewHolder parent.context.getDeviceWidth(): ${parent.context.getDeviceWidth()}")
-//        logg("onBindCreateViewHolder parent.context.getDeviceWidth(): ${parent.height}")
-//        logg("onBindCreateViewHolder parent.context.getDeviceWidth(): ${parent.measuredHeight}")
-//        layoutParams.width = parent.context.getTimelineOneTakeWidth()
-////        layoutParams.width = (parent.context.getDeviceWidth() - parent.context.resources.getDimensionPixelSize(R.dimen.default_timeline_padding) * 2) / 10
-//        layoutParams.height = parent.measuredHeight - parent.context.resources.getDimensionPixelSize(R.dimen.timeline_time_text_area)
-//        logg("calcScrollXDistance parent.context.getTimelineOneTakeWidth`(): ${parent.context.getTimelineOneTakeWidth()}")
-//        binding.ivVideoFrameThumbnail.layoutParams = layoutParams
-//    }
+    private val requestOptions =  RequestOptions().format(DecodeFormat.PREFER_RGB_565)
+        .centerCrop()
+        .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
 
     override fun bindItem(
         bindingView: ItemVideoCropAndTrimVideoFrameBinding,
         position: Int,
-        item: Bitmap,
+        item: Pair<String, Long>,
         viewType: Int,
         payloads: MutableList<Any>?
     ) {
 
         glide
-            .load(item)
-            .diskCacheStrategy(DiskCacheStrategy.ALL)
-            .into(binding.ivVideoFrameThumbnail)
+            .load(item.first)
+            .apply(
+                requestOptions.override(
+                    0,
+                    0).frame(((item.second / 1500) * 15 * 10f.pow(5)).toLong())
+            ).into(bindingView.ivVideoFrameThumbnail)
+
+
+//        glide
+//            .load(item)
+//            .diskCacheStrategy(DiskCacheStrategy.ALL)
+//            .into(binding.ivVideoFrameThumbnail)
     }
 }

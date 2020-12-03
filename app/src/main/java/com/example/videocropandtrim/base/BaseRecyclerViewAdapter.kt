@@ -185,13 +185,16 @@ abstract class BaseRecyclerViewAdapter<T, VM, VDB: ViewDataBinding>
     }
 
     private fun onBindViewHolderR(holder: RecyclerView.ViewHolder, position: Int, payloads: MutableList<Any>? = null){
-
+        logg("onBindViewHolderR position $position     payloads: $payloads")
         when(holder.itemViewType){
             TYPE_ITEM -> {
                 items?.let {
                     val changePosition = position - headerNum
                     if(changePosition in it.indices){
-                        DataBindingUtil.bind<VDB>(holder.itemView)?.let { viewBinding -> bindItem(viewBinding, changePosition, it[changePosition], payloads = payloads ) }
+                        DataBindingUtil.bind<VDB>(holder.itemView)?.let { viewBinding ->
+                            logg("onBindViewHolderR position $position okkkkkkkkkkkkkkkk")
+                            bindItem(viewBinding, changePosition, it[changePosition], payloads = payloads )
+                        }
 
 //                        holder.itemView.setOnClickListener { _ -> mRecyclerViewItemClickListener?.itemClick(holder.itemView, changePosition, it[changePosition]) }
                         holder.itemView.setOnClickListener { _ -> mRecyclerViewItemClickListener?.invoke(it[changePosition], holder.itemView, changePosition) }

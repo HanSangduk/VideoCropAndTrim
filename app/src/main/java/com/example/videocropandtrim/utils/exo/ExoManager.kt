@@ -41,10 +41,8 @@ class ExoManager(
                 .setTrackSelector(trackSelector)
                 .build()
         }
-
-        player?.addListener(defaultExoListener)
-
         videoListener?.let { player?.addVideoListener(it) }
+        playbackStateListener?.let { player?.addListener(it) } ?: run { player?.addListener(defaultExoListener) }
 
         playerView.player = player
         val mediaItem = MediaItem.Builder()
@@ -55,18 +53,37 @@ class ExoManager(
         player?.setMediaItem(mediaItem)
         player?.playWhenReady = playWhenReady
         player?.seekTo(currentWindow, playbackPosition)
-        playbackStateListener?.let { player?.addListener(it) }
         player?.prepare()
+    }
 
+    fun pausePlayer(){
+        player?.let { lPlayer ->
+            lPlayer.pause()
+        }
+    }
+    fun getCurrentTime(): Long? = player?.currentPosition
 
+    fun seekTo(windowIndex: Int = currentWindow, exoPos: Long){
+        player?.let { lPlayer ->
+            lPlayer.pause()
+            lPlayer.seekTo(windowIndex, exoPos)
+        }
+    }
+
+    fun start(){
+        player?.let { lPlayer ->
+            lPlayer.play()
+        }
     }
 
     fun releasePlayer() {
         player?.let { lPlayer ->
+            lPlayer.stop()
             playbackPosition = lPlayer.currentPosition
             currentWindow = lPlayer.currentWindowIndex
             playWhenReady = lPlayer.playWhenReady
-            playbackStateListener?.let { player?.removeListener(it) }
+            playbackStateListener?.let { player?.removeListener(it) }  ?: run { player?.removeListener(defaultExoListener) }
+            videoListener?.let { player?.removeVideoListener(it) }
             lPlayer.release()
             player = null
         }

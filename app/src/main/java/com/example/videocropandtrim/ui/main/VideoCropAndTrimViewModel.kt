@@ -11,11 +11,8 @@ import com.example.videocropandtrim.model.MediaRepository
 import com.example.videocropandtrim.model.data.MediaFile
 import com.example.videocropandtrim.ui.BaseViewModel
 import com.example.videocropandtrim.ui.detail.VideoCTDetailFragment
-import com.example.videocropandtrim.utils.getOneSceneDuration
-import com.example.videocropandtrim.utils.getTimelineWidth
-import com.example.videocropandtrim.utils.logg
+import com.example.videocropandtrim.utils.*
 import com.example.videocropandtrim.utils.widget.TimeLineTrimmer
-import com.example.videocropandtrim.utils.with
 import com.google.android.exoplayer2.Timeline
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -38,6 +35,10 @@ class VideoCropAndTrimViewModel(val context: Context, val mediaRepository: Media
     private val _selectVideoFrames : MutableLiveData<List<Bitmap>> = MutableLiveData()
     val selectVideoFrames: MutableLiveData<List<Bitmap>>
         get() = _selectVideoFrames
+
+    private val _videoFrames : MutableLiveData<List<Pair<String, Long>>> = MutableLiveData()
+    val videoFrames: MutableLiveData<List<Pair<String, Long>>>
+        get() = _videoFrames
 
     init {
         mediaRepository.videos()
@@ -65,7 +66,8 @@ class VideoCropAndTrimViewModel(val context: Context, val mediaRepository: Media
             videoUri.lastPathSegment.toString()
         )
         logg("33 videoUri: $rr")
-        getVideoFrame(mediaFile)
+        getVideoFrame2(mediaFile)
+//        getVideoFrame(mediaFile)
     }
 
     fun clearselectVideoUri(){
@@ -78,6 +80,22 @@ class VideoCropAndTrimViewModel(val context: Context, val mediaRepository: Media
 
     fun shareFragmentFinished(){
         shareDisposables.clear()
+    }
+
+    fun getVideoFrame2(mediaFile: MediaFile){
+        mediaFile.dataURI?.let { dataUri ->
+
+            val mediaDurationMilliSec = mediaFile.duration / TimeLineTrimmer.ONE_SECOND_BY_MILLISECOND
+            val interval: Long = context.getOneSceneDuration(mediaFile.duration, VideoCTDetailFragment.TEMP_TEMPLATE_DURATION)
+            val totalCnt = mediaDurationMilliSec / interval
+            val list: MutableList<Pair<String, Long>> = mutableListOf()
+            for(i in 0 .. totalCnt){
+                list.add(
+                    Pair(dataUri , (interval * i))
+                )
+            }
+            _videoFrames.value = list
+        }
     }
 
     fun getVideoFrame(mediaFile: MediaFile){
@@ -94,7 +112,7 @@ class VideoCropAndTrimViewModel(val context: Context, val mediaRepository: Media
                     val frameTime: Long = interval * it
                     logg("getVideoFrame need frameTime: ${frameTime}")
                     val bitmap = mediaMetadataRetriever.getFrameAtTime(
-                        frameTime * 1000,
+                        frameTime ,
                         MediaMetadataRetriever.OPTION_CLOSEST_SYNC
                     )
                     logg("test123 it long: $it  && hash: ${bitmap.hashCode()}")

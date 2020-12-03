@@ -12,8 +12,7 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/purple_200">
+        android:layout_height="match_parent">
 
         <ImageView
             android:id="@+id/testThumbnail"
@@ -66,8 +65,17 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            bind:set_ct_detail_rv_adapter="@{videoCropAndTrimViewModel.selectVideoFrames}"
+            bind:set_ct_detail_rv_adapter="@{videoCropAndTrimViewModel.videoFrames}"
             bind:set_ct_detail_rv_adapter_vm="@{videoCropAndTrimViewModel}" />
+<!--        <androidx.recyclerview.widget.RecyclerView-->
+<!--            android:id="@+id/rvVideoCropAndTrimDetailTimeLine"-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="90dp"-->
+<!--            app:layout_constraintBottom_toBottomOf="parent"-->
+<!--            app:layout_constraintLeft_toLeftOf="parent"-->
+<!--            app:layout_constraintRight_toRightOf="parent"-->
+<!--            bind:set_ct_detail_rv_adapter="@{videoCropAndTrimViewModel.selectVideoFrames}"-->
+<!--            bind:set_ct_detail_rv_adapter_vm="@{videoCropAndTrimViewModel}" />-->
 
         <com.example.videocropandtrim.utils.widget.TimeLineTrimmer
             android:id="@+id/tltVideoCTD"
@@ -80,6 +88,15 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"/>
+
+        <View
+            android:id="@+id/vProgressBarVideoTimeLine"
+            android:layout_width="5dp"
+            android:layout_height="90dp"
+            android:background="@color/purple_200"
+            android:layout_marginStart="@dimen/default_timeline_padding"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"/>
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/mbVideoCropAndTrimDetailNext"

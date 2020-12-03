@@ -72,13 +72,15 @@ class TimeLineTrimmer @JvmOverloads constructor(
     }
 
     private var mTimelineStartPos = 0f
-    var mRealTimelineStartTimeStr = ""
-    var mRealTimelineEndTimeStr = ""
+    var mRealTimelineStartTimeMilliSec = 0L
+    var mRealTimelineEndTimeMilliSec = 0L
 
     //template에 필요한 영상 초에 따른 rect영역
     private var mTemplateMaxRightPoint: Float? = null
 
     private var mVideoDurationRatio = 1L
+
+    var timeLineChnageTimeCallback: ( (startTime: Long, endTime: Long) -> Unit )? = null
 
     init {
 //        attrs?.let { lAttrs ->
@@ -199,35 +201,35 @@ class TimeLineTrimmer @JvmOverloads constructor(
     }
 
     private fun drawTimelineText(lCanvas: Canvas) {
-        logg("setTimeLineTemp 그럼 여기 오나?: $mTimeLineTrimmerRect" )
-        logg("setTimeLineTemp mTimeLineTrimmerRect.left?: ${mTimeLineTrimmerRect.left}")
-        logg("setTimeLineTemp 222 paddingLeft?: ${paddingLeft}")
-        logg("setTimeLineTemp 222 mTempTimeLineRect.left - paddingLeft?: ${(mTimeLineTrimmerRect.left - paddingLeft)}")
-        logg("setTimeLineTemp 222 mTempTimeLineRect.left - paddingLeft?: ${mTimeLineTrimmerRect.left.toInt() - paddingLeft}")
+
         val plusTime = (mTimeLineTrimmerRect.left - paddingLeft) / mVideoOneTakeWidth * 1000
-        logg("setTimeLineTemp 333 mTimeLineTrimmerRect.left?: ${plusTime}")
-        logg("setTimeLineTemp 444 mTimeLineTrimmerRect.left?: ${mTimelineStartPos}")
         val realTime = (mTimelineStartPos + plusTime).toLong()
 
-        logg("setTimeLineTemp 555 mTimeLineTrimmerRect.left?: ${realTime}")
-        logg("setTimeLineTemp 666 mTimeLineTrimmerRect.mVideoOneTakeMilliSec?: ${mVideoOneTakeMilliSec}")
-        logg("setTimeLineTemp 777 mTimeLineTrimmerRect.left?: ${mVideoDurationRatio}")
-        mRealTimelineStartTimeStr = realTime.convertSecondsToTime()
-        mRealTimelineEndTimeStr = (realTime + mTemplateVideoMaxDurationMilliSec).convertSecondsToTime()
+        logg("drawTimelineText: mTimeLineTrimmerRect.left: ${mTimeLineTrimmerRect.left}")
+        logg("drawTimelineText: paddingLeft: ${paddingLeft}")
+        logg("drawTimelineText: mVideoOneTakeWidth: ${mVideoOneTakeWidth}")
+        logg("drawTimelineText: plusTime: ${plusTime}")
+        logg("drawTimelineText: (mTimeLineTrimmerRect.left - paddingLeft): ${(mTimeLineTrimmerRect.left - paddingLeft)}")
+        logg("drawTimelineText: mTimelineStartPos: $mTimelineStartPos")
+        logg("drawTimelineText: realTime: $realTime")
+
+        mRealTimelineStartTimeMilliSec = realTime
+        mRealTimelineEndTimeMilliSec = realTime + mTemplateVideoMaxDurationMilliSec
+
+        timeLineChnageTimeCallback?.invoke(mRealTimelineStartTimeMilliSec, mRealTimelineEndTimeMilliSec)
+
         lCanvas.drawText(
-            mRealTimelineStartTimeStr,
+            mRealTimelineStartTimeMilliSec.convertSecondsToTime(),
             mTimeLineTrimmerRect.left,
             resources.getDimension(R.dimen.timeline_time_text_area) / 2,
             mTimelineTextpaintL
         )
         lCanvas.drawText(
-            mRealTimelineEndTimeStr,
+            mRealTimelineEndTimeMilliSec.convertSecondsToTime(),
             mTimeLineTrimmerRect.right,
             resources.getDimension(R.dimen.timeline_time_text_area) / 2,
             mTimelineTextpaintR
         )
-
-        logg("mTimeLineTrimmerRect.left: ${mTimeLineTrimmerRect}")
     }
 
     fun setVideoAndTemplateDuration(videoDuration: Long, templateDuration: Long){
@@ -246,9 +248,6 @@ class TimeLineTrimmer @JvmOverloads constructor(
      * 5. 그리고 이게 마무리 된다면 해당 시간초로 cropㅎ ㅏ자
      */
     fun setTimeLineTemp(startSec: Float){
-
-        logg("setTimeLineTemp startSec: $startSec")
-        logg("setTimeLineTemp startSec: ${startSec * mVideoOneTakeMilliSec}")
         mTimelineStartPos = startSec * mVideoOneTakeMilliSec
         postInvalidate()
 
