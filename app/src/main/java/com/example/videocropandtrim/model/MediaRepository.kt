@@ -10,6 +10,7 @@ import androidx.core.database.getStringOrNull
 import com.example.videocropandtrim.model.data.MEDIA_TYPE_IMAGE
 import com.example.videocropandtrim.model.data.MEDIA_TYPE_VIDEO
 import com.example.videocropandtrim.model.data.MediaFile
+import com.example.videocropandtrim.utils.logg
 import com.example.videocropandtrim.utils.rx.RxCursorIterable
 import io.reactivex.Observable
 import io.reactivex.schedulers.Schedulers
@@ -60,15 +61,10 @@ class MediaRepository(val context: Context){
             Observable.empty<Cursor>()
         }
             .subscribeOn(Schedulers.io())
-            .flatMap {
+            .map {
                 val mimeType = it.getStringOrNull(
                     it.getColumnIndexOrThrow(MediaStore.Files.FileColumns.MIME_TYPE)
                 ) ?: "image/__unknown__"
-                if(mimeType.contains("svg") || mimeType.contains("webp") ||
-                    mimeType.contains("x-adobe-dng") ||
-                    mimeType.contains("heif") ||
-                    mimeType.contains("vnd.wap.wbmp") ||
-                    mimeType.contains("heic")) return@flatMap Observable.never<MediaFile>()
 
                 val filedId =
                     it.getInt(it.getColumnIndexOrThrow(MediaStore.Files.FileColumns._ID)) // 46
@@ -91,6 +87,8 @@ class MediaRepository(val context: Context){
                     else MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
                     filedId.toString()
                 )
+
+
                 val legacyThumbnailUri = if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {
                     val legacyThumbnailColumName =  if(sourceType == MEDIA_TYPE_VIDEO) {
                         MediaStore.Video.Thumbnails.DATA
@@ -103,21 +101,25 @@ class MediaRepository(val context: Context){
                 else
                     null
 
+                logg("-------------------------------------")
+                logg("displayName: $displayName")
+                logg("sourceType: $sourceType")
+                logg("mimeType: $mimeType")
+                logg("thumbUri: $thumbUri")
 
-                Observable.just(
-                    MediaFile(
-                        _id = filedId,
-                        filePath = filePath,
-                        fileName = displayName,
-                        dataURI = thumbUri.toString(),
-                        sourceType = sourceType,
-                        fileFolderName = fileFolderName,
-                        duration = duration * 1000L,
-                        width = width,
-                        height = height,
-                        createTime = createTime,
-                        legacyThumbnailUri = legacyThumbnailUri
-                    )
+                MediaFile(
+                    _id = filedId,
+                    filePath = filePath,
+                    fileName = displayName,
+                    dataURI = thumbUri.toString(),
+                    sourceType = sourceType,
+                    fileFolderName = fileFolderName,
+                    duration = duration * 1000L,
+                    width = width,
+                    height = height,
+                    createTime = createTime,
+                    legacyThumbnailUri = legacyThumbnailUri,
+                    mimeType = mimeType
                 )
             }
     }

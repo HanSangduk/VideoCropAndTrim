@@ -6,18 +6,15 @@ import android.media.MediaMetadataRetriever
 import android.net.Uri
 import android.provider.MediaStore
 import androidx.lifecycle.MutableLiveData
-import com.example.videocropandtrim.R
 import com.example.videocropandtrim.model.MediaRepository
 import com.example.videocropandtrim.model.data.MediaFile
 import com.example.videocropandtrim.ui.BaseViewModel
-import com.example.videocropandtrim.ui.detail.VideoCTDetailFragment
+import com.example.videocropandtrim.ui.detail.video.VideoCTDetailFragment
 import com.example.videocropandtrim.utils.*
 import com.example.videocropandtrim.utils.widget.TimeLineTrimmer
-import com.google.android.exoplayer2.Timeline
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.rxkotlin.Observables
 import io.reactivex.rxkotlin.addTo
 import io.reactivex.schedulers.Schedulers
 import java.util.concurrent.TimeUnit
@@ -41,7 +38,7 @@ class VideoCropAndTrimViewModel(val context: Context, val mediaRepository: Media
         get() = _videoFrames
 
     init {
-        mediaRepository.videos()
+        mediaRepository.bothVideosAndImages()
             .buffer(55, TimeUnit.MILLISECONDS, 5535)
             .with()
             .doOnSubscribe {
@@ -52,6 +49,17 @@ class VideoCropAndTrimViewModel(val context: Context, val mediaRepository: Media
                 logg("@@subscribe@.videos _videoList.value: ${_videoList.value}")
                 _videoList.value  = _videoList.value?.plus(it) ?: it
             }.addTo(disposables)
+//        mediaRepository.videos()
+//            .buffer(55, TimeUnit.MILLISECONDS, 5535)
+//            .with()
+//            .doOnSubscribe {
+//                logg("doOnSubscribe@.videos doOnNext: $it")
+//            }
+//            .subscribe {
+//                logg("@@subscribe@.videos doOnNext: $it")
+//                logg("@@subscribe@.videos _videoList.value: ${_videoList.value}")
+//                _videoList.value  = _videoList.value?.plus(it) ?: it
+//            }.addTo(disposables)
     }
 
     fun selectedVideo(mediaFile: MediaFile){

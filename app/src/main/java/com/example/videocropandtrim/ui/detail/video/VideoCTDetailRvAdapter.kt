@@ -1,4 +1,4 @@
-package com.example.videocropandtrim.ui.detail
+package com.example.videocropandtrim.ui.detail.video
 
 import com.bumptech.glide.RequestManager
 import com.bumptech.glide.load.DecodeFormat

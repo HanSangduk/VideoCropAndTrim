@@ -1,5 +1,6 @@
-package com.example.videocropandtrim.ui.detail
+package com.example.videocropandtrim.ui.detail.video
 
+import android.R.attr.*
 import android.animation.ValueAnimator
 import android.graphics.RectF
 import android.os.Bundle
@@ -35,9 +36,9 @@ import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.addTo
 import org.joda.time.DateTime
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
-import java.io.File
 import java.util.*
 import java.util.concurrent.TimeUnit
+
 
 class VideoCTDetailFragment: Fragment(), ViewBindingHolder<FragmentVideoCropTrimDetailBinding> by ViewBindingHolderImpl(){
 
@@ -95,6 +96,13 @@ class VideoCTDetailFragment: Fragment(), ViewBindingHolder<FragmentVideoCropTrim
         return (position * itemWidth - firstVisibleChildView.left + itemWidth) / itemWidth.toFloat()
     }
 
+    var rota = 1
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        hideNavigationBar()
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -103,11 +111,6 @@ class VideoCTDetailFragment: Fragment(), ViewBindingHolder<FragmentVideoCropTrim
 
         logg("navArgs: $navArgs")
         logg("mVideoCropAndTrimViewModel.selectVideoUri: ${mVideoCropAndTrimViewModel.selectVideoUri.value}")
-//        context?.let {
-//            Glide.with(it)
-//                .load(Uri.parse("${navArgs.selectedMediaFile.dataURI}"))
-//                .into(testThumbnail)
-//        }
 
         initUI()
         initObersve()
@@ -127,14 +130,7 @@ class VideoCTDetailFragment: Fragment(), ViewBindingHolder<FragmentVideoCropTrim
         }
     }
 
-//    var rectf = RectF()
-
     fun FragmentVideoCropTrimDetailBinding.initUI(){
-//        ocvVideoCTDetail.overlayCropViewChangeListener = {
-//            logg("overlayCropViewChangeListener rectf: $it")
-//            rectf = it
-//        }
-        ocvVideoCTDetail.setTargetAspectRatio(1f) // todo 흠 이거 ratio를 어케 정해줘야하려나
 
         rvVideoCropAndTrimDetailTimeLine.addOnScrollListener(mOnScrollListener)
         TimeLineTrimmerSetting()
@@ -163,10 +159,13 @@ class VideoCTDetailFragment: Fragment(), ViewBindingHolder<FragmentVideoCropTrim
         context?.let { ctx ->
 
             binding?.apply {
+                vProgressBarVideoTimeLine.visibility = View.VISIBLE
                 val params = vProgressBarVideoTimeLine.layoutParams as ConstraintLayout.LayoutParams
                 val start = ctx.resources.getDimensionPixelSize(R.dimen.default_timeline_padding)
                 val end = ctx.getTimelineWidth() + start
-                mProgressAnimator = ValueAnimator.ofInt(start, end).setDuration(TEMP_TEMPLATE_DURATION )
+                mProgressAnimator = ValueAnimator.ofInt(start, end).setDuration(
+                    TEMP_TEMPLATE_DURATION
+                )
                 mProgressAnimator?.interpolator = LinearInterpolator()
                 mProgressAnimator?.addUpdateListener { animation ->
 
@@ -180,6 +179,7 @@ class VideoCTDetailFragment: Fragment(), ViewBindingHolder<FragmentVideoCropTrim
     }
 
     private fun pauseTimelineProgressBar() {
+        binding?.vProgressBarVideoTimeLine?.visibility = View.GONE
         binding?.vProgressBarVideoTimeLine?.clearAnimation()
 //        binding?.vProgressBarVideoTimeLine?.removeCallbacks() //todo listener 넣으면 추가해주자
         mProgressAnimator?.cancel()
@@ -204,6 +204,8 @@ class VideoCTDetailFragment: Fragment(), ViewBindingHolder<FragmentVideoCropTrim
                             unappliedRotationDegrees,
                             pixelWidthHeightRatio
                         )
+                        logg("111 여길 와 근데 ???? ${width}")
+                        logg("111 여길 와 근데 height ???? ${height}")
                         ocvVideoCTDetail.realVideoRectF.set(
                             0f,
                             0f,
@@ -214,6 +216,8 @@ class VideoCTDetailFragment: Fragment(), ViewBindingHolder<FragmentVideoCropTrim
 
                     override fun onSurfaceSizeChanged(width: Int, height: Int) {
                         super.onSurfaceSizeChanged(width, height)
+                        logg("여길 와 근데 ???? ${width}")
+                        logg("여길 와 근데 height ???? ${height}")
                         ocvVideoCTDetail.resizeVideoRectF.set(
                             0f,
                             0f,
@@ -278,13 +282,8 @@ class VideoCTDetailFragment: Fragment(), ViewBindingHolder<FragmentVideoCropTrim
     fun FragmentVideoCropTrimDetailBinding.btnSetting(){
         mbVideoCropAndTrimDetailNext.setOnClickListener {
 
-//            navArgs.selectedMediaFile.filePath?.let { it1 -> temp(it1) }
             ffmpegFolderPath?.let { ffmpegFolderPath ->
                 val trimmerFileName = "${ffmpegFolderPath}cuttemp_${DateTime().millis}.mp4"
-
-                File(ffmpegFolderPath).apply {
-                    if(!isDirectory) mkdir()
-                }
 
                 val str0 = "-y -ss ${tltVideoCTD.mRealTimelineStartTimeMilliSec.convertSecondsToTime()}" +
                         " -i ${navArgs.selectedMediaFile.filePath}" +
@@ -368,7 +367,7 @@ class VideoCTDetailFragment: Fragment(), ViewBindingHolder<FragmentVideoCropTrim
     fun FragmentVideoCropTrimDetailBinding.videoCrop(chanageFileName: String){
 
         val fileName = "${ffmpegFolderPath}temp_${DateTime().millis}.mp4"
-        val realCropRectF = ocvVideoCTDetail.getRealSizeCropRectF()
+        val realCropRectF = ocvVideoCTDetail.getffmpegConvertToRealSizeCropRectF()
         realCropRectF?.let {
             val str1 = "-i $chanageFileName" +
                     " -r 30 -preset ultrafast" +
@@ -384,10 +383,13 @@ class VideoCTDetailFragment: Fragment(), ViewBindingHolder<FragmentVideoCropTrim
             }
         }
     }
-//    10000 / 1000
-//    (template video / (width / oneTakeWidth))
-//    (width / oneTakeWidth)
-//    1000 1080 94
+
+    fun hideNavigationBar(){
+        val decorView = activity?.window?.decorView
+        decorView?.systemUiVisibility = (View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                or View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
+                or View.SYSTEM_UI_FLAG_FULLSCREEN)
+    }
 
     fun go(fileName: String){
         findNavController().navigate(

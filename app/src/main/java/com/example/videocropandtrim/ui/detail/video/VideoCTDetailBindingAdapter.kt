@@ -1,13 +1,10 @@
-package com.example.videocropandtrim.ui.detail
+package com.example.videocropandtrim.ui.detail.video
 
-import android.graphics.Bitmap
 import androidx.databinding.BindingAdapter
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.videocropandtrim.R
-import com.example.videocropandtrim.model.data.MediaFile
 import com.example.videocropandtrim.ui.main.VideoCropAndTrimViewModel
 import com.example.videocropandtrim.utils.logg
 import com.example.videocropandtrim.utils.widget.DefaultRvItemDecoration

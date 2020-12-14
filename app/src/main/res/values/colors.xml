@@ -7,6 +7,9 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="color_ff4081">#ff4081</color>
+    <color name="color_707070">#707070</color>
+
 
     <!--Crop View-->
     <color name="color_default_crop_grid">#80ffffff</color>

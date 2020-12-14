@@ -17,6 +17,7 @@ data class MediaFile(
         val filePath: String? = null,
         val dataURI: String? = null,
         val webDataURI: String? = null,
+        val mimeType: String? = null,
         val sourceType: Int? = null,
         val fileFolderName: String? = null,
         val duration: Long = 4500L,

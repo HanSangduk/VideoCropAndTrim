@@ -11,14 +11,30 @@
         tools:layout="@layout/fragment_video_crop_trim_main">
         <action
             android:id="@+id/action_mainFragment_to_detailFragemnt"
-            app:destination="@id/detailFragemnt" />
+            app:destination="@id/videoDetailFragemnt" />
+        <action
+            android:id="@+id/action_mainFragment_to_imageDetailFragment"
+            app:destination="@id/imageDetailFragemnt" />
     </fragment>
 
     <fragment
-        android:id="@+id/detailFragemnt"
-        android:name="com.example.videocropandtrim.ui.detail.VideoCTDetailFragment"
+        android:id="@+id/videoDetailFragemnt"
+        android:name="com.example.videocropandtrim.ui.detail.video.VideoCTDetailFragment"
         android:label="user_fragment"
         tools:layout="@layout/fragment_video_crop_trim_detail">
+        <argument
+            android:name="selectedMediaFile"
+            app:argType="com.example.videocropandtrim.model.data.MediaFile" />
+        <action
+            android:id="@+id/action_detailFragment_to_resultFragment"
+            app:destination="@id/resultFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/imageDetailFragemnt"
+        android:name="com.example.videocropandtrim.ui.detail.image.ImageCropDetailFragment"
+        android:label="user_image_edit_fragment"
+        tools:layout="@layout/fragment_image_crop_detail">
         <argument
             android:name="selectedMediaFile"
             app:argType="com.example.videocropandtrim.model.data.MediaFile" />

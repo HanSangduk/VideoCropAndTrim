@@ -39,7 +39,7 @@ class VideoCropAndTrimRvAdapter(
     ) {
         logg("bindItem item.dataURI: ${item.dataURI}")
         if(payloads.isNullOrEmpty()){
-
+            bindingView.mediaFile = item
             item.dataURI?.let { dataUri ->
                 glide
                     .load(Uri.parse(dataUri))

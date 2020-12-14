@@ -47,9 +47,15 @@ class VideoCTMainFragment: Fragment(), ViewBindingHolder<FragmentVideoCropTrimMa
                 mediaFile?.let {
                     naviController.navigateUp()
                     naviController.navigate(
-                        VideoCTMainFragmentDirections.actionMainFragmentToDetailFragemnt(
-                            mediaFile
-                        )
+                        if (mediaFile.mimeType?.contains("video/") == true){
+                            VideoCTMainFragmentDirections.actionMainFragmentToDetailFragemnt(
+                                mediaFile
+                            )
+                        }else{
+                            VideoCTMainFragmentDirections.actionMainFragmentToImageDetailFragment(
+                                mediaFile
+                            )
+                        }
                     )
                 }
             })

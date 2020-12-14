@@ -26,7 +26,7 @@ class VideoCTResultFragment: Fragment(), ViewBindingHolder<FragmentVideoCropTrim
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? = initBinding(FragmentVideoCropTrimResultBinding.inflate(layoutInflater), this) {
+    ): View = initBinding(FragmentVideoCropTrimResultBinding.inflate(layoutInflater), this) {
 
 //        context?.let {
 //            logg("resultFragment: navArgs.resultMediaFile ${navArgs.resultMediaFile}")
@@ -35,6 +35,14 @@ class VideoCTResultFragment: Fragment(), ViewBindingHolder<FragmentVideoCropTrim
 //                .into(ivVideoCTResultThumbnail)
 //        }
 
+        if(navArgs.resultMediaFile.filePath?.contains(".jpg") == true
+            || navArgs.resultMediaFile.filePath?.contains(".png") == true ){
+            context?.let {
+                Glide.with(it)
+                    .load(navArgs.resultMediaFile.dataURI)
+                    .into(ivThumbNail)
+            }
+        }
         initializePlayer()
     }
 
