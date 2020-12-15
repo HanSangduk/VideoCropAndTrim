@@ -730,7 +730,7 @@ import kotlin.math.sin
      * Rotate the given bitmap by the given degrees.<br></br>
      * New bitmap is created and the old one is recycled.
      */
-    private fun rotateBitmapInt(bitmap: Bitmap, degrees: Int): Bitmap {
+    private fun rotateBitmapInt(bitmap: Bitmap, degrees: Int, isHorizontalRevers: Boolean = true): Bitmap {
         return if (degrees > 0) {
             val matrix = Matrix()
             matrix.setRotate(degrees.toFloat())
@@ -739,6 +739,17 @@ import kotlin.math.sin
             if (newBitmap != bitmap) {
                 bitmap.recycle()
             }
+//            if(isHorizontalRevers) {
+//                val scaleMatrix = Matrix()
+//                scaleMatrix.setScale(-1f, 1f)
+//                val scaleBitmap =
+//                    Bitmap.createBitmap(newBitmap, 0, 0, newBitmap.width, newBitmap.height, scaleMatrix, false)
+//                if (scaleBitmap != newBitmap) {
+//                    newBitmap.recycle()
+//                }
+//                logg("여기 오지??????????????")
+//                scaleBitmap
+//            }else newBitmap
             newBitmap
         } else {
             bitmap
@@ -881,4 +892,45 @@ enum class RequestSizeOptions {
      * If the image is smaller than the requested size it will enlarge it.
      */
     RESIZE_EXACT
+}
+
+
+
+//todo 1215 image rotate exif 만들었으니 이거 사용해서 돌리자
+enum class ImageExif(val rotate: Int, val isHorizontalRevers: Boolean = false) {
+    TOP_LEFT(0 ), // = 1,      // Default
+    TOP_RIGHT(0, true), // = 2,  //flip horizontal   // Reflected across y-axis
+    BOTTOM_RIGHT(180), // = 3,  // Rotated 180
+    BOTTOM_LEFT(180, true), // = 4, // 180 ->  flip horizontal  // Reflected across x-axis
+    LEFT_TOP(90, true), // = 5,  // 90 ->  flip horizontal    // Reflected across x-axis, Rotated 90 CCW
+    RIGHT_TOP(270), // = 6,     // Rotated 270
+    RIGHT_BOTTOM(270, true), // = 7, // 270 -> flip horizontal // Reflected across x-axis, Rotated 90 CW
+    LEFT_BOTTOM(90), //  = 8   // Rotated 90 CCW
+}
+
+
+fun ImageExif.flipHorizontal(): ImageExif {
+    return when (this) {
+        ImageExif.TOP_LEFT  ->  ImageExif.TOP_RIGHT
+        ImageExif.TOP_RIGHT ->   ImageExif.TOP_LEFT
+        ImageExif.BOTTOM_RIGHT  ->  ImageExif.BOTTOM_LEFT
+        ImageExif.BOTTOM_LEFT   ->  ImageExif.BOTTOM_RIGHT
+        ImageExif.LEFT_TOP  ->  ImageExif.RIGHT_TOP
+        ImageExif.RIGHT_TOP ->  ImageExif.LEFT_TOP
+        ImageExif.RIGHT_BOTTOM  ->  ImageExif.LEFT_BOTTOM
+        ImageExif.LEFT_BOTTOM   ->  ImageExif.RIGHT_BOTTOM
+    }
+}
+
+fun  ImageExif.rotateRight(): ImageExif {
+    return when (this) {
+        ImageExif.TOP_LEFT -> ImageExif.LEFT_BOTTOM
+        ImageExif.TOP_RIGHT -> ImageExif.LEFT_TOP //flip horizontal
+        ImageExif.BOTTOM_RIGHT -> ImageExif.RIGHT_TOP           //  180
+        ImageExif.BOTTOM_LEFT -> ImageExif.RIGHT_BOTTOM         // 180 ->  flip horizontal
+        ImageExif.LEFT_TOP -> ImageExif.BOTTOM_LEFT            // 90 ->  flip horizontal
+        ImageExif.RIGHT_TOP -> ImageExif.TOP_LEFT              // 270
+        ImageExif.RIGHT_BOTTOM -> ImageExif.TOP_RIGHT        // 270 -> flip horizontal
+        ImageExif.LEFT_BOTTOM -> ImageExif.BOTTOM_RIGHT            // 90
+    }
 }

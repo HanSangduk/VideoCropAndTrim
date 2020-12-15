@@ -1,6 +1,9 @@
 package com.example.videocropandtrim.ui.detail.image
 
+import android.graphics.Bitmap
+import android.graphics.Matrix
 import android.graphics.RectF
+import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -12,16 +15,27 @@ import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.load.resource.bitmap.Rotate
+import com.bumptech.glide.request.target.CustomTarget
+import com.bumptech.glide.request.transition.Transition
 import com.example.videocropandtrim.base.ViewBindingHolder
 import com.example.videocropandtrim.base.ViewBindingHolderImpl
 import com.example.videocropandtrim.databinding.FragmentImageCropDetailBinding
 import com.example.videocropandtrim.model.data.MediaFile
 import com.example.videocropandtrim.ui.main.VideoCropAndTrimViewModel
 import com.example.videocropandtrim.utils.*
+import com.jakewharton.rxbinding3.view.clicks
+import io.reactivex.Observable
+import io.reactivex.Scheduler
+import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.rxkotlin.Observables
+import io.reactivex.rxkotlin.addTo
+import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.fragment_video_crop_trim_detail.*
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import java.util.*
+import java.util.concurrent.TimeUnit
+import kotlin.math.abs
 
 
 class ImageCropDetailFragment : Fragment(),
@@ -42,17 +56,12 @@ class ImageCropDetailFragment : Fragment(),
         logg("mVideoCropAndTrimViewModel.selectVideoUri: ${mVideoCropAndTrimViewModel.selectVideoUri.value}")
 
         initUI()
-//        initObersve()
-//        videoCropAndTrimViewModel = mVideoCropAndTrimViewModel
         mVideoCropAndTrimViewModel.clearselectVideoUri()
 
         context?.let {
             Glide.with(it)
                 .load(Uri.parse("${navArgs.selectedMediaFile.dataURI}"))
                 .into(ivTemplateImageEditorTarget)
-
-//            logg("flTemplateImageEditorTargetContainer width: ${flTemplateImageEditorTargetContainer.width}")
-//            logg("flTemplateImageEditorTargetContainer hhhheight: ${flTemplateImageEditorTargetContainer.height}")
 
             ctlTemplateImageEditorTargetContainer.addOnLayoutChangeListener { view, i, i2, i3, i4, i5, i6, i7, i8 ->
                 if (i3 - i == 0 || i4 - i2 == 0) return@addOnLayoutChangeListener
@@ -66,62 +75,30 @@ class ImageCropDetailFragment : Fragment(),
 
             ivTemplateImageEditorTarget.addOnLayoutChangeListener { view, i, i2, i3, i4, i5, i6, i7, i8 ->
                 if (i3 - i == 0 || i4 - i2 == 0) return@addOnLayoutChangeListener
-                logg("addOnLayoutChangeListener i: $i")
-                logg("addOnLayoutChangeListener i2: $i2")
-                logg("addOnLayoutChangeListener i3: $i3")
-                logg("addOnLayoutChangeListener i4: $i4")
-                logg("addOnLayoutChangeListener i5: $i5")
-                logg("addOnLayoutChangeListener i6: $i6")
-                logg("addOnLayoutChangeListener i7: $i7")
-                logg("addOnLayoutChangeListener i8: $i8")
+
                 val left = if (i < 0) 0f else i.toFloat()
                 val top = if (i2 < 0) 0f else i2.toFloat()
                 val right = if (i < 0) (i3 - i).toFloat() else i3.toFloat()
                 val bottom = if (i2 < 0) (i4 - i2).toFloat() else i4.toFloat()
-//                ocvImageCTDetail.resizeVideoRectF.set(
-//                    left,
-//                    top,
-//                    right,
-//                    bottom
-//                )
+
                 ocvImageCTDetail.resizeVideoRectF.set(
                     0f,
                     0f,
                     right - left,
                     bottom - top
                 )
-                logg("addOnLayoutChangeListener ocvImageCTDetail.resizeVideoRectF: ${ocvImageCTDetail.resizeVideoRectF}")
-                val setTemplateWidth = 720f
-                val setTemplateHeight = 1080f
-//                val setTemplateWidth = 540f
-//                val setTemplateHeight = 960f
 
                 ocvImageCTDetail.setTemplateCropRectF(
                     RectF(
                         0f,
                         0f,
-                        setTemplateWidth,
-                        setTemplateHeight
+                        requireTemplateWidth.toFloat(),
+                        requireTemplateHeight.toFloat()
                     )
                 )
-
-//                val cropRectViewP: ViewGroup.LayoutParams = ocvImageCTDetail.layoutParams
-//                cropRectViewP.width = i3 - i
-//                cropRectViewP.height = i4 - i2
-//                logg("addOnLayoutChangeListener cropRectViewP.width:${cropRectViewP.width}")
-//                logg("addOnLayoutChangeListener i3 - i:${i3 - i}")
-//                logg("addOnLayoutChangeListener cropRectViewP.height:${cropRectViewP.height}")
-//                ocvImageCTDetail.layoutParams = cropRectViewP
-//                ocvImageCTDetail.postInvalidate()
-//                ivTemplateImageEditorTarget.postInvalidate()
-
             }
         }
 
-
-        logg("crop navArgs.selectedMediaFile.width: ${navArgs.selectedMediaFile.width}")
-        logg("crop navArgs.selectedMediaFile.heighttt: ${navArgs.selectedMediaFile.height}")
-        logg("addOnLayoutChangeListener reaaaaaaaaaaaaaaaaaaaaaaaal:")
         ocvImageCTDetail.realVideoRectF.set(
             0f,
             0f,
@@ -130,126 +107,194 @@ class ImageCropDetailFragment : Fragment(),
         )
     }
 
+    //todo 1214 server에서 넘어오는 값으로 해야함
+    val requireTemplateWidth = 540
+    val requireTemplateHeight = 960
 
     fun FragmentImageCropDetailBinding.initUI() {
         btnSetting()
     }
 
     fun FragmentImageCropDetailBinding.ImageCrop(){
-        val points = ocvImageCTDetail.getCropRectRealPoints((rota - 1) * 90)
-//        val points2 = ocvImageCTDetail.getCropRectRealPoints2(0)
-        logg("ocvImageCTDetail.getRealSizeCropRectF() left: ${points[0]}")
-        logg("ocvImageCTDetail.getRealSizeCropRectF() top: ${points[1]}")
-        logg("ocvImageCTDetail.getRealSizeCropRectF() right: ${points[2]}")
-        logg("ocvImageCTDetail.getRealSizeCropRectF() bottom: ${points[7]}")
-//        logg("ocvImageCTDetail.getRealSizeCropRectF() left: ${points2[0]}")
-//        logg("ocvImageCTDetail.getRealSizeCropRectF() top: ${points2[1]}")
-//        logg("ocvImageCTDetail.getRealSizeCropRectF() right: ${points2[2]}")
-//        logg("ocvImageCTDetail.getRealSizeCropRectF() bottom: ${points2[7]}")
+        val degree = (rota) * 90
+        val points = ocvImageCTDetail.getCropRectRealPoints((rota) * 90)
 
-        bitmapCroppingWorkerTask(ivTemplateImageEditorTarget, points)
+        bitmapCroppingWorkerTask(
+            ivTemplateImageEditorTarget, points, degree,
+            Uri.parse(navArgs.selectedMediaFile.dataURI), navArgs.selectedMediaFile.width ?: 0, navArgs.selectedMediaFile.height ?: 0,
+            requireTemplateWidth, requireTemplateHeight
+        )
 
-//        val fileName = "${ffmpegFolderPath}temp_${DateTime().millis}.png"
-//        val realCropRectF = ocvImageCTDetail.getRealSizeCropRectF()
-//        realCropRectF?.let {
-//            val str1 = "-i ${navArgs.selectedMediaFile.filePath}" +
-//                    " -r 30 -preset ultrafast" +
-//                    " -vf crop=${realCropRectF.left}:${realCropRectF.top}:${realCropRectF.right}:${realCropRectF.bottom}" +
-//                    " $fileName"
-//
-//            logg("click str $str1")
-//            FFmpeg.executeAsync(str1.split(" ").toTypedArray()) { executionId, returnCode ->
-//                logg("FFmpeg.executeAsync executionId: $executionId ")
-//                logg("FFmpeg.executeAsync returnCode: $returnCode ")
-//                if(returnCode != Config.RETURN_CODE_SUCCESS) return@executeAsync
-//                go(fileName)
-//            }
-//        }
     }
 
-    private val ffmpegFolderPath by lazy {
+    private var rota = 0
+    private var isHorizontalRevers = false
+    private val glide by lazy {
         context?.let { ctx ->
-            getFileFolderPath(ctx, IMAGE_CROP_FILE_FOLDER_PATH)
+            Glide.with(ctx)
         }
+
     }
-
-    private var rota = 1
-
     fun FragmentImageCropDetailBinding.btnSetting() {
         tvImageEditCompleteBtn.setOnClickListener {
             ImageCrop()
         }
 
-        llTemplateImageEditorReverseBtn.setOnClickListener {
-
-        }
-
-        llTemplateImageEditorRotateBtn.setOnClickListener {
-            context?.let { ctx ->
-                logg("rota: ${90f * rota}")
-                val degree = 90f * rota
-
-//                navArgs.selectedMediaFile.filePath?.let { it1 ->
-//                    Glide.with(ctx)
-//                        .load(rotateBitmap(it1, degree = degree) )
-//                        .into(ivTemplateImageEditorTarget)
-//
+        Observable.merge(
+            listOf(
+                llTemplateImageEditorReverseBtn.clicks().map{0},
+                llTemplateImageEditorRotateBtn.clicks().map{1}
+            )
+        ).throttleLatest(333, TimeUnit.MILLISECONDS)
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe ({
+                logg("rota: $rota")
+//                val degree = 90 * (rota)
+//                when(it){
+//                    0 -> isHorizontalRevers = !isHorizontalRevers
+//                    1 -> {
+//                        rota %= 4
+//                        rota ++
+//                    }
 //                }
 
-                Glide.with(ctx)
-                    .asBitmap()
-                    .load(Uri.parse("${navArgs.selectedMediaFile.dataURI}"))
-                    .transform(Rotate(degree.toInt()))
-                    .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
-                    .into(ivTemplateImageEditorTarget)
+                when(it){
+                    0 -> {
+//                        val degree = -90 * (rota)  * if(isHorizontalRevers)-1 else 1
+//                        val degree =if(isHorizontalRevers) 360 - 90 * (rota)
+//                        else -90 * (rota)  * if(isHorizontalRevers)-1 else 1
+//                        -270
+                        val degree = when(rota){
+                            0, 2, 4 -> -90 * (rota)  * if(isHorizontalRevers)-1 else 1
+                            else -> -90 * (rota)  * if(isHorizontalRevers)-1 else 1
+                        }
+                        isHorizontalRevers = !isHorizontalRevers
 
-                rota %= 4
-                rota++
-            }
+//                        val degree = 90 * (rota)
+                        logg("Revers degree: $degree")
+                        glide
+                            ?.asBitmap()
+                            ?.load(Uri.parse("${navArgs.selectedMediaFile.dataURI}"))
+                            ?.transform(Rotate(degree))
+                            ?.diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
+                            ?.into(object : CustomTarget<Bitmap>(){
+                                override fun onResourceReady(newBitmap: Bitmap, transition: Transition<in Bitmap>?) {
+                                    val tagetBitmap = if(isHorizontalRevers){
+                                        val matrix = Matrix()
+//                                        if(degree == 90 || degree == 270) matrix.setScale(1f, -1f)
+//                                        else matrix.setScale(-1f, 1f)
+                                        when(abs(degree)){
+                                            0, 180, 360 -> matrix.setScale(-1f, 1f)
+                                            else -> matrix.setScale(1f, -1f)
+                                        }
+//                                        matrix.setScale(-1f, 1f)
+                                        Bitmap.createBitmap(newBitmap, 0, 0, newBitmap.width, newBitmap.height, matrix, false)
+                                    }else newBitmap
+                                    ivTemplateImageEditorTarget.setImageBitmap(tagetBitmap)
+                                }
+                                override fun onLoadCleared(placeholder: Drawable?) {}
+                            })
+                    }
+                    1 -> {
+                        rota %= 4
+                        rota ++
+                        val degree = 90 * (rota) * if(isHorizontalRevers)-1 else 1
+                        logg("degree: $degree")
+                        glide
+                            ?.asBitmap()
+                            ?.load(Uri.parse("${navArgs.selectedMediaFile.dataURI}"))
+                            ?.transform(Rotate(degree))
+                            ?.diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
+                            ?.into(object : CustomTarget<Bitmap>(){
+                                override fun onResourceReady(newBitmap: Bitmap, transition: Transition<in Bitmap>?) {
+                                    val tagetBitmap = if(isHorizontalRevers){
+                                        val matrix = Matrix()
+                                        when(abs(degree)){
+                                            0, 180, 360 -> matrix.setScale(-1f, 1f)
+                                            else -> matrix.setScale(1f, -1f)
+                                        }
+//                                        matrix.setScale(-1f, 1f)
+                                        Bitmap.createBitmap(newBitmap, 0, 0, newBitmap.width, newBitmap.height, matrix, false)
+                                    }else newBitmap
 
-        }
+//                                    val matrix = Matrix()
+//                                    when(abs(degree)) {
+//                                        0, 180, 360 -> matrix.setScale(-1f, 1f)
+//                                        else -> matrix.setScale(1f, -1f)
+//                                    }
+//                                    val tagetBitmap = Bitmap.createBitmap(newBitmap, 0, 0, newBitmap.width, newBitmap.height, matrix, false)
 
+                                    ivTemplateImageEditorTarget.setImageBitmap(tagetBitmap)
+                                    logg("ㅎㅎㅎㅎㅎㅎㅎㅎ????")
+                                }
+                                override fun onLoadCleared(placeholder: Drawable?) {
+                                    logg("ㅎㅎㅎㅎㅎㅎㅎㅎ????2222")
+                                }
+                            })
+                    }
+                }
+//                glide
+//                    ?.asBitmap()
+//                    ?.load(Uri.parse("${navArgs.selectedMediaFile.dataURI}"))
+//                    ?.transform(Rotate(degree * if(isHorizontalRevers)-1 else 1))
+//                    ?.diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
+//                    ?.into(object : CustomTarget<Bitmap>(){
+//                        override fun onResourceReady(newBitmap: Bitmap, transition: Transition<in Bitmap>?) {
+//                            val tagetBitmap = if(isHorizontalRevers){
+//                                val matrix = Matrix()
+//                                if(degree == 90 || degree == 270) matrix.setScale(1f, -1f)
+//                                else matrix.setScale(-1f, 1f)
+//                                Bitmap.createBitmap(newBitmap, 0, 0, newBitmap.width, newBitmap.height, matrix, false)
+//                            }else newBitmap
+//                            ivTemplateImageEditorTarget.setImageBitmap(tagetBitmap)
+//                            logg("ㅎㅎㅎㅎㅎㅎㅎㅎ????")
+//                        }
+//                        override fun onLoadCleared(placeholder: Drawable?) {
+//                            logg("ㅎㅎㅎㅎㅎㅎㅎㅎ????2222")
+//                        }
+//                    })
+//                    ?.into(ivTemplateImageEditorTarget)
+
+
+
+            }, {
+                logg("throw: ${it.message}")
+            }).addTo(disposable)
+
+//        llTemplateImageEditorReverseBtn.setOnClickListener {
+//            logg("rota: ${90f * rota}")
+//            val degree = 90f * (rota-1)
+//            glide
+//                ?.asBitmap()
+//                ?.load(Uri.parse("${navArgs.selectedMediaFile.dataURI}"))
+//                ?.transform(Rotate(degree.toInt()))
+//                ?.diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
+//                ?.into(object : CustomTarget<Bitmap>(){
+//                    override fun onResourceReady(newBitmap: Bitmap, transition: Transition<in Bitmap>?) {
+//                        val matrix = Matrix()
+//                        matrix.setScale(-1f, 1f)
+//                        val reverseBitmap = Bitmap.createBitmap(newBitmap, 0, 0, newBitmap.width, newBitmap.height, matrix, false)
+//                        ivTemplateImageEditorTarget.setImageBitmap(reverseBitmap)
+//                    }
+//                    override fun onLoadCleared(placeholder: Drawable?) {}
+//                })
+//        }
+//
 //        llTemplateImageEditorRotateBtn.setOnClickListener {
-//            val matrix = Matrix()
-//            ivTemplateImageEditorTarget.scaleType = ImageView.ScaleType.MATRIX //required
+//            logg("rota: ${90f * rota}")
+//            val degree = 90f * rota
 //
-////                    if(rota % 2 == 0){
-////                    }
+//                glide
+//                    ?.asBitmap()
+//                    ?.load(Uri.parse("${navArgs.selectedMediaFile.dataURI}"))
+//                    ?.transform(Rotate(degree.toInt()))
+//                    ?.diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
+//                    ?.into(ivTemplateImageEditorTarget)
 //
-//            logg("templateImageEditorTargetContainerRectF: $templateImageEditorTargetContainerRectF")
-//            logg("templateImageEditorTargetContainerRectF: ${templateImageEditorTargetContainerRectF.centerX()}")
-//            matrix.postRotate(
-//                90f * rota,
-//                0f,
-//                0f
-//            )
 //
-//            ivTemplateImageEditorTarget.imageMatrix = matrix
 //            rota %= 4
 //            rota++
-//            //todo 1207 흠 최대값을 가져와야 뭔가 넣어주고 자시고 할거같은데 바꾸ㅣ고 돌리고
-//
-////            if(rota % 2 == 0){
-////                matrix.postScale(0.5f, 0.2f, (ivTemplateImageEditorTarget.x + ivTemplateImageEditorTarget.width/2f), (ivTemplateImageEditorTarget.y + ivTemplateImageEditorTarget.height/2f))
-////                ivTemplateImageEditorTarget.imageMatrix = matrix
-////            }
-//
-////            val lp = ivTemplateImageEditorTarget.layoutParams
-////            lp.width = 607
-////            lp.height = 1080
-////            logg("(1080 / 1920) * 1080: ${((1080 / 1920f) * 1080)}")
-////            ivTemplateImageEditorTarget.layoutParams = lp
-//
-////            val lp = ivTemplateImageEditorTarget.layoutParams
-////            lp.width = 1080
-////            lp.height = ((1080 / 1920f) * 1080).toInt()
-////            logg("(1080 / 1920) * 1080: ${((1080 / 1920f) * 1080)}")
-////            ivTemplateImageEditorTarget.layoutParams = lp
 //        }
-    }
-
-    private val timelineTimerDispose by lazy {
-        CompositeDisposable()
     }
 
     fun go(fileName: String) {
@@ -264,8 +309,6 @@ class ImageCropDetailFragment : Fragment(),
     }
 
     override fun onDestroy() {
-        timelineTimerDispose.clear()
-        timelineTimerDispose.dispose()
         super.onDestroy()
         logg("여길 안타는군??")
     }

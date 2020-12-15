@@ -337,119 +337,42 @@ class OverlayCropView
 
     fun getCropRectRealPoints(degree: Int): FloatArray{
 
-//        val width = 1080
-//        val heught = 807
-//
-        val width = resizeVideoRectF.width()
-        val heught = resizeVideoRectF.height()
+        var widthRatio = resizeVideoRectF.width() / realVideoRectF.width()
+        var heightRatio = resizeVideoRectF.height() / realVideoRectF.height()
 
-        val widthRatio = width / realVideoRectF.width()
-        val heughtRatio = heught / realVideoRectF.height()
-
-        /**
-         * 0도
-         * trans width: 1080.0
-         * trans heught: 607.0
-         * 90도
-         * trans width: 691.0
-         * trans heught: 1228.0
-         */
-
-        logg("trans width: $width")
-        logg("trans heught: $heught")
-        logg("trans widthRatio: $widthRatio")
-        logg("trans heughtRatio: $heughtRatio")
-        logg("trans resizeVideoRectF: $resizeVideoRectF")
-        logg("trans mCropViewRect: $mCropViewRect")
-        logg("trans realVideoRectF: $realVideoRectF")
-
-        var left = when(degree){
-            90 -> mCropViewRect.top
-            180 -> width - mCropViewRect.right
-            270 -> width - mCropViewRect.bottom
-            else -> mCropViewRect.left
+        if(degree == 90 || degree == 270){
+            widthRatio = resizeVideoRectF.width() / realVideoRectF.height()
+            heightRatio = resizeVideoRectF.height() / realVideoRectF.width()
         }
-        var top = when(degree){
-            90 -> height - mCropViewRect.right
-            180 -> height - mCropViewRect.bottom
-            270 -> heught - mCropViewRect.left
-            else -> mCropViewRect.top
-        }
-        var right = when(degree){
-            90 -> mCropViewRect.bottom
-            180 -> width - mCropViewRect.left
-            270 -> width - mCropViewRect.top
-            else -> mCropViewRect.right
-        }
-        var bottom = when(degree){
-            90 -> heught - mCropViewRect.left
-            180 -> heught - mCropViewRect.top
-            270 -> heught - mCropViewRect.right
-            else -> mCropViewRect.bottom
-        }
-        logg("trans left: $left")
-        logg("trans top: $top")
-        logg("trans right: $right")
-        logg("trans bottom: $bottom")
-        logg("trans ratio left: ${left/ widthRatio}")
-        logg("trans ratio top: ${top/ heughtRatio}")
-        logg("trans ratio right: ${right/ widthRatio}")
-        logg("trans ratio bottom: ${bottom/ heughtRatio}")
 
-        //todo 1211 월욜에 와서 여기 비율하는거 해보자 이거만 이거 포인뚜만 하면 완성될거 같은데 말이지
-
-//        left /= heughtRatio
-//        top /= widthRatio
-//        right /= heughtRatio
-//        bottom /= widthRatio
-
-//        left *= 1.2f
-//        right *= 1.2f
-//        top *= 1.2f
-//        logg("trans 22left: $left")
-//        logg("trans 22right: $right")
-//        logg("trans 22top: $top")
-
-        return floatArrayOf(
-            left,
-            top,
-            right,
-            top,
-            right,
-            bottom,
-            left,
-            bottom
-        )
-    }
-    fun getCropRectRealPoints2(degree: Int): FloatArray{
-
-        val width = resizeVideoRectF.width()
-        val heught = resizeVideoRectF.height()
-
+        val leftRatio = mCropViewRect.left / widthRatio
+        val topRatio = mCropViewRect.top / heightRatio
+        val rightRatio = mCropViewRect.right / widthRatio
+        val bottomRatio = mCropViewRect.bottom / heightRatio
 
         val left = when(degree){
-            90 -> mCropViewRect.top
-            180 -> width - mCropViewRect.right
-            270 -> width - mCropViewRect.bottom
-            else -> mCropViewRect.left
+            90 -> topRatio
+            180 -> realVideoRectF.width() - rightRatio
+            270 -> realVideoRectF.width() - bottomRatio
+            else -> leftRatio
         }
         val top = when(degree){
-            90 -> height - mCropViewRect.right
-            180 -> height - mCropViewRect.bottom
-            270 -> heught - mCropViewRect.left
-            else -> mCropViewRect.top
+            90 -> realVideoRectF.height() - rightRatio
+            180 -> realVideoRectF.height() - bottomRatio
+            270 -> leftRatio
+            else -> topRatio
         }
         val right = when(degree){
-            90 -> mCropViewRect.bottom
-            180 -> width - mCropViewRect.left
-            270 -> width - mCropViewRect.top
-            else -> mCropViewRect.right
+            90 -> bottomRatio
+            180 -> realVideoRectF.width() - leftRatio
+            270 -> realVideoRectF.width() - topRatio
+            else -> rightRatio
         }
         val bottom = when(degree){
-            90 -> heught - mCropViewRect.left
-            180 -> heught - mCropViewRect.top
-            270 -> heught - mCropViewRect.right
-            else -> mCropViewRect.bottom
+            90 -> realVideoRectF.height() - leftRatio
+            180 -> realVideoRectF.height() - topRatio
+            270 -> rightRatio
+            else -> bottomRatio
         }
 
         return floatArrayOf(
@@ -817,168 +740,6 @@ class OverlayCropView
 //            }
 //        }
     }
-
-//    fun getRealCropPoints(): FloatArray? {
-//        logg("PhotoView, getCropPoints, mDegreesRotated = $mDegreesRotated")
-//        var scale_real_crop_left = 0f
-//        var scale_real_crop_top = 0f
-//        var scale_real_crop_right = 0f
-//        var scale_real_crop_bottom = 0f
-//        val last_left: Float = mImageMatrixRectF.left
-//        val last_top: Float = mImageMatrixRectF.top
-//        val last_right: Float = mImageMatrixRectF.right
-//        val last_bottom: Float = mImageMatrixRectF.bottom
-//        logg("PhotoView, getCropPoints, mImageMatrixRectF.left = $last_left, mImageMatrixRectF.top = $last_top, mImageMatrixRectF.right = $last_right, mImageMatrixRectF.bottom = $last_bottom")
-//        logg("PhotoView, getCropPoints, mContentRect.left = " + mContentRect.left + ", mContentRect.top = " + mContentRect.top + ", mContentRect.right = " + mContentRect.right + ", mContentRect.bottom = " + mContentRect.bottom)
-//        val display_crop_left: Float = mContentRect.left - last_left
-//        val display_crop_top: Float = mContentRect.top - last_top
-//        val display_crop_right: Float = display_crop_left + mContentRect.width()
-//        val display_crop_bottom: Float = display_crop_top + mContentRect.height()
-//        logg("PhotoView, getCropPoints, display_crop_left = $display_crop_left, display_crop_top = $display_crop_top, display_crop_right = $display_crop_right, display_crop_bottom = $display_crop_bottom")
-//
-//        //rotaed 시킨 좌표를 구하자
-//        if (mDegreesRotated == 0) {
-////        logg("PhotoView, getCropPoints, (display_crop_right - display_crop_left) = " + (display_crop_right - display_crop_left) + ", mContentRect.height() = " + (display_crop_bottom - display_crop_top));
-////        logg("PhotoView, getCropPoints, mContentRect.width() = " + mContentRect.width() + ", mContentRect.height() = " + mContentRect.height());
-//            scale_real_crop_left = display_crop_left * mRealImageWidth / mImageMatrixRectF.width()
-//            scale_real_crop_top = display_crop_top * mRealImageHeight / mImageMatrixRectF.height()
-//            scale_real_crop_right = display_crop_right * mRealImageWidth / mImageMatrixRectF.width()
-//            scale_real_crop_bottom =
-//                display_crop_bottom * mRealImageHeight / mImageMatrixRectF.height()
-//            logg("PhotoView, getCropPoints, scale_real_crop_left = $scale_real_crop_left, scale_real_crop_top = $scale_real_crop_top, scale_real_crop_right = $scale_real_crop_right, scale_real_crop_bottom = $scale_real_crop_bottom")
-//        } else if (mDegreesRotated == 90 || mDegreesRotated == -270) {
-//            val display_crop_top_90: Float = mImageMatrixRectF.width() - display_crop_right
-//            val display_crop_right_90: Float = display_crop_top + mContentRect.height()
-//            val display_crop_bottom_90: Float = display_crop_top_90 + mContentRect.width()
-//            scale_real_crop_left = display_crop_top * mRealImageWidth / mImageMatrixRectF.height()
-//            scale_real_crop_top = display_crop_top_90 * mRealImageHeight / mImageMatrixRectF.width()
-//            scale_real_crop_right =
-//                display_crop_right_90 * mRealImageWidth / mImageMatrixRectF.height()
-//            scale_real_crop_bottom =
-//                display_crop_bottom_90 * mRealImageHeight / mImageMatrixRectF.width()
-//            logg("90 -270 PhotoView, getCropPoints, scale_real_crop_left = $scale_real_crop_left, scale_real_crop_top = $scale_real_crop_top, scale_real_crop_right = $scale_real_crop_right, scale_real_crop_bottom = $scale_real_crop_bottom")
-//        } else if (mDegreesRotated == -90 || mDegreesRotated == 270) {
-//            val display_crop_left_90: Float = mImageMatrixRectF.height() - display_crop_bottom
-//            val display_crop_right_90: Float = display_crop_left_90 + mContentRect.height()
-//            val display_crop_bottom_90: Float = display_crop_left + mContentRect.width()
-//            scale_real_crop_left =
-//                display_crop_left_90 * mRealImageWidth / mImageMatrixRectF.height()
-//            scale_real_crop_top = display_crop_left * mRealImageHeight / mImageMatrixRectF.width()
-//            scale_real_crop_right =
-//                display_crop_right_90 * mRealImageWidth / mImageMatrixRectF.height()
-//            scale_real_crop_bottom =
-//                display_crop_bottom_90 * mRealImageHeight / mImageMatrixRectF.width()
-//            logg("--90 +270 PhotoView, getCropPoints, scale_real_crop_left = $scale_real_crop_left, scale_real_crop_top = $scale_real_crop_top, scale_real_crop_right = $scale_real_crop_right, scale_real_crop_bottom = $scale_real_crop_bottom")
-//        } else if (mDegreesRotated == 180 || mDegreesRotated == -180) {
-//            val display_crop_left_180: Float = mImageMatrixRectF.width() - display_crop_right
-//            val display_crop_top_180: Float = mImageMatrixRectF.height() - display_crop_bottom
-//            val display_crop_right_180: Float = display_crop_left_180 + mContentRect.width()
-//            val display_crop_bottom_180: Float = display_crop_top_180 + mContentRect.height()
-//            scale_real_crop_left =
-//                display_crop_left_180 * mRealImageWidth / mImageMatrixRectF.width()
-//            scale_real_crop_top =
-//                display_crop_top_180 * mRealImageHeight / mImageMatrixRectF.height()
-//            scale_real_crop_right =
-//                display_crop_right_180 * mRealImageWidth / mImageMatrixRectF.width()
-//            scale_real_crop_bottom =
-//                display_crop_bottom_180 * mRealImageHeight / mImageMatrixRectF.height()
-//            logg("180 -180 PhotoView, getCropPoints, scale_real_crop_left = $scale_real_crop_left, scale_real_crop_top = $scale_real_crop_top, scale_real_crop_right = $scale_real_crop_right, scale_real_crop_bottom = $scale_real_crop_bottom")
-//        }
-//        var points: FloatArray? = null
-//        points = floatArrayOf(
-//            scale_real_crop_left,
-//            scale_real_crop_top,
-//            scale_real_crop_right,
-//            scale_real_crop_top,
-//            scale_real_crop_right,
-//            scale_real_crop_bottom,
-//            scale_real_crop_left,
-//            scale_real_crop_bottom
-//        )
-//        return points
-//    }
-
-
-//    fun getRealCropPoints(): FloatArray? {
-//        logg("PhotoView, getCropPoints, mDegreesRotated = $mDegreesRotated")
-//        var scale_real_crop_left = 0f
-//        var scale_real_crop_top = 0f
-//        var scale_real_crop_right = 0f
-//        var scale_real_crop_bottom = 0f
-//        val last_left: Float = mImageMatrixRectF.left
-//        val last_top: Float = mImageMatrixRectF.top
-//        val last_right: Float = mImageMatrixRectF.right
-//        val last_bottom: Float = mImageMatrixRectF.bottom
-//        logg("PhotoView, getCropPoints, mImageMatrixRectF.left = $last_left, mImageMatrixRectF.top = $last_top, mImageMatrixRectF.right = $last_right, mImageMatrixRectF.bottom = $last_bottom")
-//        logg("PhotoView, getCropPoints, mContentRect.left = " + mContentRect.left + ", mContentRect.top = " + mContentRect.top + ", mContentRect.right = " + mContentRect.right + ", mContentRect.bottom = " + mContentRect.bottom)
-//        val display_crop_left: Float = mContentRect.left - last_left
-//        val display_crop_top: Float = mContentRect.top - last_top
-//        val display_crop_right: Float = display_crop_left + mContentRect.width()
-//        val display_crop_bottom: Float = display_crop_top + mContentRect.height()
-//        logg("PhotoView, getCropPoints, display_crop_left = $display_crop_left, display_crop_top = $display_crop_top, display_crop_right = $display_crop_right, display_crop_bottom = $display_crop_bottom")
-//
-//        //rotaed 시킨 좌표를 구하자
-//        if (mDegreesRotated == 0) {
-////        logg("PhotoView, getCropPoints, (display_crop_right - display_crop_left) = " + (display_crop_right - display_crop_left) + ", mContentRect.height() = " + (display_crop_bottom - display_crop_top));
-////        logg("PhotoView, getCropPoints, mContentRect.width() = " + mContentRect.width() + ", mContentRect.height() = " + mContentRect.height());
-//            scale_real_crop_left = display_crop_left * mRealImageWidth / mImageMatrixRectF.width()
-//            scale_real_crop_top = display_crop_top * mRealImageHeight / mImageMatrixRectF.height()
-//            scale_real_crop_right = display_crop_right * mRealImageWidth / mImageMatrixRectF.width()
-//            scale_real_crop_bottom =
-//                display_crop_bottom * mRealImageHeight / mImageMatrixRectF.height()
-//            logg("PhotoView, getCropPoints, scale_real_crop_left = $scale_real_crop_left, scale_real_crop_top = $scale_real_crop_top, scale_real_crop_right = $scale_real_crop_right, scale_real_crop_bottom = $scale_real_crop_bottom")
-//        } else if (mDegreesRotated == 90 || mDegreesRotated == -270) {
-//            val display_crop_top_90: Float = mImageMatrixRectF.width() - display_crop_right
-//            val display_crop_right_90: Float = display_crop_top + mContentRect.height()
-//            val display_crop_bottom_90: Float = display_crop_top_90 + mContentRect.width()
-//            scale_real_crop_left = display_crop_top * mRealImageWidth / mImageMatrixRectF.height()
-//            scale_real_crop_top = display_crop_top_90 * mRealImageHeight / mImageMatrixRectF.width()
-//            scale_real_crop_right =
-//                display_crop_right_90 * mRealImageWidth / mImageMatrixRectF.height()
-//            scale_real_crop_bottom =
-//                display_crop_bottom_90 * mRealImageHeight / mImageMatrixRectF.width()
-//            logg("90 -270 PhotoView, getCropPoints, scale_real_crop_left = $scale_real_crop_left, scale_real_crop_top = $scale_real_crop_top, scale_real_crop_right = $scale_real_crop_right, scale_real_crop_bottom = $scale_real_crop_bottom")
-//        } else if (mDegreesRotated == -90 || mDegreesRotated == 270) {
-//            val display_crop_left_90: Float = mImageMatrixRectF.height() - display_crop_bottom
-//            val display_crop_right_90: Float = display_crop_left_90 + mContentRect.height()
-//            val display_crop_bottom_90: Float = display_crop_left + mContentRect.width()
-//            scale_real_crop_left =
-//                display_crop_left_90 * mRealImageWidth / mImageMatrixRectF.height()
-//            scale_real_crop_top = display_crop_left * mRealImageHeight / mImageMatrixRectF.width()
-//            scale_real_crop_right =
-//                display_crop_right_90 * mRealImageWidth / mImageMatrixRectF.height()
-//            scale_real_crop_bottom =
-//                display_crop_bottom_90 * mRealImageHeight / mImageMatrixRectF.width()
-//            logg("--90 +270 PhotoView, getCropPoints, scale_real_crop_left = $scale_real_crop_left, scale_real_crop_top = $scale_real_crop_top, scale_real_crop_right = $scale_real_crop_right, scale_real_crop_bottom = $scale_real_crop_bottom")
-//        } else if (mDegreesRotated == 180 || mDegreesRotated == -180) {
-//            val display_crop_left_180: Float = mImageMatrixRectF.width() - display_crop_right
-//            val display_crop_top_180: Float = mImageMatrixRectF.height() - display_crop_bottom
-//            val display_crop_right_180: Float = display_crop_left_180 + mContentRect.width()
-//            val display_crop_bottom_180: Float = display_crop_top_180 + mContentRect.height()
-//            scale_real_crop_left =
-//                display_crop_left_180 * mRealImageWidth / mImageMatrixRectF.width()
-//            scale_real_crop_top =
-//                display_crop_top_180 * mRealImageHeight / mImageMatrixRectF.height()
-//            scale_real_crop_right =
-//                display_crop_right_180 * mRealImageWidth / mImageMatrixRectF.width()
-//            scale_real_crop_bottom =
-//                display_crop_bottom_180 * mRealImageHeight / mImageMatrixRectF.height()
-//            logg("180 -180 PhotoView, getCropPoints, scale_real_crop_left = $scale_real_crop_left, scale_real_crop_top = $scale_real_crop_top, scale_real_crop_right = $scale_real_crop_right, scale_real_crop_bottom = $scale_real_crop_bottom")
-//        }
-//        var points: FloatArray? = null
-//        points = floatArrayOf(
-//            scale_real_crop_left,
-//            scale_real_crop_top,
-//            scale_real_crop_right,
-//            scale_real_crop_top,
-//            scale_real_crop_right,
-//            scale_real_crop_bottom,
-//            scale_real_crop_left,
-//            scale_real_crop_bottom
-//        )
-//        return points
-//    }
-    
 
     @kotlin.annotation.Retention(AnnotationRetention.SOURCE)
     @IntDef(

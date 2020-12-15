@@ -44,7 +44,7 @@ fun getFileFolderPath(ctx: Context, folderName: String = FFMPEG_FILE_FOLDER_PATH
     return dirPath
 }
 
-fun getOutputUri(context: Context, folderName: String): Uri {
+fun getOutputUri(context: Context, folderName: String =IMAGE_CROP_FILE_FOLDER_PATH): Uri {
     return Uri.fromFile(
         File.createTempFile(
             "cropped_image_${System.currentTimeMillis()}",

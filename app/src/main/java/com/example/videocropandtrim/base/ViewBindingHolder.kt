@@ -9,9 +9,11 @@ import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.OnLifecycleEvent
 import androidx.viewbinding.ViewBinding
 import com.example.videocropandtrim.utils.logg
+import io.reactivex.disposables.CompositeDisposable
 
 interface ViewBindingHolder<T : ViewBinding> {
     val binding: T?
+    val disposable: CompositeDisposable
 
     fun initBinding(binding: T, fragment: Fragment, onBound: (T.() -> Unit)?): View
 
@@ -23,9 +25,14 @@ class ViewBindingHolderImpl<T: ViewBinding>: ViewBindingHolder<T>, LifecycleObse
     var lifecycle: Lifecycle? = null
 
     private lateinit var fragmentName: String
+    override val disposable by lazy {
+        CompositeDisposable()
+    }
 
     @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)
     fun onDestroyView(){
+        disposable.clear()
+        disposable.dispose()
         lifecycle?.removeObserver(this)
         (binding as ViewDataBinding).lifecycleOwner = null
         lifecycle = null
