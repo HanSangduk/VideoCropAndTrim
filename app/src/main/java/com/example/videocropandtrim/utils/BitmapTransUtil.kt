@@ -915,22 +915,22 @@ fun ImageExif.flipHorizontal(): ImageExif {
         ImageExif.TOP_RIGHT ->   ImageExif.TOP_LEFT
         ImageExif.BOTTOM_RIGHT  ->  ImageExif.BOTTOM_LEFT
         ImageExif.BOTTOM_LEFT   ->  ImageExif.BOTTOM_RIGHT
-        ImageExif.LEFT_TOP  ->  ImageExif.RIGHT_TOP
-        ImageExif.RIGHT_TOP ->  ImageExif.LEFT_TOP
-        ImageExif.RIGHT_BOTTOM  ->  ImageExif.LEFT_BOTTOM
-        ImageExif.LEFT_BOTTOM   ->  ImageExif.RIGHT_BOTTOM
+        ImageExif.LEFT_TOP  ->  ImageExif.LEFT_BOTTOM
+        ImageExif.RIGHT_TOP ->  ImageExif.RIGHT_BOTTOM
+        ImageExif.RIGHT_BOTTOM  ->  ImageExif.RIGHT_TOP
+        ImageExif.LEFT_BOTTOM   ->  ImageExif.LEFT_TOP
     }
 }
 
 fun  ImageExif.rotateRight(): ImageExif {
     return when (this) {
         ImageExif.TOP_LEFT -> ImageExif.LEFT_BOTTOM
-        ImageExif.TOP_RIGHT -> ImageExif.LEFT_TOP //flip horizontal
+        ImageExif.TOP_RIGHT -> ImageExif.RIGHT_BOTTOM //flip horizontal
         ImageExif.BOTTOM_RIGHT -> ImageExif.RIGHT_TOP           //  180
-        ImageExif.BOTTOM_LEFT -> ImageExif.RIGHT_BOTTOM         // 180 ->  flip horizontal
-        ImageExif.LEFT_TOP -> ImageExif.BOTTOM_LEFT            // 90 ->  flip horizontal
+        ImageExif.BOTTOM_LEFT -> ImageExif.LEFT_TOP         // 180 ->  flip horizontal
+        ImageExif.LEFT_TOP -> ImageExif.TOP_RIGHT            // 90 ->  flip horizontal
         ImageExif.RIGHT_TOP -> ImageExif.TOP_LEFT              // 270
-        ImageExif.RIGHT_BOTTOM -> ImageExif.TOP_RIGHT        // 270 -> flip horizontal
+        ImageExif.RIGHT_BOTTOM -> ImageExif.BOTTOM_LEFT        // 270 -> flip horizontal
         ImageExif.LEFT_BOTTOM -> ImageExif.BOTTOM_RIGHT            // 90
     }
 }

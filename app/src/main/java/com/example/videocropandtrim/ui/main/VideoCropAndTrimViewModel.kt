@@ -22,20 +22,19 @@ import java.util.concurrent.TimeUnit
 class VideoCropAndTrimViewModel(val context: Context, val mediaRepository: MediaRepository): BaseViewModel(){
 
     private val _videoList : MutableLiveData<List<MediaFile>> = MutableLiveData()
-    val videoList: MutableLiveData<List<MediaFile>>
-        get() = _videoList
+    val videoList: MutableLiveData<List<MediaFile>> = _videoList
 
     private val _selectVideoUri : MutableLiveData<MediaFile> = MutableLiveData()
-    val selectVideoUri: MutableLiveData<MediaFile>
-        get() = _selectVideoUri
+    val selectVideoUri: MutableLiveData<MediaFile> = _selectVideoUri
 
     private val _selectVideoFrames : MutableLiveData<List<Bitmap>> = MutableLiveData()
-    val selectVideoFrames: MutableLiveData<List<Bitmap>>
-        get() = _selectVideoFrames
+    val selectVideoFrames: MutableLiveData<List<Bitmap>> = _selectVideoFrames
 
     private val _videoFrames : MutableLiveData<List<Pair<String, Long>>> = MutableLiveData()
-    val videoFrames: MutableLiveData<List<Pair<String, Long>>>
-        get() = _videoFrames
+    val videoFrames: MutableLiveData<List<Pair<String, Long>>> = _videoFrames
+
+    private val _currentImageExif : MutableLiveData<ImageExif> = MutableLiveData(ImageExif.TOP_LEFT)
+    val currentImageExif: MutableLiveData<ImageExif> = _currentImageExif
 
     init {
         mediaRepository.bothVideosAndImages()
@@ -80,6 +79,7 @@ class VideoCropAndTrimViewModel(val context: Context, val mediaRepository: Media
 
     fun clearselectVideoUri(){
         _selectVideoUri.postValue(null)
+        _currentImageExif.postValue(ImageExif.TOP_LEFT)
     }
 
     private val shareDisposables : CompositeDisposable by lazy {
@@ -200,5 +200,16 @@ class VideoCropAndTrimViewModel(val context: Context, val mediaRepository: Media
         }
     }
 
+    fun rotateRight() {
+        _currentImageExif.value?.rotateRight()?.let {
+            _currentImageExif.value = it
+        }
+    }
+
+    fun flipHorizontal() {
+        _currentImageExif.value?.flipHorizontal()?.let {
+            _currentImageExif.value = it
+        }
+    }
 
 }
