@@ -10,9 +10,11 @@ import android.view.View
 import androidx.annotation.IntDef
 import androidx.core.content.ContextCompat
 import com.example.videocropandtrim.R
+import com.example.videocropandtrim.utils.ImageExif
 import com.example.videocropandtrim.utils.getCenterFromRect
 import com.example.videocropandtrim.utils.getCornersFromRect
 import com.example.videocropandtrim.utils.logg
+import java.lang.Math.abs
 
 class OverlayCropView
     @JvmOverloads
@@ -373,6 +375,76 @@ class OverlayCropView
             180 -> realVideoRectF.height() - topRatio
             270 -> rightRatio
             else -> bottomRatio
+        }
+
+        return floatArrayOf(
+            left,
+            top,
+            right,
+            top,
+            right,
+            bottom,
+            left,
+            bottom
+        )
+    }
+
+    fun getCropRectExifRealPoints(imageExif: ImageExif): FloatArray{
+
+        val degree = imageExif.rotate
+        val isHorizontalRevers = imageExif.isHorizontalRevers
+
+        var widthRatio = resizeVideoRectF.width() / realVideoRectF.width()
+        var heightRatio = resizeVideoRectF.height() / realVideoRectF.height()
+
+        if(degree == 90 || degree == 270){
+            widthRatio = resizeVideoRectF.width() / realVideoRectF.height()
+            heightRatio = resizeVideoRectF.height() / realVideoRectF.width()
+        }
+
+        val leftRatio = mCropViewRect.left / widthRatio
+        val topRatio = mCropViewRect.top / heightRatio
+        val rightRatio = mCropViewRect.right / widthRatio
+        val bottomRatio = mCropViewRect.bottom / heightRatio
+
+        var left = when(degree){
+            90 -> topRatio
+            180 -> realVideoRectF.width() - rightRatio
+            270 -> realVideoRectF.width() - bottomRatio
+            else -> leftRatio
+        }
+        var top = when(degree){
+            90 -> realVideoRectF.height() - rightRatio
+            180 -> realVideoRectF.height() - bottomRatio
+            270 -> leftRatio
+            else -> topRatio
+        }
+        var right = when(degree){
+            90 -> bottomRatio
+            180 -> realVideoRectF.width() - leftRatio
+            270 -> realVideoRectF.width() - topRatio
+            else -> rightRatio
+        }
+        var bottom = when(degree){
+            90 -> realVideoRectF.height() - leftRatio
+            180 -> realVideoRectF.height() - topRatio
+            270 -> rightRatio
+            else -> bottomRatio
+        }
+
+        if(isHorizontalRevers){
+            val(tempLeft, tempRight) = when(abs(imageExif.rotate)){
+                90, 270 -> Pair(left, right)
+                else -> Pair(realVideoRectF.width() - right, realVideoRectF.width() - left)
+            }
+            val (tempTop, tempBottom) = when(abs(imageExif.rotate)){
+                90, 270 -> Pair(realVideoRectF.height() - bottom, realVideoRectF.height() - top)
+                else -> Pair(top, bottom)
+            }
+            left = tempLeft
+            right = tempRight
+            top = tempTop
+            bottom = tempBottom
         }
 
         return floatArrayOf(

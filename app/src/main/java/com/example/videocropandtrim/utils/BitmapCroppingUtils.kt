@@ -68,6 +68,63 @@ fun bitmapCroppingWorkerTask(
         }.addTo(disposables)
 }
 
+fun bitmapExifCroppingWorkerTask(
+    cropImageView: AppCompatImageView, cropPoints: FloatArray, imageExif: ImageExif = ImageExif.TOP_LEFT,
+    mUri: Uri, mOrgWidth: Int, mOrgHeight: Int,
+    mReqWidth: Int, mReqHeight: Int,
+    mSaveCompressFormat: Bitmap.CompressFormat = CompressFormat.JPEG,
+    mSaveCompressQuality: Int = 90,
+    mIsPreview: Boolean = false
+){
+
+    val mContext = cropImageView.context
+    val mFixAspectRatio = true
+    val mAspectRatioX = mReqWidth
+    val mAspectRatioY = mReqHeight
+
+    val mSaveUri = getOutputUri(context = mContext)
+
+    val disposables = CompositeDisposable() //todo 잠깐 밑에 waring 안나오게 하려고
+
+    Observable.fromCallable {
+
+        val bitmapSampled: BitmapSampled = cropExifBitmap(
+            mContext, mUri, cropPoints, imageExif, mOrgWidth, mOrgHeight,
+            mFixAspectRatio, mAspectRatioX, mAspectRatioY, mReqWidth, mReqHeight
+        )
+        val sampleSize = bitmapSampled.sampleSize
+
+        bitmapSampled.bitmap?.let {
+            writeBitmapToUri(
+                mContext,
+                it,
+                mSaveUri,
+                mSaveCompressFormat,
+                mSaveCompressQuality
+            )
+        }
+
+        CroppingResult(
+            uri = mSaveUri,
+            sampleSize = sampleSize,
+            isPreview = mIsPreview
+        )
+
+    }.subscribeOn(Schedulers.computation())
+        .observeOn(AndroidSchedulers.mainThread())
+        .subscribe {
+            it?.let { croppingResult ->
+
+                cropImageView.let { it1 ->
+                    Glide.with(mContext)
+                        .load(croppingResult.uri)
+                        .into(it1)
+                }
+            }
+
+        }.addTo(disposables)
+}
+
 //region: Inner class: Result
 data class CroppingResult(
     /**

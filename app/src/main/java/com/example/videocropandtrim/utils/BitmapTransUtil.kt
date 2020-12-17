@@ -197,6 +197,36 @@ import kotlin.math.sin
             }
         }
     }
+    fun cropExifBitmap(
+        context: Context, loadedImageUri: Uri, points: FloatArray,
+        imageExif: ImageExif, orgWidth: Int, orgHeight: Int, fixAspectRatio: Boolean,
+        aspectRatioX: Int, aspectRatioY: Int, reqWidth: Int, reqHeight: Int
+    ): BitmapSampled {
+        var sampleMulti = 1
+        while (true) {
+            try {
+                // if successful, just return the resulting bitmap
+                return cropExifBitmap(
+                    context, loadedImageUri, points,
+                    imageExif, orgWidth, orgHeight, fixAspectRatio,
+                    aspectRatioX, aspectRatioY, reqWidth, reqHeight,
+                    sampleMulti
+                )
+            } catch (e: OutOfMemoryError) {
+                logg("BitmapUtils, cropBitmap, OutOfMemoryError~!!! sampling retry~!!!")
+                // if OOM try to increase the sampling to lower the memory usage
+                sampleMulti *= 2
+                if (sampleMulti > 16) {
+                    throw RuntimeException(
+                        """
+                        Failed to handle OOM by sampling ($sampleMulti): $loadedImageUri
+                        ${e.message}
+                        """.trimIndent(), e
+                    )
+                }
+            }
+        }
+    }
 
     /**
      * Get left value of the bounding rectangle of the given points.
@@ -456,6 +486,70 @@ import kotlin.math.sin
                 loadedImageUri,
                 points,
                 degreesRotated,
+                fixAspectRatio,
+                aspectRatioX,
+                aspectRatioY,
+                sampleMulti,
+                rect,
+                width,
+                height
+            )
+        }
+    }
+    private fun cropExifBitmap(
+        context: Context, loadedImageUri: Uri, points: FloatArray,
+        imageExif: ImageExif, orgWidth: Int, orgHeight: Int, fixAspectRatio: Boolean,
+        aspectRatioX: Int, aspectRatioY: Int, reqWidth: Int, reqHeight: Int, sampleMulti: Int
+    ): BitmapSampled {
+
+        // get the rectangle in original image that contains the required cropped area (larger for non rectangular crop)
+        val rect = getRectFromPoints(
+            points,
+            orgWidth,
+            orgHeight,
+            fixAspectRatio,
+            aspectRatioX,
+            aspectRatioY
+        )
+        val width = if (reqWidth > 0) reqWidth else rect.width()
+        val height = if (reqHeight > 0) reqHeight else rect.height()
+        var result: Bitmap? = null
+        var sampleSize = 1
+        try {
+            // decode only the required image from URI, optionally sub-sampling if reqWidth/reqHeight is given.
+            val bitmapSampled = decodeSampledBitmapRegion(
+                context,
+                loadedImageUri,
+                rect,
+                width,
+                height,
+                sampleMulti
+            )
+            result = bitmapSampled.bitmap
+            sampleSize = bitmapSampled.sampleSize
+        } catch (e: Exception) {
+            logg("BitmapUtils, cropBitmap, Exception!!!")
+        }
+        return if (result != null) {
+            try {
+                // rotate the decoded region by the required amount
+                result = rotateExifBitmapInt(result, imageExif)
+
+            } catch (e: OutOfMemoryError) {
+                logg("BitmapUtils, cropBitmap, OutOfMemoryError!!!")
+                if (result != null) {
+                    result.recycle()
+                }
+                throw e
+            }
+            BitmapSampled(result, sampleSize)
+        } else {
+            // failed to decode region, may be skia issue, try full decode and then crop
+            cropBitmap(
+                context,
+                loadedImageUri,
+                points,
+                imageExif.rotate,
                 fixAspectRatio,
                 aspectRatioX,
                 aspectRatioY,
@@ -755,6 +849,31 @@ import kotlin.math.sin
             bitmap
         }
     }
+    private fun rotateExifBitmapInt(bitmap: Bitmap, imageExif: ImageExif): Bitmap {
+        val degrees = imageExif.rotate.toFloat()
+        return if (degrees >= 0) {
+            val matrix = Matrix()
+            matrix.setRotate(degrees)
+            val newBitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.width, bitmap.height, matrix, false)
+            if (newBitmap != bitmap) {
+                bitmap.recycle()
+            }
+            if(imageExif.isHorizontalRevers) {
+                val scaleMatrix = Matrix()
+                scaleMatrix.setScale(-1f, 1f)
+                val scaleBitmap =
+                    Bitmap.createBitmap(newBitmap, 0, 0, newBitmap.width, newBitmap.height, scaleMatrix, false)
+                if (scaleBitmap != newBitmap) {
+                    newBitmap.recycle()
+                }
+                scaleBitmap
+            }else newBitmap
+        } else {
+            bitmap
+        }
+    }
+
+
     //    /**
     //     * Get the max size of bitmap allowed to be rendered on the device.<br>
     //     * http://stackoverflow.com/questions/7428996/hw-accelerated-activity-how-to-get-opengl-texture-size-limit.
