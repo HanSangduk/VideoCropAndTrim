@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/layoutRoot"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
+
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/tutorialPager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <RadioGroup
+            android:id="@+id/gr_tutorial_pagination"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="44dp"
+            android:gravity="center"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <LinearLayout
+            android:id="@+id/layoutBottom"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white">
+
+                <RelativeLayout
+                    android:id="@+id/layoutId"
+                    android:layout_width="match_parent"
+                    android:layout_height="56dp"
+                    android:background="@drawable/border_stroke_bottom_f9ac19"
+                    android:gravity="center_vertical">
+
+                    <TextView
+                        android:id="@+id/tvCheckAll"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:lineSpacingExtra="8sp"
+                        android:paddingStart="20dp"
+                        android:paddingEnd="20dp"
+                        android:text="@string/permission_agree_all"
+                        android:textColor="@color/color_f9ac19"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+
+                    <androidx.appcompat.widget.AppCompatCheckBox
+                        android:id="@+id/cbCheckAll"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginRight="16dp"
+                        android:button="@drawable/selector_checkbox"/>
+
+                </RelativeLayout>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recyclerView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/layoutId"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginRight="16dp"
+                    android:paddingTop="10dp"
+                    android:paddingBottom="10dp"/>
+
+            </RelativeLayout>
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btn_next"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:gravity="center"
+                android:text="@string/btn_start_text"
+                android:textColor="@color/white"
+                android:textSize="15sp" />
+
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
+
+<!--    <?xml version="1.0" encoding="utf-8"?>-->
+<!--<layout xmlns:android="http://schemas.android.com/apk/res/android"-->
+<!--xmlns:app="http://schemas.android.com/apk/res-auto">-->
+
+<!--<data>-->
+
+<!--    <import type="android.view.View" />-->
+
+<!--    <variable-->
+<!--        name="viewModel"-->
+<!--        type="com.ram.delivery.view.tutorial.TutorialViewModel" />-->
+<!--</data>-->
+
+<!--<androidx.constraintlayout.widget.ConstraintLayout-->
+<!--    android:id="@+id/layoutRoot"-->
+<!--    android:layout_width="match_parent"-->
+<!--    android:layout_height="match_parent"-->
+<!--    >-->
+
+<!--    <androidx.viewpager2.widget.ViewPager2-->
+<!--        android:id="@+id/tutorialPager"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="match_parent"-->
+<!--        app:layout_constraintLeft_toLeftOf="parent"-->
+<!--        app:layout_constraintRight_toRightOf="parent"-->
+<!--        app:layout_constraintTop_toTopOf="parent" />-->
+
+<!--    <RadioGroup-->
+<!--        android:id="@+id/gr_tutorial_pagination"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginTop="44dp"-->
+<!--        android:gravity="center"-->
+<!--        android:orientation="horizontal"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toTopOf="parent" />-->
+
+<!--    <LinearLayout-->
+<!--        android:id="@+id/layoutBottom"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:orientation="vertical"-->
+<!--        android:visibility="@{viewModel.isBottomVisibility() ? View.VISIBLE : View.GONE}"-->
+<!--        app:layout_constraintBottom_toBottomOf="parent"-->
+<!--        app:layout_constraintLeft_toLeftOf="parent"-->
+<!--        app:layout_constraintRight_toRightOf="parent">-->
+
+<!--        <RelativeLayout-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:background="@color/white">-->
+
+<!--            <RelativeLayout-->
+<!--                android:id="@+id/layoutId"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="56dp"-->
+<!--                android:background="@drawable/border_stroke_bottom_f9ac19"-->
+<!--                android:gravity="center_vertical">-->
+
+<!--                <TextView-->
+<!--                    android:id="@+id/tvCheckAll"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:lineSpacingExtra="8sp"-->
+<!--                    android:paddingStart="20dp"-->
+<!--                    android:paddingEnd="20dp"-->
+<!--                    android:text="@string/permission_agree_all"-->
+<!--                    android:textColor="@color/color_f9ac19"-->
+<!--                    android:textSize="16sp"-->
+<!--                    android:textStyle="bold" />-->
+
+<!--                <androidx.appcompat.widget.AppCompatCheckBox-->
+<!--                    android:id="@+id/cbCheckAll"-->
+<!--                    android:layout_width="20dp"-->
+<!--                    android:layout_height="20dp"-->
+<!--                    android:layout_alignParentRight="true"-->
+<!--                    android:layout_marginRight="16dp"-->
+<!--                    android:button="@drawable/selector_checkbox"-->
+<!--                    android:onClick="@{() -> viewModel.onClickAgreeAll()}" />-->
+
+<!--            </RelativeLayout>-->
+
+<!--            <androidx.recyclerview.widget.RecyclerView-->
+<!--                android:id="@+id/recyclerView"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_below="@+id/layoutId"-->
+<!--                android:layout_marginLeft="16dp"-->
+<!--                android:layout_marginRight="16dp"-->
+<!--                android:paddingTop="10dp"-->
+<!--                android:paddingBottom="10dp"/>-->
+
+<!--            &lt;!&ndash;                <androidx.recyclerview.widget.RecyclerView&ndash;&gt;-->
+<!--            &lt;!&ndash;                    android:id="@+id/recyclerView"&ndash;&gt;-->
+<!--            &lt;!&ndash;                    android:layout_width="match_parent"&ndash;&gt;-->
+<!--            &lt;!&ndash;                    android:layout_height="wrap_content"&ndash;&gt;-->
+<!--            &lt;!&ndash;                    android:layout_below="@+id/layoutId"&ndash;&gt;-->
+<!--            &lt;!&ndash;                    android:layout_marginLeft="16dp"&ndash;&gt;-->
+<!--            &lt;!&ndash;                    android:layout_marginRight="16dp"&ndash;&gt;-->
+<!--            &lt;!&ndash;                    android:paddingTop="10dp"&ndash;&gt;-->
+<!--            &lt;!&ndash;                    android:paddingBottom="10dp"&ndash;&gt;-->
+<!--            &lt;!&ndash;                    app:tutorialTermsAdapter="@{viewModel.termsList}" />&ndash;&gt;-->
+
+<!--        </RelativeLayout>-->
+
+<!--        <androidx.appcompat.widget.AppCompatButton-->
+<!--            android:id="@+id/btn_next"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="56dp"-->
+<!--            android:background="@{viewModel.isBtnEnable ? @color/color_f9ac19 : @color/color_dddbd7}"-->
+<!--            android:enabled="@{viewModel.isBtnEnable}"-->
+<!--            android:gravity="center"-->
+<!--            android:onClick="@{() -> viewModel.onClickStart()}"-->
+<!--            android:text="@string/btn_start_text"-->
+<!--            android:textColor="@color/white"-->
+<!--            android:textSize="15sp" />-->
+
+<!--    </LinearLayout>-->
+
+<!--</androidx.constraintlayout.widget.ConstraintLayout>-->
+<!--</layout>-->

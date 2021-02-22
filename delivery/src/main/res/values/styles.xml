@@ -1,0 +1,151 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.MaterialComponents.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <!-- <item name="colorAccent">@color/colorAccent</item>-->
+        <item name="android:windowTranslucentStatus">true</item>
+        <!--No Title Bar-->
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="Theme.AppCompat.Transparent.NoActionBar" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowIsFloating">false</item>
+        <item name="android:backgroundDimEnabled">true</item>
+    </style>
+
+    <style name="ShopTabText" parent="TextAppearance.Design.Tab">
+        <item name="android:textSize">16sp</item>
+        <item name="textAllCaps">false</item>
+
+    </style>
+
+    <style name="CamTabText" parent="TextAppearance.Design.Tab">
+        <item name="android:textSize">10sp</item>
+        <item name="android:textStyle">normal</item>
+    </style>
+
+    <style name="Tooltip">
+        <item name="android:layout_width">165dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:paddingLeft">10dp</item>
+        <item name="android:paddingRight">10dp</item>
+        <item name="android:paddingTop">8dp</item>
+        <item name="android:paddingBottom">8dp</item>
+        <item name="android:text">Hello World!</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:lineSpacingExtra">2dp</item>
+        <item name="backgroundColor">@color/color_fabc47</item>
+        <item name="cornerRadius">14dp</item>
+        <item name="arrowWidth">0dp</item>
+        <item name="arrowHeight">0dp</item>
+    </style>
+
+    <style name="RatingBar" parent="Theme.AppCompat">
+        <item name="colorControlNormal">@color/color_707070</item>
+        <item name="colorControlActivated">@color/color_f9ac19</item>
+    </style>
+
+    <style name="RatingBar.SafeTalk.Dirty" parent="Theme.AppCompat">
+        <item name="colorControlNormal">@color/color_707070</item>
+        <item name="colorControlActivated">#e21836</item>
+    </style>
+
+    <style name="RatingBar.SafeTalk.Clean" parent="Theme.AppCompat">
+        <item name="colorControlNormal">@color/color_707070</item>
+        <item name="colorControlActivated">#34c759</item>
+    </style>
+
+    <style name="ShopRatingBar" parent="Widget.AppCompat.RatingBar.Indicator">
+        <item name="android:indeterminateOnly">false</item>
+        <item name="android:progressDrawable">@drawable/rating_bar_shop</item>
+        <item name="android:indeterminateDrawable">@drawable/rating_bar_shop</item>
+        <item name="android:minHeight">24dip</item>
+        <item name="android:maxHeight">24dip</item>
+        <item name="android:thumb">@null</item>
+        <item name="android:isIndicator">true</item>
+        <item name="colorControlNormal">@color/color_707070</item>
+        <item name="colorControlActivated">@color/color_f9ac19</item>
+    </style>
+
+
+    <style name="popCasterDlgTheme" parent="@style/ThemeOverlay.AppCompat.Dialog.Alert">
+        <item name="android:windowBackground">@null</item>
+        <item name="android:colorBackgroundCacheHint">@null</item>
+        <item name="android:windowFrame">@null</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowAnimationStyle">@null</item>
+        <item name="android:windowIsFloating">false</item>
+        <item name="android:backgroundDimEnabled">false</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowNoTitle">true</item>
+    </style>
+
+    <style name="NormalButton" parent="Widget.AppCompat.TextView">
+        <item name="android:textColor">@color/white</item>
+        <item name="android:background">@drawable/all_btn_normal_selector</item>
+    </style>
+
+    <style name="OrderDetailOrderInfoLabelTextViewStyle" parent="Widget.AppCompat.TextView">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">#999999</item>
+    </style>
+
+    <style name="OrderDetailOrderInfoValueTextViewStyle" parent="Widget.AppCompat.TextView">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">#3c3c3c</item>
+    </style>
+
+    <style name="AllSortBtnTextView" parent="AllSortBtnWithoutIconTextView">
+        <item name="android:drawablePadding">12dp</item>
+        <item name="android:drawableEnd">@drawable/icon_filter</item>
+    </style>
+
+    <style name="AllSortBtnWithoutIconTextView" parent="Widget.AppCompat.TextView">
+        <item name="android:background">@drawable/all_sort_btn_bg</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">36dp</item>
+        <item name="android:gravity">center</item>
+        <item name="android:paddingStart">22dp</item>
+        <item name="android:paddingEnd">22dp</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:text">@string/lbl_sort_distince</item>
+    </style>
+
+    <style name="SafeTalk.ShopReg.TextView" parent="Widget.AppCompat.TextView">
+        <item name="android:background">@drawable/safe_talk_shop_reg_box_off_bg_shape</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">48dp</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:layout_marginStart">16dp</item>
+        <item name="android:layout_marginEnd">16dp</item>
+        <item name="android:paddingStart">16dp</item>
+        <item name="android:paddingEnd">16dp</item>
+        <item name="android:drawableRight">@drawable/icon_down_bf</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/color_3c3c3c</item>
+        <item name="android:textColorHint">@color/color_bfbfbf</item>
+    </style>
+
+    <style name="MySafeTalk.Preface.TextView" parent="Widget.AppCompat.TextView">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:visibility">gone</item>
+        <item name="android:drawablePadding">4dp</item>
+    </style>
+</resources>

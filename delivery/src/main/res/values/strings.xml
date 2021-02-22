@@ -1,0 +1,526 @@
+<resources>
+    <string name="app_name">DEMO 공공배달</string>
+
+    <!-- Title -->
+    <string name="title_order_history">주문내역</string>
+    <string name="title_order_history_call">전화주문 내역</string>
+    <string name="title_address_setup">배달주소 설정</string>
+    <string name="title_review">리뷰관리</string>
+    <string name="title_review_write">리뷰쓰기</string>
+    <string name="title_my_order">마이오더</string>
+    <string name="title_my_info">내 정보</string>
+    <string name="title_order">주문하기</string>
+    <string name="title_order_detail">주문 상세</string>
+    <string name="title_payment">결제하기</string>
+    <string name="title_payment_method">결제수단 선택</string>
+    <string name="title_payment_history">결제주문 내역</string>
+    <string name="title_notice">공지사항</string>
+    <string name="title_event">이벤트</string>
+    <string name="title_faq">자주 묻는 질문</string>
+    <string name="title_inquiry">1:1 문의</string>
+    <string name="title_inquiry_write">문의작성</string>
+    <string name="title_customer_center">고객센터</string>
+    <string name="title_env_setup">환경설정</string>
+
+    <!-- Sub Title -->
+    <string name="sub_title_safety_shop">안심 매장</string>
+    <string name="sub_title_right_shop">바른 매장</string>
+    <string name="sub_title_call_shop">전화 매장</string>
+
+    <!-- Tab Title -->
+    <string name="tab_title_payment_order">결제주문</string>
+    <string name="tab_title_call_order">전화주문</string>
+    <string name="tab_title_shop_customer">단골</string>
+    <string name="tab_title_shop_share">공유하기</string>
+
+    <string name="tab_title_shop_menu">메뉴</string>
+    <string name="tab_title_shop_review">리뷰</string>
+    <string name="tab_title_shop_info">정보</string>
+
+    <!-- Button -->
+    <string name="btn_confirm_text">확인</string>
+    <string name="btn_cancel_text">취소</string>
+    <string name="btn_yes_text">예</string>
+    <string name="btn_no_text">아니오</string>
+    <string name="btn_close_text">닫기</string>
+    <string name="btn_popup_next">다음에</string>
+    <string name="btn_popup_upgrade">업그레이드</string>
+    <string name="btn_adult_auth">성인인증 하기</string>
+    <string name="btn_popup_delivery_setup">배달주소 변경하기</string>
+    <string name="btn_popup_location_setup">위치 서비스 설정</string>
+    <string name="btn_start_text">시작하기</string>
+    <string name="btn_full_text_view">전문보기</string>
+    <string name="btn_address_setup">현재 위치로 주소 설정</string>
+    <string name="btn_day_view_text">오늘 하루 보이지 않기</string>
+
+    <!-- Biz Info -->
+    <string name="btn_biz_text">사업자정보확인</string>
+    <string name="btn_use_terms_text">이용약관</string>
+    <string name="btn_privacy_info_text">개인정보 처리방침</string>
+    <string name="lbl_biz_ceo">대표이사</string>
+    <string name="lbl_biz_address">주소</string>
+    <string name="lbl_biz_no">사업자등록번호</string>
+    <string name="lbl_biz_sales_">통신판매업신고</string>
+    <string name="lbl_biz_hsp">호스팅서비스제공자</string>
+    <string name="lbl_biz_inquiry">1:1 문의</string>
+    <string name="lbl_biz_call_center">고객센터</string>
+    <string name="txt_biz_call_center">평일 오전 9시~오후6시 (토/일/공휴일 휴무)</string>
+    <string name="info_biz_call_center">* 입점, 제휴, 불편 등 각 종 문의는 아래로 연락 해주세요.</string>
+    <string name="info_biz_message">공공배달은 통신판매중개자이며 통신판매의 당사자가 아닙니다.\n따라서 공공배달은 상품거래정보 및 거래에 대한 책임을 지지 않습니다.</string>
+
+    <!-- Label -->
+    <string name="lbl_notice">공지사항</string>
+    <string name="lbl_event">이벤트</string>
+    <string name="lbl_search_area">주변</string>
+    <string name="lbl_search_text">검색</string>
+    <string name="lbl_search_result">검색결과</string>
+    <string name="lbl_recent_text">최근 검색어</string>
+    <string name="lbl_near_store">주변매장</string>
+    <string name="lbl_location_jibun">[지번]</string>
+
+    <!-- Hint -->
+    <string name="hint_address_setup">건물명, 도로명, 지번으로 검색 해주세요.</string>
+    <string name="hint_address_detail">상세 주소 입력 (건물명, 층, 동 / 호수 등)</string>
+    <string name="hint_favorite_menu">좋아하는 메뉴를 찾아보세요!</string>
+
+    <!-- sign_in / Join -->
+    <string name="hint_sign_in_id">아이디(이메일)</string>
+    <string name="hint_sign_in_id_msg">사용하시는 이메일 주소 입력</string>
+    <string name="hint_sign_in_pw">비밀번호</string>
+    <string name="title_txt_search_id">아이디 찾기</string>
+    <string name="title_txt_search_pw">비밀번호 찾기</string>
+    <string name="title_txt_new_pw">비밀번호 변경</string>
+    <string name="info_txt_new_pw">새로운 비밀번호를 생성 합니다.</string>
+    <string name="info_no_info">가입 정보 없음</string>
+    <string name="hint_new_pw">새로운 비밀번호</string>
+    <string name="hint_new_re_pw">새로운 비밀번호 확인</string>
+    <string name="btn_txt_sign_in">로그인</string>
+    <string name="btn_txt_alert_sign_in">로그인하기</string>
+    <string name="btn_txt_change">변경하기</string>
+    <string name="btn_txt_complete_signin">완료 및 로그인하기</string>
+    <string name="btn_txt_search_id">아이디 확인하기</string>
+    <string name="btn_txt_search_pw">비밀번호 확인하기</string>
+    <string name="alert_msg_use_sign_in">로그인 후 이용할 수 있습니다.</string>
+    <string name="title_member_join">간편 회원가입</string>
+    <string name="btn_txt_member_join">회원가입</string>
+    <string name="hint_join_pw">6~16자 | 영문+숫자 | 특수문자 가능</string>
+    <string name="hint_sign_in_pw_len">6~16자 입력</string>
+    <string name="hint_sign_in_pw_msg">영문+숫자 조합 필수</string>
+    <string name="hint_join_re_pw">비밀번호 확인</string>
+    <string name="hint_join_re_pw_msg">비밀번호를 다시 입력</string>
+    <string name="hint_join_phone">휴대폰 번호</string>
+    <string name="hint_new_join_phone">새 휴대폰 번호</string>
+    <string name="hint_join_auth">인증번호</string>
+    <string name="btn_txt_rcv_auth">인증</string>
+    <string name="btn_txt_confirm_auth">확인</string>
+    <string name="btn_txt_join">동의하고 가입하기</string>
+    <string name="btn_txt_re_pw">완료 및 로그인하기</string>
+    <string name="txt_join_complete1">회원 가입</string>
+    <string name="txt_join_complete2">이 완료 되었습니다.</string>
+    <string name="lbl_sign_up_date">가입일시 : </string>
+    <string name="txt_search_id_complete"><font color="#f9ac19">아이디</font>를 찾았습니다.</string>
+    <string name="toast_sign_out">로그아웃 되었습니다.</string>
+    <string name="toast_send_auth_no">인증번호가 발송되었습니다.</string>
+    <string name="toast_withdrawal">회원 탈퇴 되었습니다.</string>
+    <string name="msg_sch_pw_fail">일치하지 않는 정보 입니다</string>
+    <string name="info_sch_pw_fail">입력하신 아이디(이메일)과 휴대폰 번호가\n회원가입시 등록된 정보와 일치하지 않습니다.</string>
+
+    <string name="txt_sign_on_terms">본인은 만14세 이상이며\n공공배달 이용약관, 개인정보 수집 및 이용약관\n내용을 확인 하였으며, 동의합니다.</string>
+    <string name="clickable_part_1">만14세 이상</string>
+    <string name="clickable_part_2">공공배달 이용약관</string>
+    <string name="clickable_part_4">개인정보 수집 및 이용약관</string>
+
+    <!-- 배달 주소 설정 -->
+    <string name="lbl_recent_address">최근 주소</string>
+    <string name="btn_delete_all">전체삭제</string>
+    <string name="btn_location_setup">이 주소로 배달해 주세요.</string>
+
+    <!-- Shop -->
+    <string name="txt_item_order_min">최소주문</string>
+    <string name="txt_view_more">더보기</string>
+    <string name="title_dc_menu">할인 메뉴</string>
+    <string name="title_reco_menu">추천 메뉴</string>
+    <string name="title_shop_desc">공지 / 알림</string>
+    <string name="title_shop_sale">영업정보</string>
+    <string name="title_origin">원산지 정보</string>
+    <string name="lbl_phone_no">전화번호</string>
+    <string name="lbl_safety_no">안심번호</string>
+    <string name="lbl_delivery_area">배달지역</string>
+    <string name="lbl_delivery_min_amt">최소 주문 금액</string>
+    <string name="lbl_delivery_cost">배달비</string>
+    <string name="lbl_ready">준비중</string>
+    <string name="lbl_pause">영업\n일시중지</string>
+    <string name="txt_holiday">휴무</string>
+    <string name="txt_free_amt"> 0원</string>
+    <string name="txt_free_amt_above"> 이상 무료</string>
+    <string name="txt_shop_call_info1">전화주문만 가능한 매장입니다.</string>
+    <string name="txt_shop_call_info2">결제 주문이 가능하도록 빠르게 준비하겠습니다.</string>
+    <string name="txt_shop_review_blind">서비스 정책에 의해 블라인드 처리된 리뷰 입니다.</string>
+    <string name="hint_shop_search">매장이름 또는 메뉴명을 검색해주세요.</string>
+    <string name="tooltip_safety_shop">조리 과정을 볼 수 있도록 CCTV가 설치된 매장 입니다. 안심하고 이용해 보세요.</string>
+    <string name="tooltip_right_shop">안심매장이 될 수 있도록 노력중인 매장입니다. 안심매장의 기준이 매우 까다롭기 때문에 쉽지 않아요!</string>
+    <string name="tooltip_call_shop">전화주문만 가능한 매장입니다. 결제 주문이 가능하도록 빠르게 준비하겠습니다.</string>
+    <string name="shop_open_order_time">영업시간(주문가능시간)</string>
+
+    <!-- Menu -->
+    <string name="txt_menu_soldout">일시품절</string>
+    <string name="txt_menu_sell_stop">판매중지</string>
+    <string name="txt_menu_order_qty">수량</string>
+    <string name="txt_menu_order_amt">주문 금액</string>
+    <string name="txt_menu_min_order">최소주문(</string>
+    <string name="txt_menu_deli_area">배달지역</string>
+    <string name="txt_menu_sailing">영업중</string>
+    <string name="txt_menu_selling">판매중</string>
+    <string name="btn_menu_cart_into">장바구니에 담기</string>
+    <string name="btn_menu_order_into">장바구니에 담아 <font color="#f9ac19">다른 메뉴와 함께 나중에 주문</font>할 수 있습니다.</string>
+    <string name="btn_menu_now_order">지금 주문하기</string>
+    <string name="btn_menu_impossible_order">지금 주문하기 불가</string>
+    <string name="txt_menu_select">메뉴 선택</string>
+    <string name="txt_menu_select_qty">개 선택 가능</string>
+    <string name="txt_menu_select_one">1개 선택 가능</string>
+    <string name="toast_menu_select_message">개까지 선택 가능합니다.</string>
+
+    <!-- Order/Cart -->
+    <string name="lbl_cart_opt_item">추가 구성 (+)</string>
+    <string name="btn_item_delete">삭제</string>
+    <string name="lbl_delivery_address">배달 주소</string>
+    <string name="lbl_order_requiry">요청 사항</string>
+    <string name="lbl_payment_amount">결제 금액</string>
+    <string name="lbl_payment_progress"> 결제 진행중</string>
+    <string name="lbl_payment_complete"> 결제 완료</string>
+    <string name="lbl_payment_reason">사유 : </string>
+    <string name="lbl_payment_reason2">사유 : %s</string>
+    <string name="lbl_agree_all">모두 동의</string>
+    <string name="lbl_safety_number">안심번호 사용</string>
+    <string name="lbl_disposables_reduce">일회용품, 함께 줄여 볼까요?</string>
+    <string name="lbl_disposables_unuse">일회용 수저, 포크, 젓가락은 안쓸래요!</string>
+    <string name="btn_order">결제하기</string>
+    <string name="btn_order_complete">주문 완료</string>
+    <string name="btn_order_confirm">주문내역 확인</string>
+    <string name="btn_re_order_confirm">다시 결제하기</string>
+    <string name="hint_order_request">주문 요청사항 입력</string>
+    <string name="hint_order_request_example">예시.  덜 맵게해주시고, 당근은 빼주세요</string>
+    <string name="btn_change_pay">변경</string>
+    <string name="btn_all_view">전체 보기</string>
+    <string name="tooltip_delivery_address">배달주소를 통해 주문 가능한 매장을
+        제공합니다. 따라서, 배달주소의 변경은
+        ‘홈화면’과 ‘매장목록’화면에서만
+        가능합니다.</string>
+    <string name="tooltip_safety_number">주문시 입력한 고객님의
+        휴대폰 번호가 노출되지 않도록
+        임시번호를 사용하는 서비스
+        입니다. (5시간 유효)</string>
+    <string name="msg_payment_info">다양한 결제수단을 준비하고 있습니다.</string>
+    <string name="msg_order_complete">주문이 완료되었습니다</string>
+    <string name="msg_order_fail">주문을 처리하지 못했습니다.</string>
+    <string name="lbl_order_no">주문번호</string>
+    <string name="lbl_order_dttm">주문일시</string>
+    <string name="lbl_delivery_addr">배달주소</string>
+    <string name="lbl_order_phone">전화번호</string>
+    <string name="lbl_order_request">요청사항</string>
+    <string name="lbl_order_title_menu">메뉴</string>
+    <string name="lbl_order_title_qty">수량</string>
+    <string name="lbl_order_title_amt">금액</string>
+    <string name="lbl_order_tot_amt">주문금액</string>
+    <string name="lbl_order_delevery_cost">배달비 (+)</string>
+    <string name="lbl_order_payment_amt">결제금액</string>
+    <string name="msg_user_cancel">사용자 취소</string>
+    <string name="dlg_cancel_message">결제가 진행중입니다.\n취소하시겠습니까?</string>
+    <string name="dlg_cancel_auth_message">인증이 진행중입니다.\n취소하시겠습니까?</string>
+    <string name="info_pay_fail">고객님의 주문 시점과 최종결제 시점에\n변동사항이 발생하면 주문을 처리할 수 없습니다.</string>
+    <string name="msg_pay_fail_1">1. 고객님의 확인 필요사항\n
+        <font color="#f9ac19">매장 영업시간, 메뉴할인, 할인쿠폰 유효기간 등</font></string>
+    <string name="msg_pay_fail_2">2. 판매자에 의한 변동사항\n
+        <font color="#f9ac19">메뉴의 일시품절, 판매중지, 가격변동 등</font></string>
+    <string name="msg_pay_fail_3">3. 일시적 시스템 오류</string>
+    <string name="toast_add_cart">장바구니에 메뉴가 담겼습니다.</string>
+    <string name="btn_cart_order">주문하기</string>
+    <string name="btn_cart_non_order">주문불가</string>
+    <string name="lbl_add_compose">추가구성 (+)</string>
+    <string name="msg_order_detail_ready">사장님이 주문을 확인하지 못했습니다.</string>
+    <string name="msg_order_detail_ready_sub">주문 확인이 5분이상 지연되면 자동으로 취소됩니다.</string>
+    <string name="msg_order_detail_accept">사장님의 목표는 %s분 이내에 배달 완료입니다.</string>
+    <string name="msg_order_arrive_expect"> 이내 도착 예정</string>
+    <string name="msg_order_detail_accept_sub">예상시간이며, 매장과 교통상황에 따라 늦어질 수 있습니다.</string>
+    <string name="dlg_msg_adult_menu">성인인증 후\n이용할 수 있는 메뉴 입니다.</string>
+    <string name="dlg_msg_adult_once">최초 1회 인증</string>
+    <string name="dlg_msg_non_adult_use">미성년자는 이용할 수 없는\n메뉴 입니다.</string>
+    <string name="lbl_order_payment_progress">결제 진행중</string>
+
+    <string name="order_status_ready">대기</string>
+    <string name="order_status_accept_time">분 이내</string>
+    <string name="order_status_review_write">리뷰쓰기</string>
+    <string name="order_status_review_complete">리뷰완료</string>
+    <string name="order_status_cancel_complete">취소완료</string>
+    <string name="order_status_call">전화하기</string>
+
+    <!-- Review -->
+    <string name="review_title">리뷰쓰기</string>
+    <string name="review_shop_write_title">리뷰를 등록할까요?</string>
+    <string name="review_shop_write_msg">확인을 누르시면 등록이 완료됩니다.</string>
+    <string name="review_rating_title">주문에 만족 하셨나요?</string>
+    <string name="review_write_title">멋진 리뷰를 10자 이상 등록 해주세요.</string>
+    <string name="review_write_current">(%d / <font color="#757575">500</font>)</string>
+    <string name="review_hint">* 리뷰 : 최소 10자, 최대 500자까지 작성 가능\n* 사진 : 최대 5장까지 등록 가능</string>
+    <string name="review_btn_regist">등록하기</string>
+    <string name="lbl_only_photo_review">포토 리뷰만</string>
+    <string name="non_review_write">미작성</string>
+
+    <!-- My Order -->
+    <string name="my_order_title_sign_in"><b>로그인</b> 또는 <b>회원가입</b>으로\n다양한 혜택을 누려보세요.</string>
+    <string name="my_order_title_my_safe_talk">나의 안심톡</string>
+    <string name="my_order_title_notice">공지사항</string>
+    <string name="my_order_title_event">이벤트</string>
+    <string name="my_order_title_faq">자주 묻는 질문</string>
+    <string name="my_order_title_inquiry">1:1 문의</string>
+    <string name="my_order_title_center">고객센터</string>
+    <string name="my_order_txt_tot_amt">총 주문금액</string>
+    <string name="my_order_txt_coupon">쿠폰</string>
+    <string name="my_order_txt_manage_review">리뷰관리</string>
+
+    <!-- My Info -->
+    <string name="my_info_reg_nickname"><B>닉네임</B>을 등록해 주세요</string>
+    <string name="my_info_max_eight">최대8자</string>
+    <string name="my_info_id">아이디</string>
+    <string name="my_info_btn_chg_pw">비밀번호  변경</string>
+    <string name="my_info_phone_no">휴대폰 번호</string>
+    <string name="title_chg_phone_no">휴대폰 번호 변경</string>
+    <string name="my_info_btn_change">변경하기</string>
+    <string name="my_info_adult">성인인증 (주류 등 19 세 메뉴 주문시 필수)</string>
+    <string name="my_info_auth">인증완료</string>
+    <string name="my_info_non_adult">미성년</string>
+    <string name="my_info_btn_auth">인증하기</string>
+    <string name="my_info_rcv_agree_email">이메일 수신동의</string>
+    <string name="my_info_rcv_agree_sms">SMS 수신동의</string>
+    <string name="my_info_rcv_agree_info">이메일, 쿠폰, 마케팅 정보 알림</string>
+    <string name="my_info_sign_out">로그아웃</string>
+    <string name="my_info_member_withdrawal">회원탈퇴</string>
+    <string name="my_info_pay_complete_msg">배달이 완료된 주문 내역입니다.</string>
+    <string name="dlg_logout_confirm">로그아웃 할까요?\n확인을 누르시면 즉시 로그아웃됩니다.</string>
+    <string name="dlg_withdrawal_confirm">탈퇴시 모든 이력과 혜택을\n복구할 수 없습니다.\n동의 하나요?</string>
+    <string name="dlg_withdrawal_re_confirm">정말 탈퇴 할까요?\n확인을 누르시면 즉시 탈퇴합니다.</string>
+    <string name="dlg_withdrawal_not">탈퇴할 수 없습니다.\n진행중인 주문이 있을 경우\n탈퇴할 수 없습니다.</string>
+    <string name="dlg_coupon_ready_title">쿠폰 서비스는 준비중입니다.</string>
+    <string name="dlg_coupon_ready_message">다양한 혜택을 준비하고 있습니다.\n조금만 기다려 주세요.</string>
+    <string name="my_info_auth_fail">성인 인증에 실패하였습니다.</string>
+    <string name="dlg_title_register_inquiry">1:1 문의를 등록할까요?</string>
+    <string name="dlg_message_register">확인을 누르시면 등록이 완료됩니다.</string>
+    <string name="alreay_register_tel">이미 가입된 번호</string>
+
+    <!-- 이벤트 -->
+    <string name="info_event_finished">종료된 이벤트 입니다.</string>
+    <string name="event_info_list_title_format">[%s] %s</string>
+
+    <!-- 공통 -->
+    <string name="all_date_range_format">%s ~ %s</string>
+
+    <!-- 1:1 문의 -->
+    <string name="lbl_inquiry_type">문의분류</string>
+    <string name="lbl_inquiry_subject">문의제목</string>
+    <string name="hint_inquiry_contents">문의내용\n* 리뷰 : 최대 500자까지 작성 가능\n* 사진 : 최대 3장까지 등록 가능</string>
+    <string name="lbl_reply_dt">답변일:</string>
+
+    <!-- 고객 센터 -->
+    <string name="customer_center_txt_body_title">안녕하세요. <font color="#f9ac19">고객센터</font>입니다.</string>
+    <string name="customer_center_txt_body_info1">서비스를 이용하시면서 불편한 사항이 있으신가요?\n자주 묻는 질문과 1:1 문의를 통해 해소되지 않은 어려움이 있으신가요? 고객센터로 연락주시면 친절히 상담해 드리겠습니다.</string>
+    <string name="customer_center_txt_body_info2"><u>부정·불량식품 신고는 1399</u></string>
+    <string name="customer_center_txt_body_info3"> (식품의약품안전처)</string>
+    <string name="customer_center_call_no">02&#8211;2043&#8211;0074</string>
+    <string name="call_report">1399</string>
+    <string name="dlg_call_confirm">확인을 누르시면 연결됩니다.</string>
+    <string name="home_dlg_call_confirm">확인을 누르시면 연결 됩니다.</string>
+
+    <!-- 환경 설정 -->
+    <string name="setting_title_order">주문 상태 알림</string>
+    <string name="setting_sub_order">주문상태 변경 알림 (접수, 완료, 취소)</string>
+    <string name="setting_title_review">리뷰쓰기 알림</string>
+    <string name="setting_sub_review">배달완료 후 리뷰쓰기 알림</string>
+    <string name="setting_title_boss">사장님 댓글 알림</string>
+    <string name="setting_sub_boss">사장님 댓글 알림</string>
+    <string name="setting_title_inquiry">문의 답변 알림</string>
+    <string name="setting_sub_inquiry">1:1 문의 답변 알림</string>
+    <string name="setting_sub_my_safe_talk">작성 또는 알림 설정한 톡에 새로운 댓글 알림</string>
+    <string name="setting_title_notice">공지 알림</string>
+    <string name="setting_sub_notice">중요 공지사항 알림</string>
+    <string name="setting_title_event">이벤트 및 혜택 알림</string>
+    <string name="setting_sub_event">이벤트, 쿠폰, 마케팅 정보 알림</string>
+    <string name="setting_title_version">현재버전</string>
+    <string name="setting_title_new_version">최신버전</string>
+    <string name="setting_version_upgrade">업그레이드</string>
+
+    <!-- Popup Message -->
+    <string name="pop_msg_new_version"><b>새로운 버전이 출시되었어요!</b></string>
+    <string name="pop_msg_app_finish">\"다음에\"를 선택하면 앱이 종료 됩니다.</string>
+    <string name="pop_msg_app_upgrade">업그레이드를 추천 드립니다.</string>
+    <string name="pop_msg_off_location_title">위치 서비스가 OFF 상태 입니다.</string>
+    <string name="pop_msg_off_location_setup">휴대폰의 설정에서 위치 서비스를\n활성화 시켜 주세요.</string>
+    <string name="pop_msg_off_location_message">서비스 정책에 따라 서울시청이\n임시 배달 주소로 적용 되었습니다.</string>
+    <string name="splash_upgrade_major_msg"><b>새로운 버전이 출시되었어요!\n\"다음에\"를 선택하면 앱이 종료 됩니다.</b></string>
+    <string name="splash_upgrade_minor_msg"><b>새로운 버전이 출시되었어요!</b>\n업그레이드를 추천 드립니다.</string>
+
+    <!-- Toast Message -->
+    <string name="toast_msg_empty_usim">유심이 없거나, 알 수 없는 유심입니다.</string>
+    <string name="toast_back_button_exit">뒤로 버튼을 한번 더 누르면 종료합니다.</string>
+    <string name="toast_message_permission_denied">권한에 승인해야 서비스 이용이 가능합니다.</string>
+    <string name="toast_msg_delivery_changed">배달 주소가 변경 되었습니다.</string>
+    <string name="toast_msg_invalid_email">이메일 입력</string>
+    <string name="toast_msg_invalid_phone">휴대폰 번호가 유효하지 않습니다.</string>
+    <string name="toast_msg_invalid_address">주소 정보가 유효하지 않습니다.</string>
+    <string name="toast_msg_invalid_authno">인증 번호가 유효하지 않습니다.</string>
+    <string name="toast_msg_auth_time_over">입력 시간이 초과 되었습니다.</string>
+    <string name="toast_msg_valid_authno">인증 번호가 확인 되었습니다.</string>
+    <string name="toast_msg_invalid_password">※ 비밀번호는 문자/숫자를 포함하여 6~16자 내로 입력해주세요.</string>
+    <string name="toast_msg_invalid_cur_password">현재 비밀번호를 입력 해 주세요.</string>
+    <string name="toast_msg_invalid_re_password">비밀번호 불일치</string>
+    <string name="empty" />
+    <string name="toast_msg_change_phone_no">휴대폰 번호가 변경 되었습니다.</string>
+    <string name="toast_msg_change_password">비밀번호가 변경 되었습니다.</string>
+    <string name="toast_msg_empty_search_text">검색어를 입력해 주세요.</string>
+
+    <!-- Permission -->
+    <string name="permission_agree_all">모두 동의</string>
+    <!-- string name="permission_location_text">위치 기반 서비스 약관 동의 (필수)</string>
+    <string name="permission_marketing_text">마케팅 정보 수신 동의 (선택)</string>
+    <string name="permission_marketing_sub_text">이벤트, 쿠폰, 마케팅 정보를 받아 보실 수 있어요.</string> -->
+    <string name="permission_denied_phone">전화 권한이 허용되지 않았습니다.</string>
+
+    <!-- Bottom Navigation -->
+    <string name="bottom_text_home">홈</string>
+    <string name="bottom_text_favorite">단골매장</string>
+    <string name="bottom_text_cart">장바구니</string>
+    <string name="bottom_text_order_history">주문내역</string>
+    <string name="bottom_text_myorder">마이오더</string>
+
+    <string name="empty_list"><font color="#f9ac19">검색결과</font>가 없습니다.</string>
+    <string name="empty_list_shop">주변에 등록된 매장이 없습니다.\n배달주소를 다시 한번 확인 해주세요.</string>
+    <string name="empty_favorite_list">등록된 <font color="#f9ac19">단골매장</font>이 없습니다.</string>
+    <string name="empty_cart_list"><font color="#f9ac19">장바구니</font>에 담긴 메뉴가 없습니다.</string>
+    <string name="empty_order_list">주문하신 <font color="#f9ac19">내역</font>이 없습니다.</string>
+    <string name="empty_review_list"><font color="#f9ac19">주문</font> 및 <font color="#f9ac19">리뷰 작성</font> 내역이 없습니다.</string>
+    <string name="empty_notice_list">등록된 <font color="#f9ac19">공지사항</font>이 없습니다.</string>
+    <string name="empty_event_list">등록된 <font color="#f9ac19">이벤트</font>가 없습니다.</string>
+    <string name="empty_inquiry_list">등록된 <font color="#f9ac19">문의</font>가 없습니다.</string>
+    <string name="empty_reply">등록된 답변이 없습니다.</string>
+    <string name="empty_search_list"><font color="#f9ac19">검색 결과</font>가 없습니다.</string>
+
+    <!-- 기타 -->
+    <string name="currency_won">원</string>
+    <string name="txt_share_shop_subject">! 이 매장 어떠세요?\n</string>
+    <string name="txt_share_menu_subject">! 이 메뉴 어떠세요?\n</string>
+    <string name="txt_share_text">공공배달 앱에서 확인해보세요.\n\n</string>
+    <string name="hint_phone_no">000-0000-0000</string>
+    <string name="txt_all">전체</string>
+
+    <!-- 안심톡 공유 -->
+    <string name="safe_talk_detail_share_title">이 글 보셨어요?\n%s\n공공배달 앱에서 확인 해보세요.\n</string>
+
+    <!-- 정렬 -->
+    <string name="lbl_sort_distince">가까운 거리 순</string>
+    <string name="lbl_sort_aver">평점 높은 순</string>
+    <string name="lbl_sort_review_low">리뷰 많은 순</string>
+    <string name="lbl_sort_review">리뷰 많은 순</string>
+    <string name="lbl_sort_amt">최소 주문 금액 낮은 순</string>
+    <string name="lbl_sort_deli">배달비 낮은 순</string>
+    <string name="lbl_sort_best">실시간 인기 높은 순</string>
+
+    <string name="lbl_sort_new">최신 순</string>
+    <string name="lbl_sort_later">오래된 순</string>
+    <string name="lbl_sort_aver_low">평점 낮은 순</string>
+
+    <!-- Error -->
+    <string name="error_network_state">통신 상태가 원활하지 않습니다.</string>
+    <string name="error_network_state_finish">통신 상태가 원활하지 않습니다.\n잠시 후 다시 이용해 주십시요.</string>
+
+    <string name="kakao_app_key">b96d45257f1562f8a3952429e8fb7f82</string>
+    <string name="default_notification_channel_id">melchi_channel_id</string>
+    <!-- TODO: Remove or change this placeholder text -->
+
+    <string name="sample_date">2020.04.04 (토)</string>
+    <string name="sample_store_nm">리틀시저스피자</string>
+    <string name="sample_menu_nm">페퍼로니피자M 외 1건</string>
+
+    <string name="review_max_count">%d+</string>
+    <string name="shop_view_review_empty">첫번째 리뷰를 기다리고 있어요~</string>
+    <string name="safe_talks_empty">첫번째 글을 기다리고 있어요</string>
+    <string name="my_safe_talk_empty">작성 및 알림을 설정한 <font color="#f9ac19">안심톡</font>이 없습니다.</string>
+
+    <string name="all_item_review_count">(%s)</string>
+    <string name="pay_result_failure_reason">사유 : 주문할 수 없는 매장입니다.</string>
+    <string name="address_history_item_address_format">%s %s</string>
+    <string name="safe_cam">실시간 캠</string>
+    <string name="cctv_report_btn">신고하기</string>
+    <string name="dialog_cctv_report_hint">최소 10자, 최대 30자 까지 작성 가능</string>
+    <string name="cam_1">CAM 1</string>
+    <string name="cam_2">CAM 2</string>
+    <string name="cam_3">CAM 3</string>
+    <string name="all_cctv_report">신고하기</string>
+    <string name="all_reported">신고가 접수 되었습니다.</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="safe_talk_banner_title">내가 경험한 매장 이야기</string>
+    <string name="safe_talk_banner_tags">#안심톡 #위생 #블라인드 #신고하기 #포상금</string>
+    <string name="safe_talk_dirty_banner_title">‘불쾌한 매장’이 조금있어요!</string>
+    <string name="safe_talk_clean_banner_title">‘깨끗한 매장’이 모여있어요!</string>
+    <string name="safe_talk_detail_title">안심 톡!</string>
+    <string name="my_safe_talk_title">나의 안심톡</string>
+    <string name="my_safe_talk_written_article">작성글</string>
+    <string name="safe_talks_title">안심 톡!</string>
+    <string name="writer_select_dialog_desc">익명 처리를 위해 선택해주세요.</string>
+    <string name="writer_select_i">나는</string>
+    <string name="writer_select_dialog_is">입니다.</string>
+    <string name="writer_select_dialog_employee">매장직원·알바</string>
+    <string name="writer_select_dialog_customer">주문·방문고객</string>
+    <string name="hot">HOT</string>
+    <string name="safe_talk_write_title">안심톡 쓰기</string>
+    <string name="safe_talk_write_register">등록하기</string>
+    <string name="all_shop_name">매장명</string>
+    <string name="safe_talk_write_rating_desc">이 매장의 위생상태는 어땠나요?</string>
+    <string name="safe_talk_write_content_desc">자세한 내용을 알려주세요.</string>
+    <string name="safe_talk_write_content_hint">・내용 : 최대 3000자 까지 작성 가능\n・사진 : 최대 5장 까지 등록 가능</string>
+    <string name="all_title">제목</string>
+    <string name="safe_talk_search_shop_hint">매장 이름을 검색해 주세요.</string>
+    <string name="safe_talk_shop_search_desc"><font color="#f9ac19">전국매장</font> 검색</string>
+    <string name="safe_talk_shop_search_desc2"><font color="#f9ac19">전국매장</font> 검색결과</string>
+    <string name="safe_talk_shop_search_empty_desc"><font color="#f9ac19">검색결과</font>가 없습니다.</string>
+    <string name="safe_talk_shop_search_btn">직접 등록하기</string>
+    <string name="safe_talk_shop_reg_title">매장 직접등록</string>
+    <string name="safe_talk_shop_reg_shop_name_hint">매장명 (예 : 피자나라치킨공주 불광점)</string>
+    <string name="safe_talk_shop_reg_address_depth1_hint">주소 선택 (시 / 도)</string>
+    <string name="safe_talk_shop_reg_address_depth2_hint">주소 선택 (시 / 구 / 군)</string>
+    <string name="safe_talk_shop_reg_address_depth3_hint">주소 선택 (동 / 읍 / 면)</string>
+    <string name="safe_talk_shop_reg_category_hint">카테고리 선택</string>
+    <string name="safe_talk_write_reg_dialog_title">안심톡을 등록할까요?</string>
+    <string name="safe_talk_write_reg_dialog_message">확인을 누르시면 등록이 완료됩니다.</string>
+    <string name="safe_talk_shop_reg_toast_msg">안심톡 검수를 시작합니다.</string>
+    <string name="setting_title_my_safe_talk">안심톡 알림</string>
+    <string name="under_review">검토중</string>
+    <string name="reject">반려</string>
+    <string name="all_notice">알림</string>
+    <string name="all_reply">댓글</string>
+    <string name="safe_talk_i_wrote">내가 쓴 안심톡</string>
+    <string name="safe_talk_detail_reply_hint">댓글을 남겨주세요. (자동 익명처리)</string>
+    <string name="writer_employee">매장직원·알바</string>
+    <string name="writer_customer">주문·방문고객</string>
+    <string name="all_share">공유</string>
+    <string name="all_today">오늘</string>
+    <string name="all_yesterday">어제</string>
+    <string name="all_delete">삭제</string>
+    <string name="safe_talk_detail_saved_comment">댓글이 등록 되었습니다.</string>
+    <string name="all_del_comment_title">댓글을 삭제 할까요?</string>
+    <string name="all_del_comment_message">확인을 누르시면 삭제가 완료됩니다.</string>
+    <string name="all_deleted_comment">댓글이 삭제 되었습니다.</string>
+    <string name="safe_talk_shop_reg_req_1depth_toast">시 / 도를 먼저 선택 해주세요.</string>
+    <string name="safe_talk_shop_reg_req_2depth_toast">시 / 구 / 군을 먼저 선택 해주세요.</string>
+    <string name="safe_talk_shop_reg_req_3depth_toast">읍 / 면 / 동을 먼저 선택 해주세요.</string>
+    <string name="safe_talk_shop_reg_req_category_toast">카테고리 선택를 먼저 선택 해주세요.</string>
+    <string name="safe_talk_write_rating_dirty_desc"><font color="#e21836">불쾌해요.</font></string>
+    <string name="safe_talk_write_rating_clean_desc"><font color="#34c759">깨끗해요.</font></string>
+    <string name="safe_talk_write_photo_picker_title">사진선택</string>
+    <string name="safe_talk_home_banner_location">%s에는</string>
+
+    <string name="delivery_order_general_noti_channel_name">일반 알림</string>
+
+    <string name="key_juso">U01TX0FVVEgyMDIwMDgwNTE3NDc1NTExMDAyODQ=</string>
+    <string name="juso_develop_server_url">http://www.juso.go.kr</string>
+    <string name="kakao_develop_server_url">https://dapi.kakao.com</string>
+</resources>

@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        android:foreground="?android:attr/selectableItemBackground">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/iconLocation"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_centerVertical="true"
+            android:src="@drawable/icon_location" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="14dp"
+            android:layout_marginBottom="16dp"
+            android:layout_toStartOf="@+id/iconItemDelete"
+            android:layout_toEndOf="@+id/iconLocation"
+            android:gravity="center_vertical"
+            android:orientation="vertical">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/address1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:lineSpacingExtra="2sp"
+                android:maxLines="2"
+                android:textColor="@color/color_757575"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvJibun"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/lbl_location_jibun"
+                    android:textColor="@color/color_969696"
+                    android:textSize="12sp" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/address2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:lineSpacingExtra="2sp"
+                    android:textColor="@color/color_999999"
+                    android:textSize="12sp" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/iconItemDelete"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:clickable="true"
+            android:foreground="?android:attr/selectableItemBackground"
+            android:scaleType="center"
+            android:src="@drawable/icon_close_bf" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_alignParentBottom="true"
+            android:background="#dddbd7" />
+
+    </RelativeLayout>
+</layout>
+
+<!--    -->
+<!--    <?xml version="1.0" encoding="utf-8"?>-->
+<!--<layout xmlns:android="http://schemas.android.com/apk/res/android">-->
+
+<!--    <data>-->
+
+<!--        <import type="android.view.View" />-->
+
+<!--        <variable-->
+<!--            name="data"-->
+<!--            type="com.ram.delivery.model.api.res.ResDeliv" />-->
+
+<!--        <variable-->
+<!--            name="viewModel"-->
+<!--            type="com.ram.delivery.view.address.search.AddressSearchViewModel" />-->
+<!--    </data>-->
+
+<!--    <RelativeLayout-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:clickable="true"-->
+<!--        android:foreground="?android:attr/selectableItemBackground"-->
+<!--        android:onClick="@{() -> viewModel.addressHistoryClick(data)}">-->
+
+<!--        <androidx.appcompat.widget.AppCompatImageView-->
+<!--            android:id="@+id/iconLocation"-->
+<!--            android:layout_width="24dp"-->
+<!--            android:layout_height="24dp"-->
+<!--            android:layout_centerVertical="true"-->
+<!--            android:src="@drawable/icon_location" />-->
+
+<!--        <LinearLayout-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginStart="16dp"-->
+<!--            android:layout_marginTop="16dp"-->
+<!--            android:layout_marginEnd="14dp"-->
+<!--            android:layout_marginBottom="16dp"-->
+<!--            android:layout_toStartOf="@+id/iconItemDelete"-->
+<!--            android:layout_toEndOf="@+id/iconLocation"-->
+<!--            android:gravity="center_vertical"-->
+<!--            android:orientation="vertical">-->
+
+<!--            <androidx.appcompat.widget.AppCompatTextView-->
+<!--                android:id="@+id/address1"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:ellipsize="end"-->
+<!--                android:lineSpacingExtra="2sp"-->
+<!--                android:maxLines="2"-->
+<!--                android:text="@{data.addr1}"-->
+<!--                android:textColor="@color/color_757575"-->
+<!--                android:textSize="14sp"-->
+<!--                android:textStyle="bold" />-->
+
+<!--            <LinearLayout-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:orientation="horizontal">-->
+
+<!--                <androidx.appcompat.widget.AppCompatTextView-->
+<!--                    android:id="@+id/tvJibun"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:text="@string/lbl_location_jibun"-->
+<!--                    android:textColor="@color/color_969696"-->
+<!--                    android:textSize="12sp" />-->
+
+<!--                <androidx.appcompat.widget.AppCompatTextView-->
+<!--                    android:id="@+id/address2"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:lineSpacingExtra="2sp"-->
+<!--                    android:text="@{data.oldAddr}"-->
+<!--                    android:textColor="@color/color_999999"-->
+<!--                    android:textSize="12sp" />-->
+
+<!--            </LinearLayout>-->
+
+<!--        </LinearLayout>-->
+
+<!--        <androidx.appcompat.widget.AppCompatImageView-->
+<!--            android:id="@+id/iconItemDelete"-->
+<!--            android:layout_width="24dp"-->
+<!--            android:layout_height="24dp"-->
+<!--            android:layout_alignParentEnd="true"-->
+<!--            android:layout_centerVertical="true"-->
+<!--            android:clickable="true"-->
+<!--            android:foreground="?android:attr/selectableItemBackground"-->
+<!--            android:onClick="@{() -> viewModel.onClickItemDelete(data)}"-->
+<!--            android:scaleType="center"-->
+<!--            android:src="@drawable/icon_close_bf"-->
+<!--            android:visibility="@{viewModel.isSearch() ? View.GONE : View.VISIBLE}" />-->
+
+<!--        <View-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="1dp"-->
+<!--            android:layout_alignParentBottom="true"-->
+<!--            android:background="#dddbd7" />-->
+
+<!--    </RelativeLayout>-->
+<!--</layout>-->

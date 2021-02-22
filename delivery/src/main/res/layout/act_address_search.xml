@@ -1,0 +1,534 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:bind="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/layoutRoot"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <RelativeLayout
+            android:id="@+id/layoutTitle"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <androidx.appcompat.widget.AppCompatImageButton
+                android:id="@+id/btnAddressSearchClose"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="16dp"
+                android:background="@drawable/icon_close_dark"
+                android:scaleType="fitCenter" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/toolbar_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:text="@string/title_address_setup"
+                android:textColor="@color/color_3c3c3c"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+        </RelativeLayout>
+
+        <LinearLayout
+            android:id="@+id/layoutInput"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/layoutTitle">
+
+            <EditText
+                android:id="@+id/etSearch"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="5dp"
+                android:layout_weight="1"
+                android:background="@null"
+                android:hint="@string/hint_address_setup"
+                android:imeOptions="actionDone"
+                android:inputType="text"
+                android:textColor="#BFBFBF"
+                android:textSize="16sp" />
+
+            <ImageView
+                android:id="@+id/iv_address_search_input_clear"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:src="@drawable/drawable_right_icon_delete" />
+<!--            <ImageView-->
+<!--                android:id="@+id/iv_address_search_input_clear"-->
+<!--                ifVisible="@{viewModel.inputClearBtnVisible}"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:onClick="@{() -> viewModel.onSearchWordClearClick()}"-->
+<!--                android:padding="10dp"-->
+<!--                android:src="@drawable/drawable_right_icon_delete" />-->
+        </LinearLayout>
+
+        <View
+            android:id="@+id/divider1"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:background="@color/color_f9ac19"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/layoutInput" />
+
+        <LinearLayout
+            android:id="@+id/layoutBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="19dp"
+            android:background="@drawable/border_rect_round_f9ac19"
+            android:foreground="?android:attr/selectableItemBackground"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:paddingLeft="23dp"
+            android:paddingTop="6dp"
+            android:paddingRight="23dp"
+            android:paddingBottom="6dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/divider1">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/icon_finder" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginLeft="2dp"
+                android:lineSpacingExtra="8sp"
+                android:text="@string/btn_address_setup"
+                android:textColor="@color/white"
+                android:textSize="16dp" />
+
+        </LinearLayout>
+
+        <!--최근 주소-->
+        <RelativeLayout
+            android:id="@+id/layoutHistory"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="39dp"
+            android:layout_marginRight="16dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/layoutBtn">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/lblRecentText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:lineSpacingExtra="6sp"
+                android:text="@string/lbl_recent_address"
+                android:textColor="@color/color_3c3c3c"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/btnDeleteAll"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:lineSpacingExtra="6sp"
+                android:foreground="?android:attr/selectableItemBackground"
+                android:clickable="true"
+                android:text="@string/btn_delete_all"
+                android:textColor="@color/color_3c3c3c"
+                android:textSize="12sp" />
+
+            <View
+                android:id="@+id/divider2"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_below="@+id/lblRecentText"
+                android:layout_marginTop="9dp"
+                android:background="@color/color_f9ac19" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvHistoryAddr"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@+id/divider2"
+                android:layout_alignParentBottom="true"
+                android:background="@color/white"
+                android:gravity="center_vertical"/>
+
+        </RelativeLayout>
+
+        <!--검색 결과-->
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/layoutSearch"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginTop="39dp"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/layoutBtn">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvSearchText"
+                android:layout_width="wrap_content"
+                android:layout_height="22dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="4dp"
+                android:textColor="@color/color_f9ac19"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/lblSearchText"
+                android:layout_width="wrap_content"
+                android:layout_height="22dp"
+                android:layout_marginStart="4dp"
+                android:layout_marginEnd="16dp"
+                android:text="@string/lbl_search_result"
+                android:textColor="@color/color_3c3c3c"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="@id/tvSearchText"
+                app:layout_constraintStart_toEndOf="@id/tvSearchText"
+                app:layout_constraintTop_toTopOf="@id/tvSearchText" />
+
+            <View
+                android:id="@+id/divider3"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_below="@+id/tvSearchText"
+                android:layout_marginTop="8dp"
+                android:background="@color/color_f9ac19"
+                app:layout_constraintEnd_toEndOf="@id/tvSearchText"
+                app:layout_constraintStart_toStartOf="@id/tvSearchText"
+                app:layout_constraintTop_toBottomOf="@id/tvSearchText" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvSearch"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/divider3"
+                tools:itemCount="100" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <ProgressBar
+            android:id="@+id/pbAddressSearch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:indeterminateDrawable="@drawable/all_progress_circle"
+            android:indeterminateDuration="100"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>
+
+
+
+<!--    <?xml version="1.0" encoding="utf-8"?>-->
+<!--<layout xmlns:android="http://schemas.android.com/apk/res/android"-->
+<!--xmlns:app="http://schemas.android.com/apk/res-auto"-->
+<!--xmlns:bind="http://schemas.android.com/apk/res-auto"-->
+<!--xmlns:tools="http://schemas.android.com/tools">-->
+
+<!--<data>-->
+
+<!--    <import type="android.view.View" />-->
+
+<!--    <variable-->
+<!--        name="viewModel"-->
+<!--        type="com.ram.delivery.view.address.search.AddressSearchViewModel" />-->
+
+<!--</data>-->
+
+<!--<androidx.constraintlayout.widget.ConstraintLayout-->
+<!--    android:id="@+id/layoutRoot"-->
+<!--    android:layout_width="match_parent"-->
+<!--    android:layout_height="match_parent">-->
+
+<!--    <RelativeLayout-->
+<!--        android:id="@+id/layoutTitle"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="56dp"-->
+<!--        app:layout_constraintLeft_toLeftOf="parent"-->
+<!--        app:layout_constraintTop_toTopOf="parent">-->
+
+<!--        <androidx.appcompat.widget.AppCompatImageButton-->
+<!--            android:id="@+id/btnAddressSearchClose"-->
+<!--            android:layout_width="24dp"-->
+<!--            android:layout_height="24dp"-->
+<!--            android:layout_centerVertical="true"-->
+<!--            android:layout_marginStart="16dp"-->
+<!--            android:background="@drawable/icon_close_dark"-->
+<!--            android:scaleType="fitCenter" />-->
+
+<!--        <androidx.appcompat.widget.AppCompatTextView-->
+<!--            android:id="@+id/toolbar_title"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_centerHorizontal="true"-->
+<!--            android:layout_centerVertical="true"-->
+<!--            android:text="@string/title_address_setup"-->
+<!--            android:textColor="@color/color_3c3c3c"-->
+<!--            android:textSize="20sp"-->
+<!--            android:textStyle="bold" />-->
+
+<!--    </RelativeLayout>-->
+
+<!--    <LinearLayout-->
+<!--        android:id="@+id/layoutInput"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="48dp"-->
+<!--        android:layout_marginStart="16dp"-->
+<!--        android:layout_marginEnd="16dp"-->
+<!--        android:gravity="center_vertical"-->
+<!--        android:orientation="horizontal"-->
+<!--        app:layout_constraintLeft_toLeftOf="parent"-->
+<!--        app:layout_constraintTop_toBottomOf="@+id/layoutTitle">-->
+
+<!--        <EditText-->
+<!--            android:id="@+id/etSearch"-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginEnd="5dp"-->
+<!--            android:layout_weight="1"-->
+<!--            android:background="@null"-->
+<!--            android:hint="@string/hint_address_setup"-->
+<!--            android:imeOptions="actionDone"-->
+<!--            android:inputType="text"-->
+<!--            android:onEditorAction="@{(view, actionId, event) -> viewModel.onEditorAction(actionId)}"-->
+<!--            android:onTextChanged="@{(text, start, before, count) -> viewModel.onTextChanged(text)}"-->
+<!--            android:text="@={viewModel.searchWord}"-->
+<!--            android:textColor="#BFBFBF"-->
+<!--            android:textSize="16sp" />-->
+
+<!--        <ImageView-->
+<!--            android:id="@+id/iv_address_search_input_clear"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:onClick="@{() -> viewModel.onSearchWordClearClick()}"-->
+<!--            android:padding="10dp"-->
+<!--            android:src="@drawable/drawable_right_icon_delete" />-->
+<!--        &lt;!&ndash;            <ImageView&ndash;&gt;-->
+<!--        &lt;!&ndash;                android:id="@+id/iv_address_search_input_clear"&ndash;&gt;-->
+<!--        &lt;!&ndash;                ifVisible="@{viewModel.inputClearBtnVisible}"&ndash;&gt;-->
+<!--        &lt;!&ndash;                android:layout_width="wrap_content"&ndash;&gt;-->
+<!--        &lt;!&ndash;                android:layout_height="wrap_content"&ndash;&gt;-->
+<!--        &lt;!&ndash;                android:onClick="@{() -> viewModel.onSearchWordClearClick()}"&ndash;&gt;-->
+<!--        &lt;!&ndash;                android:padding="10dp"&ndash;&gt;-->
+<!--        &lt;!&ndash;                android:src="@drawable/drawable_right_icon_delete" />&ndash;&gt;-->
+<!--    </LinearLayout>-->
+
+<!--    <View-->
+<!--        android:id="@+id/divider1"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="1dp"-->
+<!--        android:layout_marginStart="16dp"-->
+<!--        android:layout_marginEnd="16dp"-->
+<!--        android:background="@color/color_f9ac19"-->
+<!--        app:layout_constraintLeft_toLeftOf="parent"-->
+<!--        app:layout_constraintTop_toBottomOf="@+id/layoutInput" />-->
+
+<!--    <LinearLayout-->
+<!--        android:id="@+id/layoutBtn"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_gravity="center"-->
+<!--        android:layout_marginTop="19dp"-->
+<!--        android:background="@drawable/border_rect_round_f9ac19"-->
+<!--        android:foreground="?android:attr/selectableItemBackground"-->
+<!--        android:gravity="center"-->
+<!--        android:orientation="horizontal"-->
+<!--        android:paddingLeft="23dp"-->
+<!--        android:paddingTop="6dp"-->
+<!--        android:paddingRight="23dp"-->
+<!--        android:paddingBottom="6dp"-->
+<!--        app:layout_constraintLeft_toLeftOf="parent"-->
+<!--        app:layout_constraintRight_toRightOf="parent"-->
+<!--        app:layout_constraintTop_toBottomOf="@+id/divider1">-->
+
+<!--        <ImageView-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:src="@drawable/icon_finder" />-->
+
+<!--        <TextView-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_gravity="center"-->
+<!--            android:layout_marginLeft="2dp"-->
+<!--            android:lineSpacingExtra="8sp"-->
+<!--            android:text="@string/btn_address_setup"-->
+<!--            android:textColor="@color/white"-->
+<!--            android:textSize="16dp" />-->
+
+<!--    </LinearLayout>-->
+
+<!--    &lt;!&ndash;최근 주소&ndash;&gt;-->
+<!--    <RelativeLayout-->
+<!--        android:id="@+id/layoutHistory"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="0dp"-->
+<!--        android:layout_marginLeft="16dp"-->
+<!--        android:layout_marginTop="39dp"-->
+<!--        android:layout_marginRight="16dp"-->
+<!--        android:visibility="@{viewModel.isHistory ? View.VISIBLE : View.GONE}"-->
+<!--        app:layout_constraintBottom_toBottomOf="parent"-->
+<!--        app:layout_constraintLeft_toLeftOf="parent"-->
+<!--        app:layout_constraintTop_toBottomOf="@+id/layoutBtn">-->
+
+<!--        <androidx.appcompat.widget.AppCompatTextView-->
+<!--            android:id="@+id/lblRecentText"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:lineSpacingExtra="6sp"-->
+<!--            android:text="@string/lbl_recent_address"-->
+<!--            android:textColor="@color/color_3c3c3c"-->
+<!--            android:textSize="14sp"-->
+<!--            android:textStyle="bold" />-->
+
+<!--        <androidx.appcompat.widget.AppCompatTextView-->
+<!--            android:id="@+id/btnDeleteAll"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_alignParentRight="true"-->
+<!--            android:lineSpacingExtra="6sp"-->
+<!--            android:foreground="?android:attr/selectableItemBackground"-->
+<!--            android:clickable="true"-->
+<!--            android:onClick="@{() -> viewModel.onClickDeleteAll()}"-->
+<!--            android:text="@string/btn_delete_all"-->
+<!--            android:textColor="@color/color_3c3c3c"-->
+<!--            android:textSize="12sp" />-->
+
+<!--        <View-->
+<!--            android:id="@+id/divider2"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="1dp"-->
+<!--            android:layout_below="@+id/lblRecentText"-->
+<!--            android:layout_marginTop="9dp"-->
+<!--            android:background="@color/color_f9ac19" />-->
+
+<!--        <androidx.recyclerview.widget.RecyclerView-->
+<!--            android:id="@+id/rvHistoryAddr"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="match_parent"-->
+<!--            android:layout_below="@+id/divider2"-->
+<!--            android:layout_alignParentBottom="true"-->
+<!--            android:background="@color/white"-->
+<!--            android:gravity="center_vertical"-->
+<!--            bind:adapter_addressLatelyHistory_list="@{viewModel.historyList}"-->
+<!--            bind:adapter_addressLatelyHistory_vm="@{viewModel}" />-->
+
+<!--    </RelativeLayout>-->
+
+<!--    &lt;!&ndash;검색 결과&ndash;&gt;-->
+<!--    <androidx.constraintlayout.widget.ConstraintLayout-->
+<!--        android:id="@+id/layoutSearch"-->
+<!--        android:layout_width="0dp"-->
+<!--        android:layout_height="0dp"-->
+<!--        android:layout_marginTop="39dp"-->
+<!--        android:paddingStart="16dp"-->
+<!--        android:paddingEnd="16dp"-->
+<!--        android:visibility="@{viewModel.isSearch() ? View.VISIBLE : View.GONE}"-->
+<!--        app:layout_constraintBottom_toBottomOf="parent"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toBottomOf="@+id/layoutBtn">-->
+
+<!--        <androidx.appcompat.widget.AppCompatTextView-->
+<!--            android:id="@+id/tvSearchText"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="22dp"-->
+<!--            android:layout_marginStart="16dp"-->
+<!--            android:layout_marginEnd="4dp"-->
+<!--            android:text="@{viewModel.searchTitle}"-->
+<!--            android:textColor="@color/color_f9ac19"-->
+<!--            android:textSize="14sp"-->
+<!--            android:textStyle="bold"-->
+<!--            app:layout_constraintStart_toStartOf="parent"-->
+<!--            app:layout_constraintTop_toTopOf="parent" />-->
+
+<!--        <androidx.appcompat.widget.AppCompatTextView-->
+<!--            android:id="@+id/lblSearchText"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="22dp"-->
+<!--            android:layout_marginStart="4dp"-->
+<!--            android:layout_marginEnd="16dp"-->
+<!--            android:text="@string/lbl_search_result"-->
+<!--            android:textColor="@color/color_3c3c3c"-->
+<!--            android:textSize="14sp"-->
+<!--            android:textStyle="bold"-->
+<!--            app:layout_constraintBottom_toBottomOf="@id/tvSearchText"-->
+<!--            app:layout_constraintStart_toEndOf="@id/tvSearchText"-->
+<!--            app:layout_constraintTop_toTopOf="@id/tvSearchText" />-->
+
+<!--        <View-->
+<!--            android:id="@+id/divider3"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="1dp"-->
+<!--            android:layout_below="@+id/tvSearchText"-->
+<!--            android:layout_marginTop="8dp"-->
+<!--            android:background="@color/color_f9ac19"-->
+<!--            android:visibility="@{viewModel.isEmptyList() ? View.GONE : View.VISIBLE}"-->
+<!--            app:layout_constraintEnd_toEndOf="@id/tvSearchText"-->
+<!--            app:layout_constraintStart_toStartOf="@id/tvSearchText"-->
+<!--            app:layout_constraintTop_toBottomOf="@id/tvSearchText" />-->
+
+<!--        <androidx.recyclerview.widget.RecyclerView-->
+<!--            android:id="@+id/rvSearch"-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="0dp"-->
+<!--            app:layout_constraintBottom_toBottomOf="parent"-->
+<!--            app:layout_constraintEnd_toEndOf="parent"-->
+<!--            app:layout_constraintStart_toStartOf="parent"-->
+<!--            app:layout_constraintTop_toBottomOf="@id/divider3"-->
+<!--            bind:adapter_addressSearch_list="@{viewModel.searchList}"-->
+<!--            bind:adapter_addressSearch_vm="@{viewModel}"-->
+<!--            tools:itemCount="100" />-->
+
+<!--    </androidx.constraintlayout.widget.ConstraintLayout>-->
+
+<!--    <ProgressBar-->
+<!--        android:id="@+id/pbAddressSearch"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:indeterminateDrawable="@drawable/all_progress_circle"-->
+<!--        android:indeterminateDuration="100"-->
+<!--        android:visibility="gone"-->
+<!--        app:layout_constraintBottom_toBottomOf="parent"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toTopOf="parent" />-->
+<!--</androidx.constraintlayout.widget.ConstraintLayout>-->
+
+<!--</layout>-->

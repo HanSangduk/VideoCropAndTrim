@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_40">
+
+        <LinearLayout
+            android:id="@+id/load_more_loading_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <ProgressBar
+                android:id="@+id/loading_progress"
+                style="?android:attr/progressBarStyleSmall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/dp_4"
+                android:indeterminateDrawable="@drawable/brvah_sample_footer_loading_progress" />
+
+            <TextView
+                android:id="@+id/loading_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/dp_4"
+                android:text="Please Wait..."
+                android:textColor="@color/color_757575"
+                android:textSize="@dimen/sp_14" />
+        </LinearLayout>
+
+        <FrameLayout
+            android:id="@+id/load_more_load_fail_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone">
+
+
+            <TextView
+                android:id="@+id/tv_prompt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="로드하지 못했습니다. 다시 시도하려면 눌러주세요."
+                android:textColor="#0dddb8" />
+
+        </FrameLayout>
+
+        <FrameLayout
+            android:id="@+id/load_more_load_complete_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="더보기"
+                android:textColor="@android:color/darker_gray" />
+        </FrameLayout>
+
+        <FrameLayout
+            android:id="@+id/load_more_load_end_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="더 이상 데이터가 없습니다."
+                android:textColor="@android:color/darker_gray" />
+        </FrameLayout>
+    </FrameLayout>
+</layout>

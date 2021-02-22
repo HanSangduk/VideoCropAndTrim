@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="8dp"
+        android:gravity="center_vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/tvCasNm"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:lineSpacingExtra="4sp"
+                android:textColor="@color/color_3c3c3c"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/btnTerms"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="7dp"
+                android:layout_toEndOf="@+id/tvCasNm"
+                android:background="@drawable/border_stroke_bottom_757575"
+                android:lineSpacingExtra="4sp"
+                android:paddingBottom="2dp"
+                android:text="@string/btn_full_text_view"
+                android:textColor="@color/color_757575"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/tvCasDesc"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tvCasNm"
+                android:lineSpacingExtra="4sp"
+                android:textColor="@color/color_757575"
+                android:textSize="14sp" />
+        </RelativeLayout>
+
+        <androidx.appcompat.widget.AppCompatCheckBox
+            android:id="@+id/cbTerms"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_alignParentEnd="true"
+            android:button="@drawable/selector_checkbox"
+            android:gravity="center_vertical"/>
+
+    </RelativeLayout>
+
+</layout>
+
+
+<!--    <?xml version="1.0" encoding="utf-8"?>-->
+<!--<layout xmlns:android="http://schemas.android.com/apk/res/android"-->
+<!--xmlns:app="http://schemas.android.com/apk/res-auto">-->
+
+<!--<data>-->
+
+<!--    <variable-->
+<!--        name="data"-->
+<!--        type="com.ram.delivery.model.api.res.ResTerms" />-->
+
+<!--    <variable-->
+<!--        name="viewModel"-->
+<!--        type="com.ram.delivery.view.tutorial.TutorialViewModel" />-->
+<!--</data>-->
+
+<!--<RelativeLayout-->
+<!--    android:layout_width="match_parent"-->
+<!--    android:layout_height="wrap_content"-->
+<!--    android:layout_marginTop="16dp"-->
+<!--    android:layout_marginBottom="8dp"-->
+<!--    android:gravity="center_vertical">-->
+
+<!--    <RelativeLayout-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content">-->
+
+<!--        <TextView-->
+<!--            android:id="@+id/tvCasNm"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:lineSpacingExtra="4sp"-->
+<!--            android:text="@{data.casNm}"-->
+<!--            android:textColor="@color/color_3c3c3c"-->
+<!--            android:textSize="16sp" />-->
+
+<!--        <TextView-->
+<!--            android:id="@+id/btnTerms"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginStart="7dp"-->
+<!--            android:layout_toEndOf="@+id/tvCasNm"-->
+<!--            android:background="@drawable/border_stroke_bottom_757575"-->
+<!--            android:lineSpacingExtra="4sp"-->
+<!--            android:onClick="@{() -> viewModel.onClickTermsView(data)}"-->
+<!--            android:paddingBottom="2dp"-->
+<!--            android:text="@string/btn_full_text_view"-->
+<!--            android:textColor="@color/color_757575"-->
+<!--            android:textSize="14sp" />-->
+
+<!--        <TextView-->
+<!--            android:id="@+id/tvCasDesc"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_below="@id/tvCasNm"-->
+<!--            android:lineSpacingExtra="4sp"-->
+<!--            android:text="@{data.casDesc}"-->
+<!--            android:textColor="@color/color_757575"-->
+<!--            android:textSize="14sp" />-->
+<!--    </RelativeLayout>-->
+
+<!--    <androidx.appcompat.widget.AppCompatCheckBox-->
+<!--        android:id="@+id/cbTerms"-->
+<!--        android:layout_width="20dp"-->
+<!--        android:layout_height="20dp"-->
+<!--        android:layout_alignParentEnd="true"-->
+<!--        android:button="@drawable/selector_checkbox"-->
+<!--        android:gravity="center_vertical"-->
+<!--        android:onClick="@{() -> viewModel.onClickTermsAgree(data)}" />-->
+
+<!--</RelativeLayout>-->
+
+<!--</layout>-->

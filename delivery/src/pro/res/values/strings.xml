@@ -1,0 +1,10 @@
+<resources>
+    <string name="rest_server_url">https://order.gong-gong.co.kr</string>
+    <string name="payment_server_url">https://order.gong-gong.co.kr</string>
+    <string name="rest_auth_url">https://order.gong-gong.co.kr</string>
+    <string name="rest_socket_svr">socket.gong-gong.co.kr:18005</string>
+    <string name="rest_kakao_url">https://dapi.kakao.com</string>
+    <string name="terms_biz_info_url">http://www.ftc.go.kr/bizCommPop.do?wrkr_no=8258801973</string>
+    <string name="deep_link_shop_url">https://gonggong.page.link/qbvQ</string>
+    <string name="stomp_url">wss://socket.gong-gong.co.kr:18005/ws-stomp/websocket</string>
+</resources>

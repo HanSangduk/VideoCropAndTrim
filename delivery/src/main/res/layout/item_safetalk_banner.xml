@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="90dp"
+        android:background="#f8f4ca">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:src="@drawable/ggman"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="ContentDescription" />
+
+        <RatingBar
+            android:id="@+id/rbSafeTalkBanner"
+            style="?android:attr/ratingBarStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginBottom="7dp"
+            android:isIndicator="true"
+            android:numStars="5"
+            android:rating="3"
+            android:theme="@style/RatingBar.SafeTalk.Clean"
+            app:layout_constraintBottom_toTopOf="@id/tvShopTalkBannerTitle"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_chainStyle="packed" />
+
+        <TextView
+            android:id="@+id/tvShopTalkBannerLocation"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="7dp"
+            android:textColor="#3c3c3c"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toBottomOf="@id/rbSafeTalkBanner"
+            app:layout_constraintStart_toEndOf="@id/rbSafeTalkBanner"
+            app:layout_constraintTop_toTopOf="@id/rbSafeTalkBanner"
+            tools:text="송파구 오금동에는" />
+
+        <TextView
+            android:id="@+id/tvShopTalkBannerTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/safe_talk_clean_banner_title"
+            android:textColor="#34c759"
+            android:textSize="21sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="@id/rbSafeTalkBanner"
+            app:layout_constraintTop_toBottomOf="@id/rbSafeTalkBanner" />
+
+        <ImageView
+            android:id="@+id/ivSafeTalkBannerDefault"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="#ff783c"
+            android:scaleType="center"
+            tools:visibility="gone"
+            android:src="@drawable/safe_talk_banner"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

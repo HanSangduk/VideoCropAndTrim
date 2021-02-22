@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/navi_main"
+    app:startDestination="@id/homeFragment">
+
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="com.ram.delivery.view.main.home.HomeFragment"
+        android:label="HomeFragment"
+        tools:layout="@layout/fmt_main">
+
+        <action
+            android:id="@+id/action_homeFragment_to_cartFragment"
+            app:destination="@+id/cartFragment"/>
+
+        <action
+            android:id="@+id/action_homeFragment_to_myOrderFragment"
+            app:destination="@+id/myOrderFragment"/>
+
+        <action
+            android:id="@+id/action_homeFragment_to_orderHistoryFragment"
+            app:destination="@+id/orderHistoryFragment"/>
+        <action
+            android:id="@+id/action_homeFragment_to_favoriteStoreFragment"
+            app:destination="@+id/favoriteStoreFragment"/>
+
+    </fragment>
+
+<!--    <fragment-->
+<!--        android:id="@+id/homeFragment"-->
+<!--        android:name="com.ram.delivery.view.main.home.HomeFragment"-->
+<!--        android:label="HomeFragment"-->
+<!--        tools:layout="@layout/fmt_main">-->
+
+<!--    </fragment>-->
+    <fragment
+        android:id="@+id/favoriteStoreFragment"
+        android:name="com.ram.delivery.view.main.favorite.FavoriteStoreFragment"
+        android:label="FavoriteStoreFragment"
+        tools:layout="@layout/fmt_main">
+
+    </fragment>
+    <fragment
+        android:id="@+id/cartFragment"
+        android:name="com.ram.delivery.view.main.cart.CartFragment"
+        android:label="CartFragment"
+        tools:layout="@layout/fmt_main">
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/myOrderFragment"
+        android:name="com.ram.delivery.view.main.myorder.MyOrderFragment"
+        android:label="MyOrderFragment"
+        tools:layout="@layout/fmt_main">
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/orderHistoryFragment"
+        android:name="com.ram.delivery.view.main.history.OrderHistoryFragment"
+        android:label="OrderHistoryFragment"
+        tools:layout="@layout/fmt_main">
+
+    </fragment>
+
+</navigation>

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<network-security-config>
+    <base-config cleartextTrafficPermitted="true" />
+    <domain-config cleartextTrafficPermitted="true">
+        <domain includeSubdomains="true">218.55.250.10:10080</domain>
+        <domain includeSubdomains="true">maps.daum-img.net</domain>
+        <domain includeSubdomains="true">cloudfront.net</domain>
+    </domain-config>
+</network-security-config>
