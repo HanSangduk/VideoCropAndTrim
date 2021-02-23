@@ -59,7 +59,7 @@ class HomeViewModel @Inject constructor(
     val lastAddress: LiveData<String> = _lastAddress
 
     private val _lastAddressRes: MutableLiveData<LastAddressResponse> = MutableLiveData()
-    val lastAddressRes: LiveData<SafeTalkBannerModel> = _lastAddressRes
+    val lastAddressRes: LiveData<LastAddressResponse> = _lastAddressRes
 
     private val _safeTalkBannerModel: MutableLiveData<SafeTalkBannerModel> = MutableLiveData()
     val safeTalkBannerModel: LiveData<SafeTalkBannerModel> = _safeTalkBannerModel
@@ -98,12 +98,12 @@ class HomeViewModel @Inject constructor(
     }
 
     fun apiCallSafeTalkBanner(lastAddress: LastAddressResponse){
-        addDisposable(
-            safeTalkApiService.getBanner(
-                appKey,
-                lastAddress.legalCd
-            )
-        )
+//        addDisposable(
+//            safeTalkApiService.getBanner(
+//                appKey,
+//                lastAddress.legalCd
+//            )
+//        )
     }
 
     fun itemClickOrView(resBanner: ResBanner, position: Int, isClick: Boolean = false){
@@ -148,7 +148,7 @@ class HomeViewModel @Inject constructor(
                 _safeTalkBannerModel.value = SafeTalkBannerModel(
                     data.talkCount,
                     data.point,
-                    _lastAddress.value?.tow
+                    _lastAddressRes.value?.town ?: ""
                 )
             }
         }

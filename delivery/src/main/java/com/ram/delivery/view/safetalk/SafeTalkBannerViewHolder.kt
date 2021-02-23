@@ -58,7 +58,7 @@ class SafeTalkBannerViewHolder private constructor(private val binding: ItemSafe
 }
 
 interface BannerViewHolder<T> {
-    fun onBindViewHolder(data: T)
+fun onBindViewHolder(data: T)
 }
 
 @Parcelize
